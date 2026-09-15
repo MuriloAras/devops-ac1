@@ -17,10 +17,11 @@ import java.util.List;
         }
 
         public void trocarMoedasPorCurso(String nomeCurso) {
-            // =========================================================================
-            // ETAPA RED (TDD - Passo 1: Stub para fazer os testes falharem)
-            // =========================================================================
-            throw new AssertionError("RED: funcionalidade não implementada");
+            // ETAPA GREEN (TDD - testes passam)
+            if (saldoMoedas >= CUSTO_CURSO) {
+                this.saldoMoedas -= CUSTO_CURSO;
+                this.cursosAdquiridos.add(nomeCurso);
+            }
         }
 
         public int getSaldoMoedas() {

@@ -8,6 +8,7 @@ class Grupo34AtddApplicationTests {
 
     @Test
     void contextLoads() {
+        Grupo34AtddApplication.main(new String[] {});
     }
 
 }
