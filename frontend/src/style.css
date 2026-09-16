@@ -1,0 +1,62 @@
+@font-face {
+  font-family: 'FredokaOne';
+  src: url('./assets/FredokaOne-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #1a1a1a;
+  --card-bg: #ffffff;
+  --pink: #f05472;
+  --pink-hover: #d63f5e;
+  --gold: #f5c842;
+  --text-dark: #1a1a1a;
+  --text-muted: #666;
+  --border-radius: 16px;
+  --input-border: #d0d0d0;
+}
+
+body {
+  background-color: var(--bg);
+  font-family: 'FredokaOne', sans-serif;
+  min-height: 100vh;
+  color: var(--text-dark);
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button {
+  font-family: 'FredokaOne', sans-serif;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+input {
+  font-family: inherit;
+  outline: none;
+  border: 1.5px solid var(--input-border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 1rem;
+  width: 100%;
+  transition: border-color 0.2s;
+  background: #fafafa;
+}
+
+input:focus {
+  border-color: var(--pink);
+  background: #fff;
+}
