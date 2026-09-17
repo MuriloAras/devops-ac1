@@ -2,7 +2,7 @@
 
 ### Avaliação Continuada 1 (AC1) — Disciplina de DevOps e QA
 
-**Grupo:** Murilo Aras, Beatriz, Pedro
+   **Grupo:** Murilo Araujo, Beatriz, Pedro
 
 ---
 
