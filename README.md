@@ -19,13 +19,18 @@ Trata-se de uma aplicação completa que simula uma plataforma de **Educação C
 O objetivo principal deste projeto é aplicar e demonstrar na prática conceitos de Engenharia de Qualidade de Software (QA) e Cultura DevOps:
 
 1. **ATDD (Acceptance Test-Driven Development) e BDD (Behavior-Driven Development):** Escrita de histórias de usuário e cenários comportamentais em formato *Gherkin* (*Dado-Quando-Então*) antes de qualquer linha de código.
+
 2. **Ciclo TDD (Test-Driven Development):** Aplicação estrita das três fases do desenvolvimento orientado a testes:
    - 🔴 **RED:** Escrever o teste unitário que define o comportamento esperado e vê-lo falhar.
    - 🟢 **GREEN:** Escrever o código mínimo necessário para fazer o teste passar.
-   - 🔵 **BLUE (Refactor):** Refatorar o código, garantindo design limpo, baixa complexidade ciclomática e **100% de cobertura de testes (Coverage)** sem lacunas no JaCoCo.
+   - 🔵 **BLUE (Refactor):** Refatorar o código, garantindo **100% de cobertura de testes** sem lacunas no JaCoCo.
+
 3. **Arquitetura em Camadas e DDD (Domain-Driven Design):** Isolamento do modelo de domínio puro (`domain.Aluno`) das camadas de persistência (`entity.AlunoEntity`), serviços (`service.AlunoService`), controle (`controller.AlunoController`) e transferência de dados (`dto`).
+
 4. **Documentação e Exposição de API:** Documentação interativa via **Swagger / OpenAPI 3.0**.
+
 5. **Conteinerização com Docker:** Criação de ambiente reproduzível e isolado utilizando `Dockerfile` multi-stage e `docker-compose.yml` integrando a aplicação, banco de dados relacional **PostgreSQL** e interface gráfica **PgAdmin**.
+
 6. **Frontend Integrado:** Interface gráfica interativa e responsiva desenvolvida em **Vue.js + Vite**, permitindo autenticação e troca visual de moedas.
 
 ---
@@ -36,7 +41,7 @@ Com base no estudo de caso de Educação Continuada Gamificada, cada integrante 
 
 O documento completo com essas informações pode ser encontrado em **BDD_Devops_AC1.xlsx**
 
-### 👥 Histórias de Usuário Criadas:
+### Histórias de Usuário Criadas:
 
 | Papel / Integrante            | Como...                                                                          | Quero...                                                | Para...                                                               |                  Status                  |
 | :---------------------------- | :------------------------------------------------------------------------------- | :------------------------------------------------------ | :-------------------------------------------------------------------- | :--------------------------------------: |
@@ -46,23 +51,23 @@ O documento completo com essas informações pode ser encontrado em **BDD_Devops
 
 ---
 
-### 🧪 Cenários BDD da US Escolhida (Troca de Moedas por Cursos)
+### Cenários BDD da US Escolhida (Troca de Moedas por Cursos)
 
 A partir da User Story selecionada (do integrante Pedro), definimos **3 cenários de teste de aceitação (BDD)**, cada um elaborado e assinado por um integrante do grupo (conforme versionado na planilha [`BDD_Devops_AC1.xlsx`](./BDD_Devops_AC1.xlsx)):
 
-#### 🔹 Cenário 1 (Murilo) — Saldo Suficiente e Exato (3 Moedas)
+#### > Cenário 1 (Murilo) — Saldo Suficiente e Exato (3 Moedas)
 
 > **Dado** que o aluno possui exatamente `3` moedas acumuladas
 > **Quando** ele solicitar a troca por um curso cujo custo é de `3` moedas
 > **Então** a troca deve ser efetuada com sucesso, o curso deve ser adicionado aos seus cursos adquiridos e seu saldo final deve ser `0` moedas.
 
-#### 🔹 Cenário 2 (Beatriz) — Saldo Insuficiente (2 Moedas)
+#### > Cenário 2 (Beatriz) — Saldo Insuficiente (2 Moedas)
 
 > **Dado** que a aluna possui apenas `2` moedas acumuladas
 > **Quando** ela solicitar a troca por um curso cujo custo é de `3` moedas
 > **Então** a operação deve ser recusada, nenhum curso deve ser adicionado e seu saldo deve permanecer inalterado em `2` moedas.
 
-#### 🔹 Cenário 3 (Pedro) — Saldo Superior ao Custo (5 Moedas)
+#### > Cenário 3 (Pedro) — Saldo Superior ao Custo (5 Moedas)
 
 > **Dado** que o aluno possui `5` moedas acumuladas
 > **Quando** ele solicitar a troca por um curso cujo custo é de `3` moedas
@@ -70,7 +75,7 @@ A partir da User Story selecionada (do integrante Pedro), definimos **3 cenário
 
 ---
 
-## 🛠️ 4. Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 * **Backend:** Java 21, Spring Boot, Spring Data JPA, Spring Security, Hibernate.
 * **Qualidade e Testes:** JUnit 5, JaCoCo.
