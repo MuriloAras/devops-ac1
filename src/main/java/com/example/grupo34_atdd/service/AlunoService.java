@@ -4,6 +4,7 @@ import com.example.grupo34_atdd.domain.Aluno;
 import com.example.grupo34_atdd.dto.AlunoRequestDTO;
 import com.example.grupo34_atdd.dto.AlunoResponseDTO;
 import com.example.grupo34_atdd.dto.LoginRequestDTO;
+import com.example.grupo34_atdd.entity.AlunoEntity;
 import com.example.grupo34_atdd.repository.AlunoRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -28,14 +29,14 @@ public class AlunoService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "E-mail já cadastrado no sistema.");
         }
 
-        Aluno aluno = new Aluno(
+        AlunoEntity entity = new AlunoEntity(
                 dto.getNome(),
                 dto.getEmail(),
                 dto.getSenha(),
                 dto.getSaldoMoedas()
         );
 
-        Aluno salvo = alunoRepository.save(aluno);
+        AlunoEntity salvo = alunoRepository.save(entity);
         return new AlunoResponseDTO(salvo);
     }
 
@@ -48,34 +49,39 @@ public class AlunoService {
 
     @Transactional(readOnly = true)
     public AlunoResponseDTO buscarPorId(Long id) {
-        Aluno aluno = alunoRepository.findById(id)
+        AlunoEntity entity = alunoRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Aluno não encontrado com ID: " + id));
-        return new AlunoResponseDTO(aluno);
+        return new AlunoResponseDTO(entity);
     }
 
     @Transactional
     public AlunoResponseDTO trocarMoedas(Long alunoId, String nomeCurso) {
-        Aluno aluno = alunoRepository.findById(alunoId)
+        AlunoEntity entity = alunoRepository.findById(alunoId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Aluno não encontrado com ID: " + alunoId));
 
-        boolean sucesso = aluno.trocarMoedasPorCurso(nomeCurso);
+        // Aplica a regra de negócio através do modelo puro de domínio Aluno
+        Aluno alunoDominio = new Aluno(entity.getSaldoMoedas());
+        boolean sucesso = alunoDominio.trocarMoedasPorCurso(nomeCurso);
         if (!sucesso) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Saldo de moedas insuficiente para adquirir o curso.");
         }
 
-        Aluno atualizado = alunoRepository.save(aluno);
+        entity.setSaldoMoedas(alunoDominio.getSaldoMoedas());
+        entity.getCursosAdquiridos().add(nomeCurso);
+
+        AlunoEntity atualizado = alunoRepository.save(entity);
         return new AlunoResponseDTO(atualizado);
     }
 
     @Transactional(readOnly = true)
     public AlunoResponseDTO autenticar(LoginRequestDTO dto) {
-        Aluno aluno = alunoRepository.findByEmail(dto.getEmail())
+        AlunoEntity entity = alunoRepository.findByEmail(dto.getEmail())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "E-mail ou senha inválidos."));
 
-        if (!aluno.getSenha().equals(dto.getSenha())) {
+        if (!entity.getSenha().equals(dto.getSenha())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "E-mail ou senha inválidos.");
         }
 
-        return new AlunoResponseDTO(aluno);
+        return new AlunoResponseDTO(entity);
     }
 }

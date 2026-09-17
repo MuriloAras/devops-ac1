@@ -1,15 +1,15 @@
 package com.example.grupo34_atdd.repository;
 
-import com.example.grupo34_atdd.domain.Aluno;
+import com.example.grupo34_atdd.entity.AlunoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface AlunoRepository extends JpaRepository<Aluno, Long> {
+public interface AlunoRepository extends JpaRepository<AlunoEntity, Long> {
 
-    Optional<Aluno> findByEmail(String email);
+    Optional<AlunoEntity> findByEmail(String email);
 
     boolean existsByEmail(String email);
 }

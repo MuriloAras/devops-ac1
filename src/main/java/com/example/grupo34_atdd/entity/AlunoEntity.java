@@ -1,34 +1,40 @@
-package com.example.grupo34_atdd.dto;
+package com.example.grupo34_atdd.entity;
 
-import com.example.grupo34_atdd.entity.AlunoEntity;
-
+import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
-public class AlunoResponseDTO {
+@Entity
+@Table(name = "alunos")
+public class AlunoEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String nome;
+
+    @Column(unique = true)
     private String email;
+
+    private String senha;
+
     private int saldoMoedas;
-    private List<String> cursosAdquiridos;
 
-    public AlunoResponseDTO() {
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "aluno_cursos", joinColumns = @JoinColumn(name = "aluno_id"))
+    @Column(name = "curso")
+    private List<String> cursosAdquiridos = new ArrayList<>();
+
+    public AlunoEntity() {
     }
 
-    public AlunoResponseDTO(AlunoEntity entity) {
-        this.id = entity.getId();
-        this.nome = entity.getNome();
-        this.email = entity.getEmail();
-        this.saldoMoedas = entity.getSaldoMoedas();
-        this.cursosAdquiridos = entity.getCursosAdquiridos();
-    }
-
-    public AlunoResponseDTO(Long id, String nome, String email, int saldoMoedas, List<String> cursosAdquiridos) {
-        this.id = id;
+    public AlunoEntity(String nome, String email, String senha, int saldoMoedas) {
         this.nome = nome;
         this.email = email;
+        this.senha = senha;
         this.saldoMoedas = saldoMoedas;
-        this.cursosAdquiridos = cursosAdquiridos;
+        this.cursosAdquiridos = new ArrayList<>();
     }
 
     public Long getId() {
@@ -55,6 +61,14 @@ public class AlunoResponseDTO {
         this.email = email;
     }
 
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
     public int getSaldoMoedas() {
         return saldoMoedas;
     }
@@ -68,6 +82,6 @@ public class AlunoResponseDTO {
     }
 
     public void setCursosAdquiridos(List<String> cursosAdquiridos) {
-        this.cursosAdquiridos = cursosAdquiridos;
+        this.cursosAdquiridos = cursosAdquiridos != null ? cursosAdquiridos : new ArrayList<>();
     }
 }
