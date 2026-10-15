@@ -1,13 +1,11 @@
 <template>
   <div class="login-page">
-    <!-- Logo -->
     <div class="logo">
       <span class="logo-text">Super</span>
       <img src="../assets/coin.png" alt="moeda" class="logo-coin" />
       <span class="logo-text">Cursos</span>
     </div>
 
-    <!-- Card de Login -->
     <div class="login-card">
       <p v-if="erro" class="erro-msg">{{ erro }}</p>
 

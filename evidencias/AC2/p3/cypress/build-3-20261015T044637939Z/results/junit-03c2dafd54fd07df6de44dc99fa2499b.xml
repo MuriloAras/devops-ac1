@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="14.912" tests="6" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-10-15T04:42:41" tests="0" file="cypress/e2e/super-cursos.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Super Cursos — autenticação e troca de moedas" timestamp="2026-10-15T04:42:41" tests="6" time="14.910" failures="0">
+    <testcase name="Super Cursos — autenticação e troca de moedas recusa senha inválida e mantém a tela de login" time="2.903" classname="recusa senha inválida e mantém a tela de login">
+    </testcase>
+    <testcase name="Super Cursos — autenticação e troca de moedas autentica aluno válido e exibe seu saldo e lista de cursos" time="1.631" classname="autentica aluno válido e exibe seu saldo e lista de cursos">
+    </testcase>
+    <testcase name="Super Cursos — autenticação e troca de moedas troca 3 moedas por um curso e termina com saldo zero" time="2.189" classname="troca 3 moedas por um curso e termina com saldo zero">
+    </testcase>
+    <testcase name="Super Cursos — autenticação e troca de moedas troca 5 moedas por um curso e preserva as 2 moedas restantes" time="2.077" classname="troca 5 moedas por um curso e preserva as 2 moedas restantes">
+    </testcase>
+    <testcase name="Super Cursos — autenticação e troca de moedas bloqueia saldo 2 na interface e na API sem alterar saldo ou cursos" time="2.564" classname="bloqueia saldo 2 na interface e na API sem alterar saldo ou cursos">
+    </testcase>
+    <testcase name="Super Cursos — autenticação e troca de moedas mantém o curso e o saldo após sair e entrar novamente" time="3.360" classname="mantém o curso e o saldo após sair e entrar novamente">
+    </testcase>
+  </testsuite>
+</testsuites>
