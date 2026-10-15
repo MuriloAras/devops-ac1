@@ -1,0 +1,12 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+grupo34_atdd,com.example.grupo34_atdd,Grupo34AtddApplication,5,3,0,0,2,1,1,1,1,1
+grupo34_atdd,com.example.grupo34_atdd.controller,HomeController,0,5,0,0,0,2,0,2,0,2
+grupo34_atdd,com.example.grupo34_atdd.controller,AlunoController,0,41,0,0,0,9,0,6,0,6
+grupo34_atdd,com.example.grupo34_atdd.config,SecurityConfig,0,61,0,0,0,10,0,4,0,4
+grupo34_atdd,com.example.grupo34_atdd.entity,AlunoEntity,0,81,0,2,0,28,0,15,0,14
+grupo34_atdd,com.example.grupo34_atdd.domain,Aluno,0,37,0,2,0,11,0,5,0,4
+grupo34_atdd,com.example.grupo34_atdd.dto,LoginRequestDTO,0,26,0,0,0,12,0,6,0,6
+grupo34_atdd,com.example.grupo34_atdd.dto,AlunoRequestDTO,0,46,0,0,0,20,0,10,0,10
+grupo34_atdd,com.example.grupo34_atdd.dto,AlunoResponseDTO,0,79,0,0,0,31,0,13,0,13
+grupo34_atdd,com.example.grupo34_atdd.dto,TrocaMoedasRequestDTO,0,16,0,0,0,8,0,4,0,4
+grupo34_atdd,com.example.grupo34_atdd.service,AlunoService,0,158,0,6,0,33,0,12,0,9

@@ -59,7 +59,6 @@ public class AlunoService {
         AlunoEntity entity = alunoRepository.findById(alunoId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Aluno não encontrado com ID: " + alunoId));
 
-        // Aplica a regra de negócio através do modelo puro de domínio Aluno
         Aluno alunoDominio = new Aluno(entity.getSaldoMoedas());
         boolean sucesso = alunoDominio.trocarMoedasPorCurso(nomeCurso);
         if (!sucesso) {

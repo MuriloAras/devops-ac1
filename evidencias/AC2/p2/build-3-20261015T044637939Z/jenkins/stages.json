@@ -1,0 +1,174 @@
+{
+    "_links":  {
+                   "self":  {
+                                "href":  "/job/A2_P2_supercursos_pipeline/3/wfapi/describe"
+                            },
+                   "artifacts":  {
+                                     "href":  "/job/A2_P2_supercursos_pipeline/3/wfapi/artifacts"
+                                 }
+               },
+    "id":  "3",
+    "name":  "#3",
+    "status":  "SUCCESS",
+    "startTimeMillis":  1792039248310,
+    "endTimeMillis":  1792039379811,
+    "durationMillis":  131501,
+    "queueDurationMillis":  5,
+    "pauseDurationMillis":  0,
+    "stages":  [
+                   {
+                       "_links":  {
+                                      "self":  {
+                                                   "href":  "/job/A2_P2_supercursos_pipeline/3/execution/node/12/wfapi/describe"
+                                               }
+                                  },
+                       "id":  "12",
+                       "name":  "0 - Preflight do Ambiente",
+                       "execNode":  "",
+                       "status":  "SUCCESS",
+                       "startTimeMillis":  1792039257588,
+                       "durationMillis":  1667,
+                       "pauseDurationMillis":  0
+                   },
+                   {
+                       "_links":  {
+                                      "self":  {
+                                                   "href":  "/job/A2_P2_supercursos_pipeline/3/execution/node/29/wfapi/describe"
+                                               }
+                                  },
+                       "id":  "29",
+                       "name":  "1 - Checkout",
+                       "execNode":  "",
+                       "status":  "SUCCESS",
+                       "startTimeMillis":  1792039259274,
+                       "durationMillis":  2228,
+                       "pauseDurationMillis":  0
+                   },
+                   {
+                       "_links":  {
+                                      "self":  {
+                                                   "href":  "/job/A2_P2_supercursos_pipeline/3/execution/node/42/wfapi/describe"
+                                               }
+                                  },
+                       "id":  "42",
+                       "name":  "2 - CI - JUnit + PostgreSQL + JaCoCo",
+                       "execNode":  "",
+                       "status":  "SUCCESS",
+                       "startTimeMillis":  1792039261525,
+                       "durationMillis":  41202,
+                       "pauseDurationMillis":  0
+                   },
+                   {
+                       "_links":  {
+                                      "self":  {
+                                                   "href":  "/job/A2_P2_supercursos_pipeline/3/execution/node/60/wfapi/describe"
+                                               }
+                                  },
+                       "id":  "60",
+                       "name":  "3 - CI - Relatorio PMD",
+                       "execNode":  "",
+                       "status":  "SUCCESS",
+                       "startTimeMillis":  1792039302745,
+                       "durationMillis":  7927,
+                       "pauseDurationMillis":  0
+                   },
+                   {
+                       "_links":  {
+                                      "self":  {
+                                                   "href":  "/job/A2_P2_supercursos_pipeline/3/execution/node/71/wfapi/describe"
+                                               }
+                                  },
+                       "id":  "71",
+                       "name":  "4 - CI - Package",
+                       "execNode":  "",
+                       "status":  "SUCCESS",
+                       "startTimeMillis":  1792039310690,
+                       "durationMillis":  7380,
+                       "pauseDurationMillis":  0
+                   },
+                   {
+                       "_links":  {
+                                      "self":  {
+                                                   "href":  "/job/A2_P2_supercursos_pipeline/3/execution/node/82/wfapi/describe"
+                                               }
+                                  },
+                       "id":  "82",
+                       "name":  "5 - CD - Build dos Containers",
+                       "execNode":  "",
+                       "status":  "SUCCESS",
+                       "startTimeMillis":  1792039318088,
+                       "durationMillis":  10717,
+                       "pauseDurationMillis":  0
+                   },
+                   {
+                       "_links":  {
+                                      "self":  {
+                                                   "href":  "/job/A2_P2_supercursos_pipeline/3/execution/node/92/wfapi/describe"
+                                               }
+                                  },
+                       "id":  "92",
+                       "name":  "6 - Registry - Docker Hub (opcional)",
+                       "execNode":  "",
+                       "status":  "NOT_EXECUTED",
+                       "startTimeMillis":  1792039328842,
+                       "durationMillis":  250,
+                       "pauseDurationMillis":  0
+                   },
+                   {
+                       "_links":  {
+                                      "self":  {
+                                                   "href":  "/job/A2_P2_supercursos_pipeline/3/execution/node/97/wfapi/describe"
+                                               }
+                                  },
+                       "id":  "97",
+                       "name":  "7 - CD - Deploy HOMOL",
+                       "execNode":  "",
+                       "status":  "SUCCESS",
+                       "startTimeMillis":  1792039329114,
+                       "durationMillis":  19170,
+                       "pauseDurationMillis":  0
+                   },
+                   {
+                       "_links":  {
+                                      "self":  {
+                                                   "href":  "/job/A2_P2_supercursos_pipeline/3/execution/node/107/wfapi/describe"
+                                               }
+                                  },
+                       "id":  "107",
+                       "name":  "8 - CD - Health Check HOMOL",
+                       "execNode":  "",
+                       "status":  "SUCCESS",
+                       "startTimeMillis":  1792039348306,
+                       "durationMillis":  1293,
+                       "pauseDurationMillis":  0
+                   },
+                   {
+                       "_links":  {
+                                      "self":  {
+                                                   "href":  "/job/A2_P2_supercursos_pipeline/3/execution/node/121/wfapi/describe"
+                                               }
+                                  },
+                       "id":  "121",
+                       "name":  "9 - CD - Cypress E2E em Container",
+                       "execNode":  "",
+                       "status":  "SUCCESS",
+                       "startTimeMillis":  1792039349621,
+                       "durationMillis":  29724,
+                       "pauseDurationMillis":  0
+                   },
+                   {
+                       "_links":  {
+                                      "self":  {
+                                                   "href":  "/job/A2_P2_supercursos_pipeline/3/execution/node/138/wfapi/describe"
+                                               }
+                                  },
+                       "id":  "138",
+                       "name":  "10 - Observabilidade",
+                       "execNode":  "",
+                       "status":  "SUCCESS",
+                       "startTimeMillis":  1792039379385,
+                       "durationMillis":  146,
+                       "pauseDurationMillis":  0
+                   }
+               ]
+}
