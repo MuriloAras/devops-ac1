@@ -1,8 +1,8 @@
-# Super Cursos - praticas 2 e 3
+# Super Cursos - execucao e CI/CD
 
-Este laboratorio aplica ao projeto da AC1 o pipeline Jenkins, a entrega em homologacao,
-os testes E2E e o monitoramento. A validacao inicial da AC1 foi dispensada pelo aluno;
-os testes abaixo verificam as novas configuracoes e continuam obrigatorios no CI.
+O pipeline Jenkins valida e implanta a aplicacao em homologacao e executa os testes E2E.
+Prometheus e Grafana monitoram o ambiente. Os testes de unidade e integracao verificam a
+aplicacao e as configuracoes do ambiente em cada execucao do CI.
 
 ## Requisitos
 
@@ -17,18 +17,18 @@ local do Vue, use Node compativel com o `package-lock.json` e `npm ci`.
 ## Repositorio e job Jenkins
 
 Origem do codigo: https://github.com/MuriloAras/devops-ac1. A branch de trabalho local
-e `devops/praticas-2-3`. O laboratorio pode usar SCM Git local para executar mudancas
+e `devops/praticas-2-3`. O job pode usar SCM Git local para executar mudancas
 comitadas antes da publicacao remota. Nesse modo, o Jenkins deve rodar nesta maquina
-e ter a opcao `-Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true`, como no laboratorio anterior.
+e ter a opcao `-Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true`.
 
-O script cria SOMENTE o job dedicado; nao altera jobs anteriores nem a autenticacao:
+Para iniciar o Jenkins e configurar o job:
 
 ```powershell
 .\scripts\iniciar-jenkins.ps1
 .\scripts\configurar-jenkins.ps1
 ```
 
-O primeiro script reaproveita a instalacao em `$env:USERPROFILE\Jenkins\jenkins.war`,
+O primeiro script usa a instalacao em `$env:USERPROFILE\Jenkins\jenkins.war`,
 inicia em segundo plano e usa JDK 21. Parametros `-JenkinsWar` e `-JavaHome` permitem
 apontar outras instalacoes. Se Jenkins ja estiver ativo, o script apenas informa isso.
 
@@ -41,14 +41,14 @@ ambiente do processo. Para usar um repositorio remoto depois de publicar a branc
 ```
 
 Abra http://localhost:9090/job/A2_P2_supercursos_pipeline/ e execute o build.
-O disparo e manual; nao ha webhook nem polling configurado neste laboratorio.
+O disparo e manual; nao ha webhook nem polling configurado no job.
 
 ## Execucao e estagios
 
 0. Preflight: JDK, Git, Docker Engine e Compose.
 1. Checkout da revisao e registro do commit/build.
 2. JUnit, PostgreSQL real com Testcontainers, JaCoCo; publica JUnit e cobertura.
-3. PMD: gera e arquiva o relatorio. Nao ha gate de violacoes nem cobertura minima arbitraria.
+3. PMD: gera e arquiva o relatorio, sem bloqueio por violacoes ou limite minimo de cobertura configurado.
 4. Package: gera o JAR apos os testes aprovados.
 5. Build das imagens da API e do Vue servido pelo Nginx.
 6. Docker Hub opcional, desabilitado por padrao.
@@ -66,7 +66,7 @@ Nenhuma publicacao e necessaria para a execucao local.
 `dev` usa H2 por padrao. O Compose DEV oferece PostgreSQL separado como opcao.
 `homol` usa PostgreSQL 16 e volume proprio. Copie `.env.example` para `.env` se quiser
 personalizar as configuracoes locais; `.env` fica fora do Git. As credenciais padrao
-sao exclusivas do laboratorio local e os dados dos testes sao ficticios.
+sao destinadas a execucao local e os dados dos testes sao ficticios.
 
 O `.env` do checkout nao e copiado pelo SCM ao workspace Jenkins. Personalizacoes de
 CI precisam ser definidas no ambiente de execução Jenkins ou no workspace efetivamente usado.
@@ -85,7 +85,7 @@ Para optar pelo PostgreSQL DEV em vez do H2, defina no processo do backend
 | Grafana | http://localhost:3003 |
 
 O Nginx encaminha `/api` para `api:8080` na rede Docker. O banco HOMOL nao publica
-porta no host. Os nomes, portas e volumes nao reutilizam a stack Jogo Enigma nem a AC1 antiga.
+porta no host. O projeto Compose `supercursos-homol` possui rede e volumes proprios.
 
 ```powershell
 docker compose -f docker-compose.homol.yml build api frontend
@@ -97,19 +97,28 @@ docker compose -f docker-compose.homol.yml ps
 `docker compose ... stop` encerra os servicos preservando dados. Nao use `down -v`
 para uma parada normal. Os testes Testcontainers usam PostgreSQL temporario separado.
 
-## Evidencias e entrega
+## Evidencias
 
-As evidencias novas ficam em `evidencias/a2/`; as da AC1 permanecem em `evidencias/`.
+Os resultados estao organizados em `evidencias/AC1/` e `evidencias/AC2/`.
+O [indice AC2](../evidencias/AC2/README.md) identifica as capturas e a execucao verificada.
 O Jenkins arquiva JUnit, JaCoCo, PMD, JAR, resultados Cypress e metadados da execucao.
 
-- `p2/`: configuracao do job, console completo, commit/build, estagios e relatorios.
-- `p3/`: health, containers, frontend, Cypress e target Prometheus.
-- `grafana/`: Explore, dashboard e exportacoes JSON.
+- `evidencias/AC2/p2/`: configuracao do job, console, commit/build, estagios e relatorios.
+- `evidencias/AC2/p3/`: health, containers, frontend, Cypress e target Prometheus.
+- `evidencias/AC2/grafana/`: Explore, dashboard e exportacoes JSON.
 
-As capturas devem identificar a pagina e o resultado. Para o monitoramento, gere
+Para coletar os resultados do ultimo build aprovado nessa estrutura:
+
+```powershell
+.\scripts\coletar-evidencias.ps1 -OutputRoot .\evidencias\AC2
+```
+
+O parametro `-OutputRoot` define o destino da coleta. O padrao do script e
+`evidencias/a2/`; os caminhos dos artefatos arquivados sao definidos pelo Jenkinsfile.
+
+Para verificar o monitoramento, gere
 requisicoes reais na aplicacao, aguarde o scrape e confirme `up{job="supercursos-api"}=1`.
 O dashboard provisionado contem disponibilidade, HTTP/s, latencia media e heap JVM.
 O sucesso do stage 10, sozinho, nao comprova a coleta dessas metricas.
 
-O relatorio final deve registrar somente resultados efetivamente obtidos, com
-legendas ligando cada captura ao criterio demonstrado e ao build utilizado.
+As coletas registram build, commit, resultados e hashes dos arquivos.

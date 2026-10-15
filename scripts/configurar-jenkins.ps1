@@ -25,7 +25,7 @@ $escapedBranch = [Security.SecurityElement]::Escape($Branch)
 $jobXml = @"
 <?xml version="1.0" encoding="UTF-8"?>
 <flow-definition plugin="workflow-job">
-  <description>Super Cursos - praticas 2 e 3: CI/CD, PostgreSQL, Cypress e observabilidade. Origem: https://github.com/MuriloAras/devops-ac1</description>
+  <description>Super Cursos - CI/CD, PostgreSQL, Cypress e observabilidade. Origem: https://github.com/MuriloAras/devops-ac1</description>
   <keepDependencies>false</keepDependencies>
   <properties/>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps">

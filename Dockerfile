@@ -1,4 +1,3 @@
-# O pipeline executa os testes antes de construir a imagem.
 FROM maven:3.9-eclipse-temurin-21-alpine AS build
 WORKDIR /workspace
 COPY pom.xml ./

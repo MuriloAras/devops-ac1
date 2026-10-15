@@ -77,7 +77,6 @@ services:
         condition: service_healthy
 
   prometheus:
-    # Binário local verificado: Prometheus 3.15.0. Digest fixa a imagem utilizada.
     image: prom/prometheus@sha256:efd719c99d83b060d9daefdcf00360461adf279f45ef5391f8d111892118753e
     restart: unless-stopped
     ports:
@@ -95,7 +94,6 @@ services:
         condition: service_healthy
 
   grafana:
-    # Binário local verificado: Grafana 13.2.4.
     image: grafana/grafana@sha256:dbbc38ea21103cefb50396340cd88afec779c7e070b0a7bf5a75b4ce46651d3f
     restart: unless-stopped
     environment:
@@ -125,7 +123,6 @@ services:
       CYPRESS_BASE_URL: http://frontend:80
       CYPRESS_VIDEO: "true"
     volumes:
-      # Inclui cypress/results, cypress/screenshots e cypress/videos no host.
       - ./frontend:/e2e
     shm_size: 1gb
     depends_on:

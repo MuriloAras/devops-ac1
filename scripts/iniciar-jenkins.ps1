@@ -23,7 +23,7 @@ if (-not $JavaHome) {
 $javaExecutable = Join-Path $JavaHome 'bin\java.exe'
 $javaVersion = (& $javaExecutable -version 2>&1 | Out-String)
 if ($javaVersion -notmatch 'version "21\.') {
-    throw 'Este laboratorio usa JDK 21. Informe -JavaHome apontando ao JDK 21.'
+    throw 'JDK 21 necessario. Informe -JavaHome apontando ao JDK 21.'
 }
 $projectRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $logRoot = Join-Path $projectRoot '.local'
@@ -38,7 +38,6 @@ $executionPaths += @(
     "$env:SystemRoot\System32", "$env:SystemRoot", "$env:SystemRoot\System32\Wbem",
     "$env:SystemRoot\System32\WindowsPowerShell\v1.0"
 )
-# Ambiente do servidor restrito aos runtimes necessarios ao laboratorio.
 $env:PATH = ($executionPaths | Select-Object -Unique) -join ';'
 $jenkinsProcess = Start-Process -FilePath $javaExecutable -ArgumentList @(
     '-Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true',
