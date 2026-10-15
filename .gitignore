@@ -44,3 +44,4 @@ frontend/cypress/results/
 frontend/cypress/screenshots/
 frontend/cypress/videos/
 frontend/cypress/downloads/
+*.pdf
