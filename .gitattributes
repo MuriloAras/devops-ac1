@@ -1,5 +1,6 @@
 /mvnw text eol=lf
 *.cmd text eol=crlf
+*.pdf binary
 
 # Preserve os bytes das evidencias para manter os hashes SHA-256 da coleta.
 evidencias/a2/** -text
