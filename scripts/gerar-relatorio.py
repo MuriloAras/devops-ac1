@@ -204,6 +204,7 @@ heading('Cobertura JaCoCo e análise PMD')
 text(f"O XML JaCoCo registra linhas {coverage('LINE')}, instruções {coverage('INSTRUCTION')} e branches {coverage('BRANCH')}. O plugin Jenkins arredonda os percentuais na apresentação. Duas linhas do método main existente não foram cobertas.")
 figure(browser_capture('p2', '04_jacoco'), 'Figura 3. Resumo JaCoCo publicado no build final do Jenkins.', 500)
 text('O relatório PMD desta execução não registrou ocorrências nas regras padrão. Os XML e HTML acompanham as evidências para conferência dos resultados, além das imagens.')
+text('O Jenkins publica a cobertura pelo plugin JaCoCo 3.3.7; o Maven gera os dados com jacoco-maven-plugin 0.8.13. A cópia local da apresentação indicada no Canvas mostra o uso de Record JaCoCo coverage report, sem uma versão numérica obrigatória identificada. A conferência e o inventário estão em docs/CONFERENCIA_PLUGINS_JENKINS.md.')
 
 newpage()
 heading('Prática 3 - Containers e homologação')
@@ -236,7 +237,7 @@ newpage()
 heading('Prometheus e Grafana')
 text('O Prometheus coleta /actuator/prometheus do serviço api:8080 sob o job supercursos-api. O Grafana consulta esse datasource. A verificação registrou o target UP e a consulta up{job="supercursos-api"} com valor 1.')
 figure(browser_capture('p3', '02_prometheus'), 'Figura 5. Target da API ativo no Prometheus.', 250)
-figure(browser_capture('grafana', '02_explore'), 'Figura 6. Grafana Explore confirma up=1 pelo datasource Prometheus.', 280)
+figure(browser_capture('grafana', '02b_explore_valor'), 'Figura 6. Grafana Explore confirma up=1 pelo datasource Prometheus.', 280)
 
 newpage()
 heading('Dashboard de observabilidade')
@@ -274,6 +275,7 @@ text(f"Manifesto da coleta: {manifest_path.relative_to(ROOT).as_posix()}. Status
 text('A configuração do job aponta ao Git local desta máquina. A branch contém as alterações; a origem remota é MuriloAras/devops-ac1. A publicação desta branch no GitHub e o Docker Hub não fazem parte da execução local registrada aqui.')
 text('Para reproduzir: siga docs/PRATICAS_A2.md, configure o job com scripts/configurar-jenkins.ps1, execute o build e, após SUCCESS, rode scripts/coletar-evidencias.ps1. O arquivo .env não é versionado e não acompanha o SCM ao workspace Jenkins.')
 text('O coletor verifica o build e o commit, os resultados JUnit e Cypress, a saúde da API e o monitoramento, e registra hashes SHA-256 dos relatórios e mídias. As capturas do navegador complementam esses arquivos. As credenciais exibidas no exemplo são exclusivas do laboratório local.')
+text('Todas as novas capturas usam formato desktop wide, próximo de 16:9: cerca de 1280 x 720 no navegador e 1600 x 900 no Cypress. O índice evidencias/a2/README.md lista os arquivos e suas dimensões. Os relatórios de execuções anteriores foram preservados no histórico local, e esta entrega usa a coleta do build atual.')
 text('Referências técnicas: documentação Jenkins de Pipeline e API remota (jenkins.io/doc); matriz de compatibilidade Springdoc (springdoc.org); documentação Docker Compose (docs.docker.com/compose); documentação Cypress (docs.cypress.io); Prometheus e Grafana (prometheus.io/docs e grafana.com/docs).')
 
 def decorate(canvas, doc):

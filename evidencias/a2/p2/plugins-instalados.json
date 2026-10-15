@@ -1,0 +1,898 @@
+{
+  "collectedAtUtc": "2026-10-15T04:47:32.6130061+00:00",
+  "source": "http://localhost:9090/pluginManager/api/json?depth=1",
+  "jenkinsVersion": "2.580.1",
+  "scope": "Inventario somente leitura; nenhum plugin ou configuracao alterado.",
+  "relevantPlugins": [
+    {
+      "id": "jacoco",
+      "name": "Jenkins JaCoCo plugin",
+      "version": "3.3.7",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "coverage",
+      "name": null,
+      "version": null,
+      "installed": false,
+      "active": false,
+      "enabled": false
+    },
+    {
+      "id": "code-coverage-api",
+      "name": null,
+      "version": null,
+      "installed": false,
+      "active": false,
+      "enabled": false
+    },
+    {
+      "id": "junit",
+      "name": "JUnit Plugin",
+      "version": "1438.v6a_ccb_4b_11004",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "warnings-ng",
+      "name": null,
+      "version": null,
+      "installed": false,
+      "active": false,
+      "enabled": false
+    },
+    {
+      "id": "pmd",
+      "name": null,
+      "version": null,
+      "installed": false,
+      "active": false,
+      "enabled": false
+    },
+    {
+      "id": "htmlpublisher",
+      "name": null,
+      "version": null,
+      "installed": false,
+      "active": false,
+      "enabled": false
+    },
+    {
+      "id": "maven-plugin",
+      "name": null,
+      "version": null,
+      "installed": false,
+      "active": false,
+      "enabled": false
+    },
+    {
+      "id": "workflow-aggregator",
+      "name": "Pipeline",
+      "version": "608.v67378e9d3db_1",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "pipeline-model-definition",
+      "name": "Pipeline: Declarative",
+      "version": "2.2293.v6e7193cec599",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "pipeline-stage-view",
+      "name": "Pipeline: Stage View Plugin",
+      "version": "2.41",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "pipeline-graph-view",
+      "name": "Pipeline Graph View Plugin",
+      "version": "1053.v9df19e6ceed2",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "git",
+      "name": "Git plugin",
+      "version": "5.11.0",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "credentials-binding",
+      "name": "Credentials Binding Plugin",
+      "version": "728.v902a_273b_8947",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "timestamper",
+      "name": "Timestamper",
+      "version": "1.30",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    }
+  ],
+  "installedPlugins": [
+    {
+      "id": "ant",
+      "name": "Ant Plugin",
+      "version": "520.vd082ecfb_16a_9",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "antisamy-markup-formatter",
+      "name": "OWASP Markup Formatter Plugin",
+      "version": "173.v680e3a_b_69ff3",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "apache-httpcomponents-client-4-api",
+      "name": "Jenkins Apache HttpComponents Client 4.x API Plugin",
+      "version": "4.5.14-269.vfa_2321039a_83",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "asm-api",
+      "name": "ASM API Plugin",
+      "version": "9.11-224.v369c884f7a_a_b_",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "bootstrap5-api",
+      "name": "Bootstrap 5 API Plugin",
+      "version": "5.3.8-1048.va_c299057e35c",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "bouncycastle-api",
+      "name": "bouncycastle API Plugin",
+      "version": "2.30.1.86.2-310.v4655f6742752",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "branch-api",
+      "name": "Branch API Plugin",
+      "version": "2.1303.v9f3b_95dc329d",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "build-timeout",
+      "name": "Build Timeout",
+      "version": "1.41",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "caffeine-api",
+      "name": "Caffeine API Plugin",
+      "version": "3.3.0-210.v71b_2985ce530",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "checks-api",
+      "name": "Checks API plugin",
+      "version": "422.vc7e8b_51488c6",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "cloudbees-folder",
+      "name": "Folders Plugin",
+      "version": "6.1106.v3a_d9a_6d2465e",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "commons-lang3-api",
+      "name": "commons-lang3 v3.x Jenkins API Plugin",
+      "version": "3.21.0-122.v6a_ea_4fd34049",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "commons-text-api",
+      "name": "commons-text API Plugin",
+      "version": "1.15.0-218.va_61573470393",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "credentials",
+      "name": "Credentials Plugin",
+      "version": "1514.vb_01eb_014e7d4",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "credentials-binding",
+      "name": "Credentials Binding Plugin",
+      "version": "728.v902a_273b_8947",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "dark-theme",
+      "name": "Dark Theme",
+      "version": "652.vea_da_dfea_e769",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "display-url-api",
+      "name": "Display URL API",
+      "version": "2.217.va_6b_de84cc74b_",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "durable-task",
+      "name": "Durable Task Plugin",
+      "version": "686.v80ff80875b_82",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "echarts-api",
+      "name": "ECharts API Plugin",
+      "version": "6.1.0-1321.v86c4c5114494",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "eddsa-api",
+      "name": "EDDSA API Plugin",
+      "version": "0.3.0.1-29.v67e9a_1c969b_b_",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "email-ext",
+      "name": "Email Extension Plugin",
+      "version": "2038.v7b_8817a_499d9",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "font-awesome-api",
+      "name": "Font Awesome API Plugin",
+      "version": "7.3.1-1013.v0835a_879ec6d",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "git",
+      "name": "Git plugin",
+      "version": "5.11.0",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "git-client",
+      "name": "Jenkins Git client plugin",
+      "version": "6.6.1",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "github",
+      "name": "GitHub plugin",
+      "version": "1.47.0",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "github-api",
+      "name": "GitHub API Plugin",
+      "version": "1.330-492.v3941a_032db_2a_",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "github-branch-source",
+      "name": "GitHub Branch Source Plugin",
+      "version": "1986.v801e40614d00",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "gradle",
+      "name": "Gradle Plugin",
+      "version": "2.20.1253.vc116f0763a_eb_",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "gson-api",
+      "name": "Gson API Plugin",
+      "version": "2.14.0-201.v8eefe5515533",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "instance-identity",
+      "name": "Instance Identity",
+      "version": "203.v15e81a_1b_7a_38",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "ionicons-api",
+      "name": "Ionicons API",
+      "version": "94.vcc3065403257",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "jackson-annotations2-api",
+      "name": "Jackson Annotations 2 API Plugin",
+      "version": "2.22-19.v10a_a_582ea_26e",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "jackson2-api",
+      "name": "Jackson 2 API Plugin",
+      "version": "2.22.3-447.v6a_93ce7d2c82",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "jackson3-api",
+      "name": "Jackson 3 API Plugin",
+      "version": "3.2.3-101.v69fc84453a_8e",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "jacoco",
+      "name": "Jenkins JaCoCo plugin",
+      "version": "3.3.7",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "jakarta-activation-api",
+      "name": "Jakarta Activation API",
+      "version": "2.1.4-1",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "jakarta-mail-api",
+      "name": "Jakarta Mail API",
+      "version": "2.1.5-1",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "jakarta-xml-bind-api",
+      "name": "Jakarta XML Binding API",
+      "version": "4.0.9-19.v2b_a_5b_44d9a_1c",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "javax-activation-api",
+      "name": "JavaBeans Activation Framework (JAF) API",
+      "version": "1.2.0-8",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "jaxb",
+      "name": "JAXB plugin",
+      "version": "2.3.9-143.v5979df3304e6",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "jjwt-api",
+      "name": "Java JSON Web Token (JJWT) Plugin",
+      "version": "0.13.0-141.vd58b_a_9592b_6c",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "joda-time-api",
+      "name": "Joda Time API Plugin",
+      "version": "2.15.0-208.v6b_084e7a_d9f0",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "jquery3-api",
+      "name": "JQuery3 API Plugin",
+      "version": "3.7.1-687.v68d468e40b_30",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "json-api",
+      "name": "JSON API Plugin",
+      "version": "20260814-226.v20f9685d642c",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "json-path-api",
+      "name": "JSON Path API Plugin",
+      "version": "3.0.0-218.vcd4dd1355de2",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "jsoup",
+      "name": "jsoup API Plugin",
+      "version": "1.23.2-106.v1161f282b_eb_f",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "junit",
+      "name": "JUnit Plugin",
+      "version": "1438.v6a_ccb_4b_11004",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "ldap",
+      "name": "LDAP Plugin",
+      "version": "825.v2fca_37dd5b_cb_",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "mailer",
+      "name": "Jenkins Mailer Plugin",
+      "version": "534.v1b_36f5864073",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "matrix-auth",
+      "name": "Matrix Authorization Strategy Plugin",
+      "version": "3.3",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "matrix-project",
+      "name": "Matrix Project Plugin",
+      "version": "928.v1effc3f3a_236",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "mina-sshd-api-common",
+      "name": "Mina SSHD API :: Common",
+      "version": "2.19.0-192.v2b_a_7b_2c1dc71",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "mina-sshd-api-core",
+      "name": "Mina SSHD API :: Core",
+      "version": "2.19.0-192.v2b_a_7b_2c1dc71",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "okhttp-api",
+      "name": "OkHttp Plugin",
+      "version": "5.3.2-200.vedb_720a_cf1f8",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "pipeline-build-step",
+      "name": "Pipeline: Build Step",
+      "version": "601.v6d4c6d1a_9dc7",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "pipeline-github-lib",
+      "name": "Pipeline: GitHub Groovy Libraries",
+      "version": "65.v203688e7727e",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "pipeline-graph-analysis",
+      "name": "Pipeline Graph Analysis Plugin",
+      "version": "254.v0f63a_a_447dca_",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "pipeline-graph-view",
+      "name": "Pipeline Graph View Plugin",
+      "version": "1053.v9df19e6ceed2",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "pipeline-groovy-lib",
+      "name": "Pipeline: Groovy Libraries",
+      "version": "822.vc95f70dea_db_7",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "pipeline-input-step",
+      "name": "Pipeline: Input Step",
+      "version": "560.v56198a_642157",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "pipeline-milestone-step",
+      "name": "Pipeline: Milestone Step",
+      "version": "152.v6e22b_8cfc66c",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "pipeline-model-api",
+      "name": "Pipeline: Model API",
+      "version": "2.2293.v6e7193cec599",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "pipeline-model-definition",
+      "name": "Pipeline: Declarative",
+      "version": "2.2293.v6e7193cec599",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "pipeline-model-extensions",
+      "name": "Pipeline: Declarative Extension Points API",
+      "version": "2.2293.v6e7193cec599",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "pipeline-rest-api",
+      "name": "Pipeline: REST API Plugin",
+      "version": "2.41",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "pipeline-stage-step",
+      "name": "Pipeline: Stage Step",
+      "version": "345.va_96187909426",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "pipeline-stage-tags-metadata",
+      "name": "Pipeline: Stage Tags Metadata",
+      "version": "2.2293.v6e7193cec599",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "pipeline-stage-view",
+      "name": "Pipeline: Stage View Plugin",
+      "version": "2.41",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "plain-credentials",
+      "name": "Plain Credentials Plugin",
+      "version": "199.v9f8e1f741799",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "plugin-util-api",
+      "name": "Plugin Utilities API Plugin",
+      "version": "7.1341.v039f146993d9",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "prism-api",
+      "name": "Prism API Plugin",
+      "version": "1.30.0-741.v034eb_0b_0a_a_fa_",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "resource-disposer",
+      "name": "Resource Disposer Plugin",
+      "version": "0.25",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "scm-api",
+      "name": "SCM API Plugin",
+      "version": "728.vc30dcf7a_0df5",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "script-security",
+      "name": "Script Security Plugin",
+      "version": "1433.v17c58a_e45cc1",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "snakeyaml-api",
+      "name": "SnakeYAML API Plugin",
+      "version": "2.7-152.vc672728cf536",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "snakeyaml-engine-api",
+      "name": "SnakeYAML Engine API Plugin",
+      "version": "3.2-18.v885ed7ff698f",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "ssh-credentials",
+      "name": "SSH Credentials Plugin",
+      "version": "372.va_250881b_08cd",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "ssh-slaves",
+      "name": "SSH Build Agents plugin",
+      "version": "3.1097.v868116049892",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "structs",
+      "name": "Structs Plugin",
+      "version": "362.va_b_695ef4fdf9",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "theme-manager",
+      "name": "Theme Manager",
+      "version": "346.v06cca_64c6a_37",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "timestamper",
+      "name": "Timestamper",
+      "version": "1.30",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "token-macro",
+      "name": "Token Macro Plugin",
+      "version": "477.vd4f0dc3cb_cf1",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "trilead-api",
+      "name": "Trilead API Plugin",
+      "version": "2.284.v1974ea_324382",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "variant",
+      "name": "Variant Plugin",
+      "version": "70.va_d9f17f859e0",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "woodstox-core-api",
+      "name": "Woodstox Core API Plugin",
+      "version": "7.3.0-16.v017f30ed004c",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "workflow-aggregator",
+      "name": "Pipeline",
+      "version": "608.v67378e9d3db_1",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "workflow-api",
+      "name": "Pipeline: API",
+      "version": "1413.v2ff1a_5e720fa_",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "workflow-basic-steps",
+      "name": "Pipeline: Basic Steps",
+      "version": "1098.v808b_fd7f8cf4",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "workflow-cps",
+      "name": "Pipeline: Groovy",
+      "version": "4395.v738456a_5da_6b_",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "workflow-durable-task-step",
+      "name": "Pipeline: Nodes and Processes",
+      "version": "1479.v56e587f413a_7",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "workflow-job",
+      "name": "Pipeline: Job",
+      "version": "1609.v8926e7962024",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "workflow-multibranch",
+      "name": "Pipeline: Multibranch",
+      "version": "842.v3a_b_59b_57b_e6e",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "workflow-scm-step",
+      "name": "Pipeline: SCM Step",
+      "version": "487.v41313a_96b_65d",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "workflow-step-api",
+      "name": "Pipeline: Step API",
+      "version": "724.v538c2362b_dfb_",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "workflow-support",
+      "name": "Pipeline: Supporting APIs",
+      "version": "1015.v785e5a_b_b_8b_22",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    },
+    {
+      "id": "ws-cleanup",
+      "name": "Jenkins Workspace Cleanup Plugin",
+      "version": "0.49",
+      "installed": true,
+      "active": true,
+      "enabled": true
+    }
+  ]
+}

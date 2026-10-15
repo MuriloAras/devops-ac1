@@ -4,10 +4,13 @@
 > Cypress e Prometheus/Grafana. Consulte o [guia de execução](docs/PRATICAS_A2.md).
 > As evidências novas ficam em `evidencias/a2/`; as evidências e a descrição original da AC1 foram preservadas abaixo.
 
-**Resultado A2:** Jenkins build **#2 aprovado**, com **26 testes de unidade + 8 de integração PostgreSQL + 6 Cypress**.
+**Resultado A2:** Jenkins build **#3 aprovado**, com **26 testes de unidade + 8 de integração PostgreSQL + 6 Cypress**.
 JaCoCo: **98,80% das linhas e 100% dos branches**. Os seis serviços de homologação ficaram saudáveis.
 Consulte o [relatório em PDF](RELATORIO_A2.pdf), a [versão em Markdown](RELATORIO_A2.md)
-e o [índice das evidências](evidencias/a2/README.md), ligados ao commit executado `f7ab240`.
+e o [índice das evidências](evidencias/a2/README.md), ligados ao commit executado `1d37dcf`.
+Branch: `devops/praticas-2-3`. As capturas A2 estão em formato desktop wide,
+próximo de 16:9: cerca de 1280 × 720 no navegador e 1600 × 900 no Cypress.
+A [conferência dos plugins](docs/CONFERENCIA_PLUGINS_JENKINS.md) registra o JaCoCo 3.3.7 instalado e o material consultado.
 
 ### Avaliação Continuada 1 (AC1) — Disciplina de DevOps e QA
 

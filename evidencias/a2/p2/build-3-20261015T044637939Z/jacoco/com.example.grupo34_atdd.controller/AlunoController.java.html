@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AlunoController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">grupo34_atdd</a> &gt; <a href="index.source.html" class="el_package">com.example.grupo34_atdd.controller</a> &gt; <span class="el_source">AlunoController.java</span></div><h1>AlunoController.java</h1><pre class="source lang-java linenums">package com.example.grupo34_atdd.controller;
+
+import com.example.grupo34_atdd.dto.AlunoRequestDTO;
+import com.example.grupo34_atdd.dto.AlunoResponseDTO;
+import com.example.grupo34_atdd.dto.LoginRequestDTO;
+import com.example.grupo34_atdd.dto.TrocaMoedasRequestDTO;
+import com.example.grupo34_atdd.service.AlunoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping(&quot;/api/alunos&quot;)
+@CrossOrigin(origins = &quot;*&quot;)
+@Tag(name = &quot;Alunos&quot;, description = &quot;Gerenciamento de alunos, autenticação e troca de moedas por cursos&quot;)
+public class AlunoController {
+
+    private final AlunoService alunoService;
+
+<span class="fc" id="L25">    public AlunoController(AlunoService alunoService) {</span>
+<span class="fc" id="L26">        this.alunoService = alunoService;</span>
+<span class="fc" id="L27">    }</span>
+
+    @PostMapping
+    @Operation(summary = &quot;Cadastrar um novo aluno com saldo inicial&quot;)
+    public ResponseEntity&lt;AlunoResponseDTO&gt; cadastrar(@Valid @RequestBody AlunoRequestDTO dto) {
+<span class="fc" id="L32">        AlunoResponseDTO response = alunoService.cadastrar(dto);</span>
+<span class="fc" id="L33">        return ResponseEntity.status(HttpStatus.CREATED).body(response);</span>
+    }
+
+    @GetMapping
+    @Operation(summary = &quot;Listar todos os alunos cadastrados&quot;)
+    public ResponseEntity&lt;List&lt;AlunoResponseDTO&gt;&gt; listarTodos() {
+<span class="fc" id="L39">        return ResponseEntity.ok(alunoService.listarTodos());</span>
+    }
+
+    @GetMapping(&quot;/{id}&quot;)
+    @Operation(summary = &quot;Buscar detalhes de um aluno por ID&quot;)
+    public ResponseEntity&lt;AlunoResponseDTO&gt; buscarPorId(@PathVariable Long id) {
+<span class="fc" id="L45">        return ResponseEntity.ok(alunoService.buscarPorId(id));</span>
+    }
+
+    @PostMapping(&quot;/{id}/trocar-moedas&quot;)
+    @Operation(summary = &quot;Trocar moedas por um curso (Regra de negócio)&quot;)
+    public ResponseEntity&lt;AlunoResponseDTO&gt; trocarMoedas(
+            @PathVariable Long id,
+            @Valid @RequestBody TrocaMoedasRequestDTO dto) {
+<span class="fc" id="L53">        return ResponseEntity.ok(alunoService.trocarMoedas(id, dto.getNomeCurso()));</span>
+    }
+
+    @PostMapping(&quot;/login&quot;)
+    @Operation(summary = &quot;Autenticar aluno via e-mail e senha&quot;)
+    public ResponseEntity&lt;AlunoResponseDTO&gt; login(@Valid @RequestBody LoginRequestDTO dto) {
+<span class="fc" id="L59">        return ResponseEntity.ok(alunoService.autenticar(dto));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
