@@ -63,6 +63,13 @@ Nenhuma publicacao e necessaria para a execucao local.
 personalizar as configuracoes locais; `.env` fica fora do Git. As credenciais padrao
 sao exclusivas do laboratorio local e os dados dos testes sao ficticios.
 
+O `.env` do checkout nao e copiado pelo SCM ao workspace Jenkins. Personalizacoes de
+CI precisam ser definidas no ambiente do agente ou no workspace efetivamente usado.
+Para optar pelo PostgreSQL DEV em vez do H2, defina no processo do backend
+`SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5433/supercursos_dev`,
+`SPRING_DATASOURCE_USERNAME`, `SPRING_DATASOURCE_PASSWORD` e
+`SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver`.
+
 | Servico HOMOL | Endereco local |
 | --- | --- |
 | Frontend Vue/Nginx | http://localhost:3002 |

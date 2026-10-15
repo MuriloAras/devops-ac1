@@ -71,6 +71,8 @@ pipeline {
             }
             post {
                 always {
+                    archiveArtifacts artifacts: 'target/site/jacoco/**,target/surefire-reports/**,target/failsafe-reports/**',
+                        allowEmptyArchive: true
                     junit testResults: 'target/surefire-reports/*.xml,target/failsafe-reports/TEST-*.xml',
                         allowEmptyResults: false
                     script {
@@ -79,8 +81,6 @@ pipeline {
                                 sourcePattern: 'src/main/java'
                         }
                     }
-                    archiveArtifacts artifacts: 'target/site/jacoco/**,target/surefire-reports/**,target/failsafe-reports/**',
-                        allowEmptyArchive: true
                 }
             }
         }
@@ -160,9 +160,9 @@ pipeline {
             }
             post {
                 always {
-                    junit testResults: 'frontend/cypress/results/*.xml', allowEmptyResults: false
                     archiveArtifacts artifacts: 'frontend/cypress/results/**,frontend/cypress/screenshots/**,frontend/cypress/videos/**',
                         allowEmptyArchive: true
+                    junit testResults: 'frontend/cypress/results/*.xml', allowEmptyResults: false
                 }
             }
         }
