@@ -3,7 +3,7 @@ param(
     [string]$JenkinsUrl = 'http://localhost:9090',
     [string]$JobName = 'A2_P2_supercursos_pipeline',
     [string]$RepositoryUrl,
-    [string]$Branch = 'devops/praticas-2-3',
+    [string]$Branch = 'Exercicio-A2',
     [switch]$AtualizarJob
 )
 $ErrorActionPreference = 'Stop'
