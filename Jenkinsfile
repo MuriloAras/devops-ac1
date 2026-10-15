@@ -43,7 +43,6 @@ pipeline {
                     runCmd('git --version')
                     runCmd('docker version')
                     runCmd('docker compose version')
-                    echo 'O ambiente de execucao precisa de JDK 21 e acesso ao Docker. Node e Cypress rodam em containers.'
                 }
             }
         }
@@ -173,7 +172,6 @@ pipeline {
                 echo 'pgAdmin: http://localhost:5051'
                 echo 'Prometheus: http://localhost:9092/targets'
                 echo 'Grafana: http://localhost:3003/d/supercursos-homol'
-                echo 'Confirme target UP, consulta up=1 e os quatro paineis. URLs sozinhas nao comprovam a coleta.'
             }
         }
     }

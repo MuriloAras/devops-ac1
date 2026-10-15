@@ -1,16 +1,3 @@
-<#
-.SYNOPSIS
-Coleta evidencias reais depois de uma execucao Jenkins concluida com SUCCESS.
-.EXAMPLE
-.\scripts\coletar-evidencias.ps1
-.EXAMPLE
-.\scripts\coletar-evidencias.ps1 -BuildNumber 1 -Fonte Artifacts
-.NOTES
-Somente leitura no Jenkins e nos servicos. Nao inicia builds, testes ou containers.
-Cada coleta tem pasta propria para nao misturar arquivos de execucoes diferentes.
-Autenticacao Jenkins opcional: JENKINS_USER e JENKINS_TOKEN no ambiente do processo.
-Credenciais/portas do laboratorio: ambiente, .env e .env.example, nesta precedencia.
-#>
 [CmdletBinding()]
 param(
     [string]$JenkinsUrl = 'http://localhost:9090',
@@ -151,7 +138,6 @@ if ($build.building -or $build.result -ne 'SUCCESS') {
     throw "Coleta interrompida: build $BuildNumber ainda esta em execucao ou nao terminou com SUCCESS."
 }
 
-# A identificacao arquivada vem do checkout desta execucao, sem depender do HEAD local.
 $executionRelativePath = 'evidencias/a2/p2/execucao.properties'
 $executionText = Response-Text (Get-Response "$buildUrl/artifact/$executionRelativePath" $jenkinsHeaders)
 $execution = Read-PropertiesText $executionText
@@ -303,7 +289,6 @@ try {
     if ((Copy-EvidenceFiles 'target/site/jacoco' (Join-Path $p2 'jacoco') '(?i)\.(html|xml|csv|css|js|gif|png|svg)$') -lt 1) { throw 'JaCoCo ausente.' }
     if ((Copy-EvidenceFiles 'target/site' (Join-Path $p2 'pmd') '^pmd\.html$') -ne 1) { throw 'HTML do PMD ausente.' }
     if ((Copy-EvidenceFiles 'target' (Join-Path $p2 'pmd') '^pmd\.xml$') -ne 1) { throw 'XML do PMD ausente.' }
-    # Recursos do skin, quando gerados/arquivados pelo Maven, acompanham o HTML.
     Copy-EvidenceFiles 'target/site' (Join-Path $p2 'pmd') '(?i)^(css|js|images|img|fonts)/.*\.(css|js|png|gif|svg|ico|woff2?|ttf)$' | Out-Null
     foreach ($required in @('jacoco\index.html', 'jacoco\jacoco.xml')) {
         if (-not (Test-Path -LiteralPath (Join-Path $p2 $required) -PathType Leaf)) { throw "Relatorio obrigatorio ausente: $required." }
@@ -387,7 +372,6 @@ try {
         }
     }
 
-    # Impede atribuir a coleta a um build antigo se outro iniciou durante a copia.
     $finalBuild = Get-Json "$jobUrl/lastBuild/api/json" $jenkinsHeaders
     if ([int]$finalBuild.number -ne $BuildNumber -or $finalBuild.building -or $finalBuild.result -ne 'SUCCESS') {
         throw 'O ultimo build mudou durante a coleta. Repita depois que ele terminar com SUCCESS.'

@@ -1,6 +1,3 @@
-# Opcional: banco externo para desenvolvimento. O perfil dev da API usa H2 por padrão.
-# Ao optar por PostgreSQL, configure SPRING_DATASOURCE_URL/USERNAME/PASSWORD
-# e SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver no backend local.
 name: supercursos-dev
 
 services:

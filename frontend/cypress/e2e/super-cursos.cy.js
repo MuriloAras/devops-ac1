@@ -1,7 +1,5 @@
 /// <reference types="cypress" />
 
-// Each test creates its own student through the real API. No reset of a shared
-// database is necessary, and the suite can run again against a persistent volume.
 const senha = 'Aluno-E2E-2026!'
 
 function cadastrarAluno(saldoMoedas) {
@@ -101,7 +99,6 @@ describe('Super Cursos — autenticação e troca de moedas', () => {
       cy.contains('button', 'Trocar Moedas').should('be.disabled')
       cy.get('.aviso-saldo').should('contain.text', 'Saldo insuficiente')
 
-      // The API must also enforce the rule independently of the disabled button.
       cy.request({
         method: 'POST',
         url: `/api/alunos/${aluno.id}/trocar-moedas`,

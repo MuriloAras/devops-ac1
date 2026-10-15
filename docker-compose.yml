@@ -1,5 +1,3 @@
-# Entrada padrão: docker compose up -d --build
-# A definição completa permanece em um único arquivo versionado.
 name: supercursos-homol
 include:
   - docker-compose.homol.yml

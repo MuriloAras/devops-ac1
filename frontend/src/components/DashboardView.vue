@@ -1,6 +1,5 @@
 <template>
   <div class="dashboard-page">
-    <!-- Header -->
     <header class="header">
       <div class="header-logo">
         <img src="../assets/coin.png" alt="moeda" class="header-coin" />
@@ -12,7 +11,6 @@
       </div>
     </header>
 
-    <!-- Saldo de Moedas -->
     <section class="saldo-section">
       <div class="saldo-card">
         <img src="../assets/coin.png" alt="moeda" class="saldo-coin" />
@@ -23,9 +21,7 @@
       </div>
     </section>
 
-    <!-- Conteúdo principal -->
     <main class="main-content">
-      <!-- Trocar Moedas -->
       <section class="card trocar-card">
         <h2 class="section-title">🎓 Trocar Moedas por Curso</h2>
         <p class="section-sub">Cada curso custa <strong>3 moedas</strong></p>
@@ -58,7 +54,6 @@
         </p>
       </section>
 
-      <!-- Cursos Adquiridos -->
       <section class="card cursos-card">
         <h2 class="section-title">📚 Meus Cursos</h2>
 
@@ -148,7 +143,6 @@ async function trocarMoedas() {
   flex-direction: column;
 }
 
-/* Header */
 .header {
   background: #111111;
   border-bottom: 2px solid #f05472;
@@ -210,7 +204,6 @@ async function trocarMoedas() {
   color: #fff;
 }
 
-/* Saldo */
 .saldo-section {
   padding: 24px 32px 0;
 }
@@ -244,7 +237,6 @@ async function trocarMoedas() {
   line-height: 1;
 }
 
-/* Main */
 .main-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -258,7 +250,6 @@ async function trocarMoedas() {
   }
 }
 
-/* Cards */
 .card {
   background: #ffffff;
   border-radius: 20px;
@@ -336,7 +327,6 @@ async function trocarMoedas() {
   color: #c0234b;
 }
 
-/* Cursos */
 .cursos-lista {
   display: flex;
   flex-direction: column;

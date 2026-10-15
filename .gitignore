@@ -32,7 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 
-### Laboratorio A2 ###
+### Execucao local ###
 .local/
 .env
 .env.*
