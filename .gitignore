@@ -31,3 +31,16 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Laboratorio A2 ###
+.local/
+.env
+.env.*
+!.env.example
+.docker-ci/
+frontend/node_modules/
+frontend/dist/
+frontend/cypress/results/
+frontend/cypress/screenshots/
+frontend/cypress/videos/
+frontend/cypress/downloads/

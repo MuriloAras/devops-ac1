@@ -1,9 +1,11 @@
-target/
+**/target/
 .git/
-.gitignore
 .idea/
+.vscode/
 *.iml
-.mvn/
-mvnw
-mvnw.cmd
 evidencias/
+frontend/
+grafana/
+prometheus/
+.env
+.env.*
