@@ -43,7 +43,7 @@ pipeline {
                     runCmd('git --version')
                     runCmd('docker version')
                     runCmd('docker compose version')
-                    echo 'O agente precisa de JDK 21 e acesso ao Docker. Node e Cypress rodam em containers.'
+                    echo 'O ambiente de execucao precisa de JDK 21 e acesso ao Docker. Node e Cypress rodam em containers.'
                 }
             }
         }
