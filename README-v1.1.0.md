@@ -68,7 +68,7 @@ e Stage View instalados.
    `A2_P2_supercursos_pipeline`.
 3. Na seção **Pipeline**, selecione **Pipeline script from SCM** e **SCM: Git**.
 4. Em **Repository URL**, informe `https://github.com/MuriloAras/devops-ac1.git`.
-   Em **Branch Specifier**, use `*/main`.
+   Em **Branch Specifier**, use `*/Exercicio-A2`.
 5. Em **Script Path**, informe `Jenkinsfile` e salve a configuração.
 6. Execute **Build Now / Construir agora**. Mantenha `PUSH_DOCKER_HUB` desmarcado
    para a execução local.
