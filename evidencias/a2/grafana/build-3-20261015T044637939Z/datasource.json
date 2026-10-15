@@ -1,0 +1,26 @@
+{
+    "id":  1,
+    "uid":  "prometheus-supercursos",
+    "orgId":  1,
+    "name":  "Prometheus SuperCursos",
+    "type":  "prometheus",
+    "typeLogoUrl":  "public/plugins/prometheus/img/prometheus_logo.svg",
+    "access":  "proxy",
+    "url":  "http://prometheus:9090",
+    "user":  "",
+    "database":  "",
+    "basicAuth":  false,
+    "basicAuthUser":  "",
+    "withCredentials":  false,
+    "isDefault":  true,
+    "jsonData":  {
+                     "httpMethod":  "POST",
+                     "timeInterval":  "15s"
+                 },
+    "secureJsonFields":  {
+
+                         },
+    "version":  1,
+    "readOnly":  true,
+    "apiVersion":  ""
+}
