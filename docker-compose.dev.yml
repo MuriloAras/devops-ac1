@@ -1,5 +1,6 @@
 # Opcional: banco externo para desenvolvimento. O perfil dev da API usa H2 por padrão.
-# Ao optar por PostgreSQL, informe DB_URL/DB_USER/DB_PASSWORD ao backend local.
+# Ao optar por PostgreSQL, configure SPRING_DATASOURCE_URL/USERNAME/PASSWORD
+# e SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver no backend local.
 name: supercursos-dev
 
 services:
@@ -22,7 +23,7 @@ services:
   pgadmin:
     image: dpage/pgadmin4:9
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@supercursos.local}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@admin.com}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin_local}
     ports:
       - "127.0.0.1:${DEV_PGADMIN_PORT:-5052}:80"

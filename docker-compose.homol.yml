@@ -20,12 +20,18 @@ services:
     image: dpage/pgadmin4:9
     restart: unless-stopped
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@supercursos.local}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@admin.com}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin_local}
     ports:
       - "127.0.0.1:${PGADMIN_PORT:-5051}:80"
     volumes:
       - pgadmin_homol:/var/lib/pgadmin
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1/misc/ping', timeout=3)"]
+      start_period: 30s
+      interval: 5s
+      timeout: 5s
+      retries: 24
     depends_on:
       postgres:
         condition: service_healthy
@@ -79,6 +85,11 @@ services:
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus_homol:/prometheus
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:9090/-/ready"]
+      interval: 5s
+      timeout: 5s
+      retries: 24
     depends_on:
       api:
         condition: service_healthy
@@ -97,6 +108,12 @@ services:
       - ./grafana/provisioning:/etc/grafana/provisioning:ro
       - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
       - grafana_homol:/var/lib/grafana
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:3000/api/health"]
+      start_period: 15s
+      interval: 5s
+      timeout: 5s
+      retries: 24
     depends_on:
       - prometheus
 
