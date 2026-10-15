@@ -8,10 +8,10 @@ dados PostgreSQL.
 Para conhecer as diferenças entre as versões e acessar suas práticas e evidências,
 clique nos READMEs abaixo:
 
-- [v1.0.0 (AC1)](README-v1.0.0.md): implementação inicial da aplicação, com
+- [README v1.0.0 (AC1)](README-v1.0.0.md): implementação inicial da aplicação, com
   autenticação, troca de moedas por cursos, cenários BDD, práticas de TDD, testes
   de unidade e ambiente Docker.
-- [v1.1.0 (AC2)](README-v1.1.0.md): evolução com esteira Jenkins, testes de
+- [README v1.1.0 (AC2)](README-v1.1.0.md): evolução com esteira Jenkins, testes de
   integração e Cypress, deploy em homologação com Docker, relatórios de qualidade
   e monitoramento com Prometheus e Grafana.
 
