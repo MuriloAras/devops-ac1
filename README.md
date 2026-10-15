@@ -1,10 +1,18 @@
 # Super Cursos
 
-Aplicação para alunos trocarem moedas por cursos.
+O Super Cursos é uma plataforma de educação continuada gamificada, na qual alunos
+fazem login, consultam seu saldo de moedas e usam essas moedas para adquirir cursos.
+A aplicação reúne uma API em Spring Boot, uma interface em Vue.js e um banco de
+dados PostgreSQL.
 
-Link para as outras práticas: https://github.com/PedroADev/CI-e-CD-com-Jenkins
+Para conhecer as diferenças entre as versões e acessar suas práticas e evidências,
+clique nos READMEs abaixo:
 
-Para acessar os READMEs de cada versão, clique nos links abaixo.
+- [v1.0.0 (AC1)](README-v1.0.0.md): implementação inicial da aplicação, com
+  autenticação, troca de moedas por cursos, cenários BDD, práticas de TDD, testes
+  de unidade e ambiente Docker.
+- [v1.1.0 (AC2)](README-v1.1.0.md): evolução com esteira Jenkins, testes de
+  integração e Cypress, deploy em homologação com Docker, relatórios de qualidade
+  e monitoramento com Prometheus e Grafana.
 
-- [v1.0.0 (AC1)](README-v1.0.0.md)
-- [v1.1.0 (AC2)](README-v1.1.0.md)
+Outras práticas: [CI/CD com Jenkins](https://github.com/PedroADev/CI-e-CD-com-Jenkins).
