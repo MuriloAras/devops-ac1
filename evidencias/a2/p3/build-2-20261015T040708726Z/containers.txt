@@ -1,7 +1,0 @@
-NAME                             IMAGE                                                                                     COMMAND                  SERVICE      CREATED         STATUS                   PORTS
-supercursos-homol-api-1          supercursos-api:2                                                                         "java -jar /app/app.…"   api          2 minutes ago   Up 2 minutes (healthy)   127.0.0.1:8082->8080/tcp
-supercursos-homol-frontend-1     supercursos-frontend:2                                                                    "/docker-entrypoint.…"   frontend     2 minutes ago   Up 2 minutes (healthy)   127.0.0.1:3002->80/tcp
-supercursos-homol-grafana-1      grafana/grafana@sha256:dbbc38ea21103cefb50396340cd88afec779c7e070b0a7bf5a75b4ce46651d3f   "/run.sh"                grafana      2 minutes ago   Up 2 minutes (healthy)   127.0.0.1:3003->3000/tcp
-supercursos-homol-pgadmin-1      dpage/pgadmin4:9                                                                          "/entrypoint.sh"         pgadmin      2 minutes ago   Up 2 minutes (healthy)   127.0.0.1:5051->80/tcp
-supercursos-homol-postgres-1     postgres:16-alpine                                                                        "docker-entrypoint.s…"   postgres     5 minutes ago   Up 5 minutes (healthy)   5432/tcp
-supercursos-homol-prometheus-1   prom/prometheus@sha256:efd719c99d83b060d9daefdcf00360461adf279f45ef5391f8d111892118753e   "/bin/prometheus --c…"   prometheus   2 minutes ago   Up 2 minutes (healthy)   127.0.0.1:9092->9090/tcp
