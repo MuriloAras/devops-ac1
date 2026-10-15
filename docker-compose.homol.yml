@@ -1,0 +1,123 @@
+name: supercursos-homol
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-supercursos_homol}
+      POSTGRES_USER: ${POSTGRES_USER:-supercursos}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-supercursos_local}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - postgres_homol:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4:9
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@supercursos.local}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin_local}
+    ports:
+      - "127.0.0.1:${PGADMIN_PORT:-5051}:80"
+    volumes:
+      - pgadmin_homol:/var/lib/pgadmin
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: supercursos-api:${IMAGE_TAG:-local}
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: homol
+      DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-supercursos_homol}
+      DB_USER: ${POSTGRES_USER:-supercursos}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-supercursos_local}
+    ports:
+      - "127.0.0.1:${API_PORT:-8082}:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/actuator/health | grep -q '\"status\":\"UP\"'"]
+      start_period: 60s
+      interval: 5s
+      timeout: 5s
+      retries: 24
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: supercursos-frontend:${IMAGE_TAG:-local}
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-3002}:80"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/health | grep -q '^OK$'"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    depends_on:
+      api:
+        condition: service_healthy
+
+  prometheus:
+    # Binário local verificado: Prometheus 3.15.0. Digest fixa a imagem utilizada.
+    image: prom/prometheus@sha256:efd719c99d83b060d9daefdcf00360461adf279f45ef5391f8d111892118753e
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${PROMETHEUS_PORT:-9092}:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_homol:/prometheus
+    depends_on:
+      api:
+        condition: service_healthy
+
+  grafana:
+    # Binário local verificado: Grafana 13.2.4.
+    image: grafana/grafana@sha256:dbbc38ea21103cefb50396340cd88afec779c7e070b0a7bf5a75b4ce46651d3f
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin_local}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    ports:
+      - "127.0.0.1:${GRAFANA_PORT:-3003}:3000"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana_homol:/var/lib/grafana
+    depends_on:
+      - prometheus
+
+  cypress:
+    image: cypress/included:14.5.4
+    profiles: ["e2e"]
+    working_dir: /e2e
+    environment:
+      CYPRESS_BASE_URL: http://frontend:80
+      CYPRESS_VIDEO: "true"
+    volumes:
+      # Inclui cypress/results, cypress/screenshots e cypress/videos no host.
+      - ./frontend:/e2e
+    shm_size: 1gb
+    depends_on:
+      frontend:
+        condition: service_healthy
+    entrypoint: ["cypress", "run"]
+
+volumes:
+  postgres_homol:
+  pgadmin_homol:
+  prometheus_homol:
+  grafana_homol:

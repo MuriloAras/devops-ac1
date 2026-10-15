@@ -1,5 +1,9 @@
 # Super Cursos - Plataforma de Educação Continuada Gamificada
 
+> **Continuação A2 — práticas 2 e 3:** pipeline Jenkins, Docker completo, PostgreSQL/Testcontainers,
+> Cypress e Prometheus/Grafana. Consulte o [guia de execução](docs/PRATICAS_A2.md).
+> As evidências novas ficam em `evidencias/a2/`; as evidências e a descrição original da AC1 foram preservadas abaixo.
+
 ### Avaliação Continuada 1 (AC1) — Disciplina de DevOps e QA
 
    **Grupo:** Murilo Araujo, Beatriz, Pedro
