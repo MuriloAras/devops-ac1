@@ -15,4 +15,6 @@ clique nos READMEs abaixo:
   integração e Cypress, deploy em homologação com Docker, relatórios de qualidade
   e monitoramento com Prometheus e Grafana.
 
+**[Acessar a pasta de evidências](evidencias/)**
+
 Outras práticas: [CI/CD com Jenkins](https://github.com/PedroADev/CI-e-CD-com-Jenkins).
