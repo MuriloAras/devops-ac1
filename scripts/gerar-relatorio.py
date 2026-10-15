@@ -25,19 +25,28 @@ from reportlab.graphics.shapes import Drawing, Rect, String, Line, Polygon
 
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = ROOT / 'evidencias' / 'a2'
-manifests = sorted(EVIDENCE.glob('p2/build-*/manifesto-coleta.json'), key=lambda p: p.stat().st_mtime)
-if not manifests:
+collections = []
+for path in EVIDENCE.glob('p2/build-*/manifesto-coleta.json'):
+    collected = json.loads(path.read_text(encoding='utf-8-sig'))
+    if collected.get('status') == 'VERIFICADO' and collected.get('checks') and all(collected['checks'].values()):
+        collections.append((path, collected))
+if not collections:
     raise SystemExit('Execute primeiro scripts/coletar-evidencias.ps1 com build SUCCESS.')
-manifest_path = manifests[-1]
-manifest = json.loads(manifest_path.read_text(encoding='utf-8-sig'))
-if manifest['status'] != 'VERIFICADO' or not all(manifest['checks'].values()):
-    raise SystemExit('A coleta precisa estar integralmente verificada.')
+manifest_path, manifest = max(collections, key=lambda item: (
+    int(item[1]['buildTimestamp']), int(item[1]['build']), item[1].get('collectedAtUtc', ''),
+))
 BUILD = manifest['build']
 COMMIT = manifest['commit']
-P2 = Path(manifest['directories']['p2'])
-P3 = Path(manifest['directories']['p3'])
-CYPRESS = Path(manifest['directories']['cypress'])
-GRAFANA = Path(manifest['directories']['grafana'])
+# Os snapshots acompanham a entrega; caminhos absolutos do computador de origem
+# presentes no manifesto nao precisam existir em outra maquina.
+capture_id = manifest_path.parent.name
+P2 = manifest_path.parent
+P3 = EVIDENCE / 'p3' / capture_id
+CYPRESS = EVIDENCE / 'p3' / 'cypress' / capture_id
+GRAFANA = EVIDENCE / 'grafana' / capture_id
+for directory in (P2, P3, CYPRESS, GRAFANA):
+    if not directory.is_dir():
+        raise SystemExit(f'Snapshot da coleta mais recente incompleto: {directory}')
 JACOCO = ET.parse(P2 / 'jacoco' / 'jacoco.xml').getroot()
 counters = {c.attrib['type']: c.attrib for c in JACOCO.findall('counter')}
 
@@ -110,6 +119,17 @@ def figure(path, caption, max_height=380):
     story.append(KeepTogether([image, Spacer(1, 6), Paragraph(escape(caption), styles['CaptionA2'])]))
     markdown.append(f'![{caption}]({path.relative_to(ROOT).as_posix()})\n')
 
+def browser_capture(section, name):
+    for suffix in ('_wide', ''):
+        for extension in ('.jpg', '.png', '.jpeg'):
+            path = EVIDENCE / section / f'{name}_build{BUILD}{suffix}{extension}'
+            if path.is_file():
+                return path
+    raise FileNotFoundError(
+        f'Captura obrigatoria ausente: {section}/{name}_build{BUILD}_wide.jpg '
+        f'(ou o nome anterior sem _wide).'
+    )
+
 def newpage():
     story.append(PageBreak())
 
@@ -151,7 +171,7 @@ table(['Verificação', 'Resultado'], [
 ], [130, width - 130])
 newpage()
 heading('Prática 2 - Pipeline as Code')
-text('Job: A2_P2_supercursos_pipeline. O Jenkins usa Pipeline script from SCM e lê o Jenkinsfile da branch codex/praticas-2-3. Nesta máquina, o SCM aponta à cópia Git local, vinculada ao repositório de origem; o disparo do build é manual. Não há webhook nem polling configurado.')
+text('Job: A2_P2_supercursos_pipeline. O Jenkins usa Pipeline script from SCM e lê o Jenkinsfile da branch devops/praticas-2-3. Nesta máquina, o SCM aponta à cópia Git local, vinculada ao repositório de origem; o disparo do build é manual. Não há webhook nem polling configurado.')
 story.append(architecture())
 para('Fluxo da entrega e topologia em homologação. O Cypress usa o frontend real; o Nginx encaminha /api ao backend. As métricas seguem da API ao Prometheus e ao Grafana.', 'CaptionA2')
 table(['Estágio', 'Responsabilidade'], [
@@ -171,18 +191,18 @@ text('Uma falha de teste interrompe o avanço para os estágios seguintes. O PMD
 
 newpage()
 heading(f'Evidência do Jenkins - build #{BUILD}')
-figure(EVIDENCE / 'p2' / f'02_resumo_build{BUILD}.jpg', f'Figura 1. Execução final no Jenkins, vinculada ao commit {COMMIT[:7]}.', 525)
+figure(browser_capture('p2', '02_resumo'), f'Figura 1. Execução final no Jenkins, vinculada ao commit {COMMIT[:7]}.', 525)
 text('O console integral, a configuração XML do job, o JSON dos estágios e os relatórios estão preservados na pasta de evidências P2 desta execução. As capturas antigas da AC1 permanecem separadas.')
 
 newpage()
 heading('Qualidade e testes automatizados')
 text('Os testes de integração usam PostgreSQL 16 em container temporário e porta aleatória, sem acessar o volume de homologação. Verificam persistência, cursos, regras de saldo, e-mail único e respostas HTTP de saúde, métricas e OpenAPI.')
-figure(EVIDENCE / 'p2' / f'03_junit_build{BUILD}.jpg', 'Figura 2. Relatório JUnit publicado no Jenkins: testes Java e Cypress, sem falhas.', 500)
+figure(browser_capture('p2', '03_junit'), 'Figura 2. Relatório JUnit publicado no Jenkins: testes Java e Cypress, sem falhas.', 500)
 
 newpage()
 heading('Cobertura JaCoCo e análise PMD')
 text(f"O XML JaCoCo registra linhas {coverage('LINE')}, instruções {coverage('INSTRUCTION')} e branches {coverage('BRANCH')}. O plugin Jenkins arredonda os percentuais na apresentação. Duas linhas do método main existente não foram cobertas.")
-figure(EVIDENCE / 'p2' / f'04_jacoco_build{BUILD}.jpg', 'Figura 3. Resumo JaCoCo publicado no build final do Jenkins.', 500)
+figure(browser_capture('p2', '04_jacoco'), 'Figura 3. Resumo JaCoCo publicado no build final do Jenkins.', 500)
 text('O relatório PMD desta execução não registrou ocorrências nas regras padrão. Os XML e HTML acompanham as evidências para conferência dos resultados, além das imagens.')
 
 newpage()
@@ -215,13 +235,13 @@ text('Cada cenário cria um aluno fictício com e-mail único pela API. Os teste
 newpage()
 heading('Prometheus e Grafana')
 text('O Prometheus coleta /actuator/prometheus do serviço api:8080 sob o job supercursos-api. O Grafana consulta esse datasource. A verificação registrou o target UP e a consulta up{job="supercursos-api"} com valor 1.')
-figure(EVIDENCE / 'p3' / f'02_prometheus_build{BUILD}.jpg', 'Figura 5. Target da API ativo no Prometheus.', 250)
-figure(EVIDENCE / 'grafana' / f'02_explore_build{BUILD}.jpg', 'Figura 6. Grafana Explore confirma up=1 pelo datasource Prometheus.', 280)
+figure(browser_capture('p3', '02_prometheus'), 'Figura 5. Target da API ativo no Prometheus.', 250)
+figure(browser_capture('grafana', '02_explore'), 'Figura 6. Grafana Explore confirma up=1 pelo datasource Prometheus.', 280)
 
 newpage()
 heading('Dashboard de observabilidade')
 text('Os quatro painéis mostram disponibilidade da coleta, requisições HTTP por segundo, tempo médio de resposta e memória JVM Heap. Foi gerado tráfego real na aplicação e aguardada a coleta; as consultas e o dashboard exportado acompanham as evidências.')
-figure(EVIDENCE / 'grafana' / f'01_dashboard_build{BUILD}.jpg', 'Figura 7. Dashboard SuperCursos - Observabilidade HOMOL, com quatro painéis provisionados.', 540)
+figure(browser_capture('grafana', '01_dashboard'), 'Figura 7. Dashboard SuperCursos - Observabilidade HOMOL, com quatro painéis provisionados.', 540)
 
 newpage()
 heading('Análise das práticas e encerramento')

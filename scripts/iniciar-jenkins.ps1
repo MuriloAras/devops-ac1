@@ -30,7 +30,16 @@ $logRoot = Join-Path $projectRoot '.local'
 New-Item -ItemType Directory -Force $logRoot | Out-Null
 $env:JAVA_HOME = $JavaHome
 $env:JENKINS_HOME = $JenkinsHome
-$env:PATH = "$JavaHome\bin;$env:PATH"
+$executionPaths = @("$JavaHome\bin")
+foreach ($commandName in @('git.exe', 'docker.exe')) {
+    $executionPaths += Split-Path (Get-Command $commandName -ErrorAction Stop).Source -Parent
+}
+$executionPaths += @(
+    "$env:SystemRoot\System32", "$env:SystemRoot", "$env:SystemRoot\System32\Wbem",
+    "$env:SystemRoot\System32\WindowsPowerShell\v1.0"
+)
+# Ambiente do servidor restrito aos runtimes necessarios ao laboratorio.
+$env:PATH = ($executionPaths | Select-Object -Unique) -join ';'
 $jenkinsProcess = Start-Process -FilePath $javaExecutable -ArgumentList @(
     '-Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true',
     '-jar', "`"$JenkinsWar`"", "--httpPort=$Port", '--httpListenAddress=127.0.0.1'

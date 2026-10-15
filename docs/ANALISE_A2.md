@@ -2,7 +2,7 @@
 
 ### Qual a principal diferença entre configurar a esteira no Freestyle e defini-la em Jenkinsfile?
 
-No Freestyle, as etapas são configuradas principalmente nos formulários do job no Jenkins. Com o Jenkinsfile, a sequência de checkout, testes, análise, empacotamento e implantação fica descrita em código no repositório do Super Cursos. Isso permite revisar alterações e recuperar a definição correspondente a cada commit, desde que o agente tenha as ferramentas e permissões necessárias.
+No Freestyle, as etapas são configuradas principalmente nos formulários do job no Jenkins. Com o Jenkinsfile, a sequência de checkout, testes, análise, empacotamento e implantação fica descrita em código no repositório do Super Cursos. Isso permite revisar alterações e recuperar a definição correspondente a cada commit, desde que o nó de execução Jenkins tenha as ferramentas e permissões necessárias.
 
 ### Por que versionar o pipeline junto ao código?
 
@@ -42,7 +42,7 @@ Nesta esteira, a CI termina no empacotamento após as verificações de código 
 
 ### Qual vantagem arquitetural o Jenkinsfile oferece em relação à configuração exclusivamente Freestyle?
 
-O Jenkinsfile torna o processo de entrega uma definição versionada junto à aplicação. Ele explicita a ordem das etapas e as condições de falha, permitindo revisar mudanças e relacionar cada execução a um commit. Isso facilita reconstruir o job em outro Jenkins, desde que também sejam preparados os plugins, o agente, o acesso ao Docker e eventuais credenciais exigidas pela configuração.
+O Jenkinsfile torna o processo de entrega uma definição versionada junto à aplicação. Ele explicita a ordem das etapas e as condições de falha, permitindo revisar mudanças e relacionar cada execução a um commit. Isso facilita reconstruir o job em outro Jenkins, desde que também sejam preparados os plugins, o nó de execução, o acesso ao Docker e eventuais credenciais exigidas pela configuração.
 
 ### Por que JUnit deve ser executado antes da criação/deploy do container e Cypress depois do deploy?
 

@@ -6,7 +6,7 @@ os testes abaixo verificam as novas configuracoes e continuam obrigatorios no CI
 
 ## Requisitos
 
-- JDK 21 no `JAVA_HOME` do agente Jenkins, Git e Docker Desktop/Engine com Compose v2.
+- JDK 21 no `JAVA_HOME` do nó de execução Jenkins, Git e Docker Desktop/Engine com Compose v2.
 - Jenkins com Pipeline, Git, JUnit, JaCoCo, Credentials Binding, Timestamper e Stage View.
 - Acesso do mesmo usuario que executa Jenkins ao Docker.
 - Para executar Maven no Windows: `mvnw.cmd`; Linux/macOS: `./mvnw`.
@@ -17,7 +17,7 @@ local do Vue, use Node compativel com o `package-lock.json` e `npm ci`.
 ## Repositorio e job Jenkins
 
 Origem do codigo: https://github.com/MuriloAras/devops-ac1. A branch de trabalho local
-e `codex/praticas-2-3`. O laboratorio pode usar SCM Git local para executar mudancas
+e `devops/praticas-2-3`. O laboratorio pode usar SCM Git local para executar mudancas
 comitadas antes da publicacao remota. Nesse modo, o Jenkins deve rodar nesta maquina
 e ter a opcao `-Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true`, como no laboratorio anterior.
 
@@ -69,7 +69,7 @@ personalizar as configuracoes locais; `.env` fica fora do Git. As credenciais pa
 sao exclusivas do laboratorio local e os dados dos testes sao ficticios.
 
 O `.env` do checkout nao e copiado pelo SCM ao workspace Jenkins. Personalizacoes de
-CI precisam ser definidas no ambiente do agente ou no workspace efetivamente usado.
+CI precisam ser definidas no ambiente de execução Jenkins ou no workspace efetivamente usado.
 Para optar pelo PostgreSQL DEV em vez do H2, defina no processo do backend
 `SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5433/supercursos_dev`,
 `SPRING_DATASOURCE_USERNAME`, `SPRING_DATASOURCE_PASSWORD` e
