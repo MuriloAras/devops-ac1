@@ -1,0 +1,177 @@
+{
+  "_links": {
+    "self": {
+      "href": "/job/A2_P2_supercursos_pipeline/2/wfapi/describe"
+    },
+    "changesets": {
+      "href": "/job/A2_P2_supercursos_pipeline/2/wfapi/changesets"
+    },
+    "artifacts": {
+      "href": "/job/A2_P2_supercursos_pipeline/2/wfapi/artifacts"
+    }
+  },
+  "id": "2",
+  "name": "#2",
+  "status": "SUCCESS",
+  "startTimeMillis": 1792037021944,
+  "endTimeMillis": 1792037159252,
+  "durationMillis": 137308,
+  "queueDurationMillis": 5,
+  "pauseDurationMillis": 0,
+  "stages": [
+    {
+      "_links": {
+        "self": {
+          "href": "/job/A2_P2_supercursos_pipeline/2/execution/node/12/wfapi/describe"
+        }
+      },
+      "id": "12",
+      "name": "0 - Preflight do Ambiente",
+      "execNode": "",
+      "status": "SUCCESS",
+      "startTimeMillis": 1792037026269,
+      "durationMillis": 2195,
+      "pauseDurationMillis": 0
+    },
+    {
+      "_links": {
+        "self": {
+          "href": "/job/A2_P2_supercursos_pipeline/2/execution/node/29/wfapi/describe"
+        }
+      },
+      "id": "29",
+      "name": "1 - Checkout",
+      "execNode": "",
+      "status": "SUCCESS",
+      "startTimeMillis": 1792037028484,
+      "durationMillis": 1960,
+      "pauseDurationMillis": 0
+    },
+    {
+      "_links": {
+        "self": {
+          "href": "/job/A2_P2_supercursos_pipeline/2/execution/node/42/wfapi/describe"
+        }
+      },
+      "id": "42",
+      "name": "2 - CI - JUnit + PostgreSQL + JaCoCo",
+      "execNode": "",
+      "status": "SUCCESS",
+      "startTimeMillis": 1792037030462,
+      "durationMillis": 40851,
+      "pauseDurationMillis": 0
+    },
+    {
+      "_links": {
+        "self": {
+          "href": "/job/A2_P2_supercursos_pipeline/2/execution/node/60/wfapi/describe"
+        }
+      },
+      "id": "60",
+      "name": "3 - CI - Relatorio PMD",
+      "execNode": "",
+      "status": "SUCCESS",
+      "startTimeMillis": 1792037071329,
+      "durationMillis": 7935,
+      "pauseDurationMillis": 0
+    },
+    {
+      "_links": {
+        "self": {
+          "href": "/job/A2_P2_supercursos_pipeline/2/execution/node/71/wfapi/describe"
+        }
+      },
+      "id": "71",
+      "name": "4 - CI - Package",
+      "execNode": "",
+      "status": "SUCCESS",
+      "startTimeMillis": 1792037079283,
+      "durationMillis": 6913,
+      "pauseDurationMillis": 0
+    },
+    {
+      "_links": {
+        "self": {
+          "href": "/job/A2_P2_supercursos_pipeline/2/execution/node/82/wfapi/describe"
+        }
+      },
+      "id": "82",
+      "name": "5 - CD - Build dos Containers",
+      "execNode": "",
+      "status": "SUCCESS",
+      "startTimeMillis": 1792037086212,
+      "durationMillis": 3912,
+      "pauseDurationMillis": 0
+    },
+    {
+      "_links": {
+        "self": {
+          "href": "/job/A2_P2_supercursos_pipeline/2/execution/node/92/wfapi/describe"
+        }
+      },
+      "id": "92",
+      "name": "6 - Registry - Docker Hub (opcional)",
+      "execNode": "",
+      "status": "NOT_EXECUTED",
+      "startTimeMillis": 1792037090143,
+      "durationMillis": 72,
+      "pauseDurationMillis": 0
+    },
+    {
+      "_links": {
+        "self": {
+          "href": "/job/A2_P2_supercursos_pipeline/2/execution/node/97/wfapi/describe"
+        }
+      },
+      "id": "97",
+      "name": "7 - CD - Deploy HOMOL",
+      "execNode": "",
+      "status": "SUCCESS",
+      "startTimeMillis": 1792037090234,
+      "durationMillis": 42075,
+      "pauseDurationMillis": 0
+    },
+    {
+      "_links": {
+        "self": {
+          "href": "/job/A2_P2_supercursos_pipeline/2/execution/node/107/wfapi/describe"
+        }
+      },
+      "id": "107",
+      "name": "8 - CD - Health Check HOMOL",
+      "execNode": "",
+      "status": "SUCCESS",
+      "startTimeMillis": 1792037132325,
+      "durationMillis": 2818,
+      "pauseDurationMillis": 0
+    },
+    {
+      "_links": {
+        "self": {
+          "href": "/job/A2_P2_supercursos_pipeline/2/execution/node/121/wfapi/describe"
+        }
+      },
+      "id": "121",
+      "name": "9 - CD - Cypress E2E em Container",
+      "execNode": "",
+      "status": "SUCCESS",
+      "startTimeMillis": 1792037135160,
+      "durationMillis": 23742,
+      "pauseDurationMillis": 0
+    },
+    {
+      "_links": {
+        "self": {
+          "href": "/job/A2_P2_supercursos_pipeline/2/execution/node/138/wfapi/describe"
+        }
+      },
+      "id": "138",
+      "name": "10 - Observabilidade",
+      "execNode": "",
+      "status": "SUCCESS",
+      "startTimeMillis": 1792037158920,
+      "durationMillis": 94,
+      "pauseDurationMillis": 0
+    }
+  ]
+}

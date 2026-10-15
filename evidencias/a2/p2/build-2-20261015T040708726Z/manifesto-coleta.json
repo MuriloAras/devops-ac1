@@ -1,0 +1,731 @@
+{
+  "status": "VERIFICADO",
+  "collectedAtUtc": "2026-10-15T04:07:40.9628216+00:00",
+  "captureId": "build-2-20261015T040708726Z",
+  "job": "A2_P2_supercursos_pipeline",
+  "build": 2,
+  "commit": "f7ab240a731e1e5c67b313cc44732d607efeea62",
+  "buildUrl": "http://localhost:9090/job/A2_P2_supercursos_pipeline/2/",
+  "buildTimestamp": 1792037021939,
+  "source": "workspace verificado",
+  "redaction": "Valores de senha/token conhecidos e senhas geradas foram removidos dos arquivos de texto.",
+  "junit": {
+    "unitarios": {
+      "reports": 6,
+      "tests": 26,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "integracao": {
+      "reports": 1,
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "cypress": {
+      "reports": 1,
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "cypressScreenshots": 6,
+  "cypressVideos": 1,
+  "checks": {
+    "jenkinsSuccess": true,
+    "apiUp": true,
+    "frontendOk": true,
+    "prometheusUp": true,
+    "grafanaUp": true,
+    "composeRunning": true
+  },
+  "directories": {
+    "p2": "C:\\Users\\pedro\\Downloads\\devops-ac1-main\\evidencias\\a2\\p2\\build-2-20261015T040708726Z",
+    "p3": "C:\\Users\\pedro\\Downloads\\devops-ac1-main\\evidencias\\a2\\p3\\build-2-20261015T040708726Z",
+    "cypress": "C:\\Users\\pedro\\Downloads\\devops-ac1-main\\evidencias\\a2\\p3\\cypress\\build-2-20261015T040708726Z",
+    "grafana": "C:\\Users\\pedro\\Downloads\\devops-ac1-main\\evidencias\\a2\\grafana\\build-2-20261015T040708726Z"
+  },
+  "files": [
+    {
+      "source": "target/surefire-reports/TEST-com.example.grupo34_atdd.controller.AlunoControllerTest.xml",
+      "destination": "p2/build-2-20261015T040708726Z/junit/unitarios/TEST-com.example.grupo34_atdd.controller.AlunoControllerTest.xml",
+      "sha256": "0ee87c57dce3622842c93d008a2fbc9418890501524d7ad6bff7355833db8919",
+      "bytes": 42972
+    },
+    {
+      "source": "target/surefire-reports/TEST-com.example.grupo34_atdd.domain.AlunoTest.xml",
+      "destination": "p2/build-2-20261015T040708726Z/junit/unitarios/TEST-com.example.grupo34_atdd.domain.AlunoTest.xml",
+      "sha256": "666f15907831c9391072715d87d43b50d3dccb3b60af552404bc6d2d4d1d3633",
+      "bytes": 41823
+    },
+    {
+      "source": "target/surefire-reports/TEST-com.example.grupo34_atdd.dto.DTOTest.xml",
+      "destination": "p2/build-2-20261015T040708726Z/junit/unitarios/TEST-com.example.grupo34_atdd.dto.DTOTest.xml",
+      "sha256": "7d31b5d20908b95db70846e86e1dd0c7ca410c78f3288d13cae1844a86dd8039",
+      "bytes": 41831
+    },
+    {
+      "source": "target/surefire-reports/TEST-com.example.grupo34_atdd.entity.AlunoEntityTest.xml",
+      "destination": "p2/build-2-20261015T040708726Z/junit/unitarios/TEST-com.example.grupo34_atdd.entity.AlunoEntityTest.xml",
+      "sha256": "5eea85ad70aee9c8c12907e77ca8700343809931ccce01a6749ed06d0e258752",
+      "bytes": 41534
+    },
+    {
+      "source": "target/surefire-reports/TEST-com.example.grupo34_atdd.Grupo34AtddApplicationTests.xml",
+      "destination": "p2/build-2-20261015T040708726Z/junit/unitarios/TEST-com.example.grupo34_atdd.Grupo34AtddApplicationTests.xml",
+      "sha256": "005aadfea16f28f7796a7e4706b6bc300e3707b09ba6fa40199492782486706a",
+      "bytes": 48231
+    },
+    {
+      "source": "target/surefire-reports/TEST-com.example.grupo34_atdd.service.AlunoServiceTest.xml",
+      "destination": "p2/build-2-20261015T040708726Z/junit/unitarios/TEST-com.example.grupo34_atdd.service.AlunoServiceTest.xml",
+      "sha256": "2746c5c04ee47a7196c331a19e25f213a41bbaf2591a5430c4f27dbb4890b2db",
+      "bytes": 43350
+    },
+    {
+      "source": "target/failsafe-reports/TEST-com.example.grupo34_atdd.repository.AlunoPostgresIT.xml",
+      "destination": "p2/build-2-20261015T040708726Z/junit/integracao/TEST-com.example.grupo34_atdd.repository.AlunoPostgresIT.xml",
+      "sha256": "e8b979cafe69139bd71573d1fb818c49651f9165ba54a0fad487a619991d74d2",
+      "bytes": 54967
+    },
+    {
+      "source": "target/site/jacoco/index.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/index.html",
+      "sha256": "508a358680c23a508224bf35d43cb5f063e9580270d790e99dfb4f725fba9710",
+      "bytes": 6776
+    },
+    {
+      "source": "target/site/jacoco/jacoco-sessions.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/jacoco-sessions.html",
+      "sha256": "0a4fef2d8fa90be41bd30d937f199602bcb406362a1d86c90942362911718f75",
+      "bytes": 1542659
+    },
+    {
+      "source": "target/site/jacoco/jacoco.csv",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/jacoco.csv",
+      "sha256": "e621d753ee16e5f15073c61e28796b68cd7e569d8626e5b4a74a3c449e749638",
+      "bytes": 1091
+    },
+    {
+      "source": "target/site/jacoco/jacoco.xml",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/jacoco.xml",
+      "sha256": "2938381ede11bfa6e90cfbe1106565029d5291599e1676204ad6fa0f71985757",
+      "bytes": 38789
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd/Grupo34AtddApplication.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd/Grupo34AtddApplication.html",
+      "sha256": "4c01749a4f0bfaa8544664cf463cb2a89f625191c96fa31f7738948dc7093e1e",
+      "bytes": 3293
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd/Grupo34AtddApplication.java.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd/Grupo34AtddApplication.java.html",
+      "sha256": "6ae1f1274a1a3fa179d9065e0810c62d813861e41172d39938ba8da11b0426bb",
+      "bytes": 1701
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd/index.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd/index.html",
+      "sha256": "b298a514f11e51e8da805e3dbd636da23b28278eb9330a57e47523a43a60b08d",
+      "bytes": 3130
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd/index.source.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd/index.source.html",
+      "sha256": "ff7243b4fc75e498cd358b57d3cb7d43412710058ab24b938443cd9248df3e48",
+      "bytes": 3128
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.config/index.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.config/index.html",
+      "sha256": "f02ce30e0cb2020215a357bb10a06115fe2199f60dbfc29aaeafbda3b4933a84",
+      "bytes": 3059
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.config/index.source.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.config/index.source.html",
+      "sha256": "6d2a262dbe28a92a46e3e66d4496acb4bc4b1be703f1ef7f0c53bf1e281d74ef",
+      "bytes": 3057
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.config/SecurityConfig.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.config/SecurityConfig.html",
+      "sha256": "370193964ad9d6265889853cc18d068e11578930e25c4dee891cde88e2e4e616",
+      "bytes": 4369
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.config/SecurityConfig.java.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.config/SecurityConfig.java.html",
+      "sha256": "58b3cd2507cf5755c54feba6cf4df5b1ebf59a925dc6ba0c544529046982a9de",
+      "bytes": 2922
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.controller/AlunoController.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.controller/AlunoController.html",
+      "sha256": "8aadd7cc6c39378b6438165e518b6206af993a30ab0312bb233ea26405190e52",
+      "bytes": 5312
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.controller/AlunoController.java.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.controller/AlunoController.java.html",
+      "sha256": "956dc87dd9855977e6ddb5085c26617022a48d83d16498b0f6251075dd21c47c",
+      "bytes": 4087
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.controller/HomeController.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.controller/HomeController.html",
+      "sha256": "6e6429255ccc3ba05453dfbd06628d7641f62e204d6dfec14b7bebb4544fd9c3",
+      "bytes": 3253
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.controller/HomeController.java.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.controller/HomeController.java.html",
+      "sha256": "85dcabb442de36c884a0337d7cc2a3a6d0065dc3d884b4a44d99b83ede5136bc",
+      "bytes": 1661
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.controller/index.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.controller/index.html",
+      "sha256": "0701b1451946366aec0bfaa90968edd32cd7a37183dc8966938d00fe1e3db626",
+      "bytes": 3618
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.controller/index.source.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.controller/index.source.html",
+      "sha256": "f3831272459c4897e526aeed6d70768e1bbcb089018dd277aeee1523e2386f70",
+      "bytes": 3627
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.domain/Aluno.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.domain/Aluno.html",
+      "sha256": "d463cb176fb610ad0efad5a9041c9009ed12b054c4b76b2adbf1baf624f83305",
+      "bytes": 4299
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.domain/Aluno.java.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.domain/Aluno.java.html",
+      "sha256": "458a2285105bcf033f7f0def5b7f30c80e18d6d2b08fa0df67792d8daf7bf256",
+      "bytes": 2494
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.domain/index.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.domain/index.html",
+      "sha256": "03c6492e34bc6dcd3eda7f66cb1628ff4dbea6a5ff4127240df7e1870ce699ef",
+      "bytes": 3134
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.domain/index.source.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.domain/index.source.html",
+      "sha256": "9921ff6e9a1beb8cb38e21d6a9c06e83ea9ef6cf38544e3786627dd16441b731",
+      "bytes": 3132
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.dto/AlunoRequestDTO.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.dto/AlunoRequestDTO.html",
+      "sha256": "c08eac787cfdcf19bccf4eff653d048a8fe9d929b3911eb5c624e7a66d5867ff",
+      "bytes": 7256
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.dto/AlunoRequestDTO.java.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.dto/AlunoRequestDTO.java.html",
+      "sha256": "3a79dc093fe48a6b259675161ff4a3bd3ab62afba0e8eebb848eeca4d8158eea",
+      "bytes": 3374
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.dto/AlunoResponseDTO.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.dto/AlunoResponseDTO.html",
+      "sha256": "c41f4c9df62390a6e180bdfe3400dfa0ebc22149d1d6302e7e4b362eba9569dc",
+      "bytes": 8823
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.dto/AlunoResponseDTO.java.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.dto/AlunoResponseDTO.java.html",
+      "sha256": "5b3c6b3acf7d995c4cc8f813300a043c7caf041e106e3e9da9b3fffbe3af8d55",
+      "bytes": 3961
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.dto/index.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.dto/index.html",
+      "sha256": "5176c52581663e4eb7786d0253aaa711a3d5cde6f95c68fc1387502e398b2072",
+      "bytes": 4725
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.dto/index.source.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.dto/index.source.html",
+      "sha256": "5fe3fb1332e564c3c4c95f26e2c27d47839d61a036709c53db6dbe87f8b3aade",
+      "bytes": 4756
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.dto/LoginRequestDTO.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.dto/LoginRequestDTO.html",
+      "sha256": "83092849238ca8ac8911c67eb7a95187e2d88499618b0d10d8ae91011b0dba04",
+      "bytes": 5256
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.dto/LoginRequestDTO.java.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.dto/LoginRequestDTO.java.html",
+      "sha256": "1349319ef8a4e0dc270196d787d3be64332c805a5c49043f69c91fe541d47cb6",
+      "bytes": 2467
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.dto/TrocaMoedasRequestDTO.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.dto/TrocaMoedasRequestDTO.html",
+      "sha256": "302a8c0af04e0b2de7494f724a77fd3074e33695a65b1de7af7524d70569ccb7",
+      "bytes": 4321
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.dto/TrocaMoedasRequestDTO.java.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.dto/TrocaMoedasRequestDTO.java.html",
+      "sha256": "43b890d80172c10acfc41d0d7a13ef11f224806dde63f8e0e22079ffbee32cff",
+      "bytes": 2056
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.entity/AlunoEntity.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.entity/AlunoEntity.html",
+      "sha256": "44fa5b09886946cd961012f6dad15529da41357598dd7e43a020b253afc86c9e",
+      "bytes": 9310
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.entity/AlunoEntity.java.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.entity/AlunoEntity.java.html",
+      "sha256": "5b45d52dd736028bf6d093a4db2cf8e959e044d2910779ea7d237b0f0491e0b9",
+      "bytes": 4152
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.entity/index.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.entity/index.html",
+      "sha256": "a00a8b59c395f28f583f07aa2b0c7a8a4fa1fd784c285bd19cca7a3bab726c36",
+      "bytes": 3150
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.entity/index.source.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.entity/index.source.html",
+      "sha256": "3752b793787503420d12386b41afd3deee0565d2c7c0264aff19bea1b78b6fa1",
+      "bytes": 3148
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.service/AlunoService.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.service/AlunoService.html",
+      "sha256": "31f817dde2619c416e97e64bc2d0f1fe71282e387b0c70837a33576d2b1158fe",
+      "bytes": 7069
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.service/AlunoService.java.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.service/AlunoService.java.html",
+      "sha256": "2cecbacf229e62d95ab8edd80231eec71af2a2d618f213a6b4b282afd82a2f1d",
+      "bytes": 5891
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.service/index.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.service/index.html",
+      "sha256": "595204474ee238995bb8efa95639a41047369ce6ef6823611f8df7a1474850bd",
+      "bytes": 3156
+    },
+    {
+      "source": "target/site/jacoco/com.example.grupo34_atdd.service/index.source.html",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/com.example.grupo34_atdd.service/index.source.html",
+      "sha256": "2123a89ff4d80bd3b6af052df8df28647c08c2ad9b402475909b58e849bd5420",
+      "bytes": 3154
+    },
+    {
+      "source": "target/site/jacoco/jacoco-resources/branchfc.gif",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/jacoco-resources/branchfc.gif",
+      "sha256": "a90e2acee1486fcc06a9dc77dc3a2c7d1103f9f65a9c833834c22079ca446d76",
+      "bytes": 91
+    },
+    {
+      "source": "target/site/jacoco/jacoco-resources/branchnc.gif",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/jacoco-resources/branchnc.gif",
+      "sha256": "cfd1d5ad1e939c895fc6c3a4b621f5b4bec61a4b71f8386d3520f0920930ba1f",
+      "bytes": 91
+    },
+    {
+      "source": "target/site/jacoco/jacoco-resources/branchpc.gif",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/jacoco-resources/branchpc.gif",
+      "sha256": "a419dc4732e7c225b409bfd5457263de4f20b6aa9737f4636f6dfad36b194b1d",
+      "bytes": 91
+    },
+    {
+      "source": "target/site/jacoco/jacoco-resources/bundle.gif",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/jacoco-resources/bundle.gif",
+      "sha256": "22656fa2e683f8e5f7adae31f091ce045fc91f042a8fed82ee7a05fc4029e0c2",
+      "bytes": 709
+    },
+    {
+      "source": "target/site/jacoco/jacoco-resources/class.gif",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/jacoco-resources/class.gif",
+      "sha256": "7ad9ac2c3f87d220f46d077e1b03d743ba45084cbbbccc2577e18c167f0fb2b1",
+      "bytes": 586
+    },
+    {
+      "source": "target/site/jacoco/jacoco-resources/down.gif",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/jacoco-resources/down.gif",
+      "sha256": "69233accdde9fbbeef01a6bb5c117a4af85f24f7312054bccbeb0f64b7bb437c",
+      "bytes": 67
+    },
+    {
+      "source": "target/site/jacoco/jacoco-resources/greenbar.gif",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/jacoco-resources/greenbar.gif",
+      "sha256": "a29475aae8c0a107bc41459eb2ca079bc34fc5092f107a78a287c4864b325791",
+      "bytes": 91
+    },
+    {
+      "source": "target/site/jacoco/jacoco-resources/group.gif",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/jacoco-resources/group.gif",
+      "sha256": "eb39f2e57cabfd740ab8d0c5fb4b26fc5ca71b334e2cfc8d6481c34842b4c360",
+      "bytes": 351
+    },
+    {
+      "source": "target/site/jacoco/jacoco-resources/method.gif",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/jacoco-resources/method.gif",
+      "sha256": "6308ea5fba7f5e989f67e3e9bb3366f0cb4c90ab72e838af7ff813aca5aac487",
+      "bytes": 193
+    },
+    {
+      "source": "target/site/jacoco/jacoco-resources/package.gif",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/jacoco-resources/package.gif",
+      "sha256": "82577b6b416bbf65cc99bc1c249e6462ae4ac708687fe2e1428b610c049300c2",
+      "bytes": 227
+    },
+    {
+      "source": "target/site/jacoco/jacoco-resources/prettify.css",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/jacoco-resources/prettify.css",
+      "sha256": "2247d0cf27cb7fd9cd850eb33444c059f261eb63a718c26b8f357a938401c5f9",
+      "bytes": 323
+    },
+    {
+      "source": "target/site/jacoco/jacoco-resources/prettify.js",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/jacoco-resources/prettify.js",
+      "sha256": "5aa62c80a165e199e55395d4ac2ba4c19aa802b7f158dfe557707c176ebed9f6",
+      "bytes": 59034
+    },
+    {
+      "source": "target/site/jacoco/jacoco-resources/redbar.gif",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/jacoco-resources/redbar.gif",
+      "sha256": "906ce7fcec0fbac1a26c16521e375f020a513f0cf87888766b69c4bf63f4d9bd",
+      "bytes": 91
+    },
+    {
+      "source": "target/site/jacoco/jacoco-resources/report.css",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/jacoco-resources/report.css",
+      "sha256": "0c464ff9ce9154fdf1a041b0efed7bc31da4a4c9744249d8ffa6b80f1c36ed9e",
+      "bytes": 4046
+    },
+    {
+      "source": "target/site/jacoco/jacoco-resources/report.gif",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/jacoco-resources/report.gif",
+      "sha256": "c765cafa65ec9a3c221b46062c6ef691f2dd5ff25628ee2c65cc9fe0b74aeea6",
+      "bytes": 363
+    },
+    {
+      "source": "target/site/jacoco/jacoco-resources/session.gif",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/jacoco-resources/session.gif",
+      "sha256": "1ec062e347bc7db837b9471b6c6128e1d0a5ae8d4c6a2eaa8fee4d5cb6441dab",
+      "bytes": 213
+    },
+    {
+      "source": "target/site/jacoco/jacoco-resources/sort.gif",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/jacoco-resources/sort.gif",
+      "sha256": "1875d39ff1be841991aa768486f1bcfc0ca02969323e2d2ec52ec156bb5cf240",
+      "bytes": 58
+    },
+    {
+      "source": "target/site/jacoco/jacoco-resources/sort.js",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/jacoco-resources/sort.js",
+      "sha256": "64407e72c5097000e41f9da4ac9a04131b8ec9479ca8987a5f5d5f2ad6383043",
+      "bytes": 3955
+    },
+    {
+      "source": "target/site/jacoco/jacoco-resources/source.gif",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/jacoco-resources/source.gif",
+      "sha256": "50257f70adf3ebe4d18bb2432a61370dac06dad7a45f235c8e5f376081251ac3",
+      "bytes": 354
+    },
+    {
+      "source": "target/site/jacoco/jacoco-resources/up.gif",
+      "destination": "p2/build-2-20261015T040708726Z/jacoco/jacoco-resources/up.gif",
+      "sha256": "e1ce2c1d5128b701f2dc5bb5f63c5c402d5d8125ad9c3ffc31c6abc7767899a0",
+      "bytes": 67
+    },
+    {
+      "source": "target/site/pmd.html",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/pmd.html",
+      "sha256": "e432d25f31d94fff1153c8de72aa94dbb1f7893c9c320954f711cc62374a59a6",
+      "bytes": 2172
+    },
+    {
+      "source": "target/pmd.xml",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/pmd.xml",
+      "sha256": "92f836076eec1ae72918183235681abe99f9c16485f49d7382160856dc22a6bd",
+      "bytes": 317
+    },
+    {
+      "source": "target/site/css/apache-maven-fluido-2.0.0-M9.min.css",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/css/apache-maven-fluido-2.0.0-M9.min.css",
+      "sha256": "43f9dccc39e0f2e800cbbc23649191dce8e80972f8e88f1346ff8d219672ed97",
+      "bytes": 128470
+    },
+    {
+      "source": "target/site/css/print.css",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/css/print.css",
+      "sha256": "a5a7946a24056e7c81a330a55137175715c850fa07b520f518676c1982552a9b",
+      "bytes": 1064
+    },
+    {
+      "source": "target/site/css/site.css",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/css/site.css",
+      "sha256": "d079d0324d331c08fea5533e5f9e7a4f533099f8916815ffbe115ab0b5524ba6",
+      "bytes": 53
+    },
+    {
+      "source": "target/site/fonts/glyphicons-halflings-regular.svg",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/fonts/glyphicons-halflings-regular.svg",
+      "sha256": "0b12aba182a43da34d79361168a665a0ec78a6a79169a730ca96b7cf696cd7c4",
+      "bytes": 63078
+    },
+    {
+      "source": "target/site/fonts/glyphicons-halflings-regular.ttf",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/fonts/glyphicons-halflings-regular.ttf",
+      "sha256": "e27b969ef04fed3b39000b7b977e602d6e6a2b1c8c0d618bebf6dd875243ea3c",
+      "bytes": 41236
+    },
+    {
+      "source": "target/site/fonts/glyphicons-halflings-regular.woff",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/fonts/glyphicons-halflings-regular.woff",
+      "sha256": "63faf0af44a428f182686f0d924bb30e369a9549630c7b98a969394f58431067",
+      "bytes": 23292
+    },
+    {
+      "source": "target/site/images/accessories-text-editor.png",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/accessories-text-editor.png",
+      "sha256": "7fe8b358b119f929abe720f8eac82c895bbb0cfbc86fa94525a496ab938b4527",
+      "bytes": 746
+    },
+    {
+      "source": "target/site/images/add.gif",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/add.gif",
+      "sha256": "aa3248f01d1c9a614f98e37a0946acc5bc9811df2f24d7e3859f1777e91ff980",
+      "bytes": 397
+    },
+    {
+      "source": "target/site/images/apache-maven-project-2.png",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/apache-maven-project-2.png",
+      "sha256": "e544ec0d5313fd3bdfb4af4b760cb7b5bc5706cf0ff2c1d1367fb8c1f86e5c46",
+      "bytes": 43073
+    },
+    {
+      "source": "target/site/images/application-certificate.png",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/application-certificate.png",
+      "sha256": "cf846cb9c13823d3513a853b3ff65bda80a16b5ad4de3ce4e40bb020e4521c02",
+      "bytes": 923
+    },
+    {
+      "source": "target/site/images/contact-new.png",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/contact-new.png",
+      "sha256": "61babfb19a878ebfc50c3359dffc5c6666fa1ab0d9dbe990a5f0c6707ebdefca",
+      "bytes": 736
+    },
+    {
+      "source": "target/site/images/document-properties.png",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/document-properties.png",
+      "sha256": "7697ddf62a159a1c0755d8f10d4b86af406f342613f7ea7ddd16f08668a98e35",
+      "bytes": 577
+    },
+    {
+      "source": "target/site/images/drive-harddisk.png",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/drive-harddisk.png",
+      "sha256": "133bdaab12c3796d27913e025468f531ae188deb9d95bd073d29a0735de4e684",
+      "bytes": 700
+    },
+    {
+      "source": "target/site/images/fix.gif",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/fix.gif",
+      "sha256": "0aeedbf7ba5c6c4e0b6ab35d424773a28d54941fa99604f80d4075c9abaeb36c",
+      "bytes": 366
+    },
+    {
+      "source": "target/site/images/icon_error_sml.gif",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/icon_error_sml.gif",
+      "sha256": "94be70125b079d0f7bc31f1d9870b549b07ed78d14585f89a23bdce976b72bce",
+      "bytes": 633
+    },
+    {
+      "source": "target/site/images/icon_help_sml.gif",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/icon_help_sml.gif",
+      "sha256": "91f660b352cd044b2985a6f05ed24fe447268f84946626c5f4d6dd4d1a22a48a",
+      "bytes": 1072
+    },
+    {
+      "source": "target/site/images/icon_info_sml.gif",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/icon_info_sml.gif",
+      "sha256": "bc90e0954a409e610d7120ee7d893362a269249a14e90be7bc99b51a84d8e93b",
+      "bytes": 638
+    },
+    {
+      "source": "target/site/images/icon_success_sml.gif",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/icon_success_sml.gif",
+      "sha256": "80f89c55c118e47605857975f235a7852c9b9714281f48c3e53baff3e89e261c",
+      "bytes": 604
+    },
+    {
+      "source": "target/site/images/icon_warning_sml.gif",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/icon_warning_sml.gif",
+      "sha256": "a28a3f9b2cb61ff89b53529eeb5d574d4a0f9e199565d67b88f30458b201d419",
+      "bytes": 625
+    },
+    {
+      "source": "target/site/images/image-x-generic.png",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/image-x-generic.png",
+      "sha256": "4961d5bd00e3c5b89cac67e6565a2bf1d4096fd5f545029e285cb836efb94f56",
+      "bytes": 662
+    },
+    {
+      "source": "target/site/images/internet-web-browser.png",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/internet-web-browser.png",
+      "sha256": "b400d4c9826f13ecf6d185e9c23a9fdb77aceab5d29956d236a1ae779f66c433",
+      "bytes": 1017
+    },
+    {
+      "source": "target/site/images/network-server.png",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/network-server.png",
+      "sha256": "e9b9def97f775ab5127fad1b82ae2dc033312d1082a18eeb68705d7e5d9879dc",
+      "bytes": 536
+    },
+    {
+      "source": "target/site/images/package-x-generic.png",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/package-x-generic.png",
+      "sha256": "3e9045ca09cd828879e769ba8a3efa847c3ae3afe9d072491fe140cde445b416",
+      "bytes": 717
+    },
+    {
+      "source": "target/site/images/remove.gif",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/remove.gif",
+      "sha256": "3e34db440ad9201f16a36cb44494a9be4066cf7edb68c7f6bd13b767148799c0",
+      "bytes": 607
+    },
+    {
+      "source": "target/site/images/rss.png",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/rss.png",
+      "sha256": "c1cf05b2eeb50cc3f142ae0fee8557b6dd39797948445caed07d438c3a2550eb",
+      "bytes": 474
+    },
+    {
+      "source": "target/site/images/update.gif",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/update.gif",
+      "sha256": "60096763883104398fc17066a93928fdacdb87ae4e2bd858b7c0b17a820ecccd",
+      "bytes": 1090
+    },
+    {
+      "source": "target/site/images/window-new.png",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/window-new.png",
+      "sha256": "30d30698359fbac1ac00d9fa1fbb6c92e71a03ea99ff2e21a2176d7f584a6ac1",
+      "bytes": 583
+    },
+    {
+      "source": "target/site/images/logos/build-by-maven-black.png",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/logos/build-by-maven-black.png",
+      "sha256": "d43d52ba554fc85e370a97f54d1c6cdc7ef80b68a8a65f717ebd8e161979e21a",
+      "bytes": 2294
+    },
+    {
+      "source": "target/site/images/logos/build-by-maven-white.png",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/logos/build-by-maven-white.png",
+      "sha256": "03a5174b45a4d1c4a54d351c5264b56de0be17abd29ef413beee651592367fd4",
+      "bytes": 2260
+    },
+    {
+      "source": "target/site/images/logos/maven-feather.png",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/logos/maven-feather.png",
+      "sha256": "656853b75a5dabf0954050196804fa3ac6ad8d9c662c3ae0ca50e6a0cffcc299",
+      "bytes": 3330
+    },
+    {
+      "source": "target/site/images/profiles/pre-release.png",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/profiles/pre-release.png",
+      "sha256": "83e78edc2886d08d48fff27d1661422edd63a930cfaa9e9100c4c3ca3fd3bb4b",
+      "bytes": 32607
+    },
+    {
+      "source": "target/site/images/profiles/retired.png",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/profiles/retired.png",
+      "sha256": "62d959dd0244477eca26e8f6d7e2d65e463009ef0d1e77a679fb20cdc77e3261",
+      "bytes": 22003
+    },
+    {
+      "source": "target/site/images/profiles/sandbox.png",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/images/profiles/sandbox.png",
+      "sha256": "244012cf3881ce760b4bb2df08e5c084ecc20e6f62c8497ba48e5a18925564e1",
+      "bytes": 33010
+    },
+    {
+      "source": "target/site/img/glyphicons-halflings-white.png",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/img/glyphicons-halflings-white.png",
+      "sha256": "f0e0d95a9c8abcdfabf46348e2d4285829bb0491f5f6af0e05af52bffb6324c4",
+      "bytes": 8777
+    },
+    {
+      "source": "target/site/img/glyphicons-halflings.png",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/img/glyphicons-halflings.png",
+      "sha256": "d99e3fa32c641032f08149914b28c2dc6acf2ec62f70987f2259eabbfa7fc0de",
+      "bytes": 12799
+    },
+    {
+      "source": "target/site/js/apache-maven-fluido-2.0.0-M9.min.js",
+      "destination": "p2/build-2-20261015T040708726Z/pmd/js/apache-maven-fluido-2.0.0-M9.min.js",
+      "sha256": "b966ba4111d9a237e4cf5c56203d1acc2f126199346170aef5f98310ce8d835e",
+      "bytes": 145082
+    },
+    {
+      "source": "frontend/cypress/results/junit-be83053bd04fd12f7edf809013798a37.xml",
+      "destination": "p3/cypress/build-2-20261015T040708726Z/results/junit-be83053bd04fd12f7edf809013798a37.xml",
+      "sha256": "9f0807dcfb3a93051fc29638df6859feee2ae4fade701daea7c0c54ff875d555",
+      "bytes": 1799
+    },
+    {
+      "source": "frontend/cypress/screenshots/super-cursos.cy.js/01-login-invalido-bloqueado.png",
+      "destination": "p3/cypress/build-2-20261015T040708726Z/screenshots/super-cursos.cy.js/01-login-invalido-bloqueado.png",
+      "sha256": "284bc6a130b53f15dd405fd76a1419475d0e9bf721ccc23c64dd7c0170dafdb2",
+      "bytes": 52114
+    },
+    {
+      "source": "frontend/cypress/screenshots/super-cursos.cy.js/02-login-valido-saldo-inicial.png",
+      "destination": "p3/cypress/build-2-20261015T040708726Z/screenshots/super-cursos.cy.js/02-login-valido-saldo-inicial.png",
+      "sha256": "da5dc1e2056a78fd499dbede2b037b58a6303bfc6e99b7af14ac4d01da4503b3",
+      "bytes": 95005
+    },
+    {
+      "source": "frontend/cypress/screenshots/super-cursos.cy.js/03-troca-3-moedas-saldo-zero.png",
+      "destination": "p3/cypress/build-2-20261015T040708726Z/screenshots/super-cursos.cy.js/03-troca-3-moedas-saldo-zero.png",
+      "sha256": "2d744e861f692a8124e8a4453841a9bee3f63edf3602f5b2feb6c1c6383417c4",
+      "bytes": 99966
+    },
+    {
+      "source": "frontend/cypress/screenshots/super-cursos.cy.js/04-troca-5-moedas-saldo-dois.png",
+      "destination": "p3/cypress/build-2-20261015T040708726Z/screenshots/super-cursos.cy.js/04-troca-5-moedas-saldo-dois.png",
+      "sha256": "b3f23ec62ac5386258fe865b03c80bbda475b54562b9f4ab333b4134c186d780",
+      "bytes": 100298
+    },
+    {
+      "source": "frontend/cypress/screenshots/super-cursos.cy.js/05-saldo-insuficiente-sem-alteracoes.png",
+      "destination": "p3/cypress/build-2-20261015T040708726Z/screenshots/super-cursos.cy.js/05-saldo-insuficiente-sem-alteracoes.png",
+      "sha256": "6cf3d6d147a5dca68a796c04d43ef5e2b8b503e406afb15d94fbc2c4e088635c",
+      "bytes": 101106
+    },
+    {
+      "source": "frontend/cypress/screenshots/super-cursos.cy.js/06-curso-e-saldo-persistidos-apos-login.png",
+      "destination": "p3/cypress/build-2-20261015T040708726Z/screenshots/super-cursos.cy.js/06-curso-e-saldo-persistidos-apos-login.png",
+      "sha256": "9a29de3de352eb5c851a264adbb00ea2249694cfeeed874f3a83448af04f9ea0",
+      "bytes": 94674
+    },
+    {
+      "source": "frontend/cypress/videos/super-cursos.cy.js.mp4",
+      "destination": "p3/cypress/build-2-20261015T040708726Z/videos/super-cursos.cy.js.mp4",
+      "sha256": "98641817ada55b7678988d89ae260f0999804ee6d822f69b95d56ec1ca8f60b2",
+      "bytes": 871789
+    }
+  ]
+}

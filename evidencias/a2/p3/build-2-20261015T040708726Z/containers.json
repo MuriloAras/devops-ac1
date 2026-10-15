@@ -1,0 +1,182 @@
+[
+  {
+    "Command": "\"java -jar /app/app.…\"",
+    "CreatedAt": "2026-10-15 01:04:50 -0300 -03",
+    "Engine": "",
+    "ExitCode": 0,
+    "Health": "healthy",
+    "ID": "e61fbc190e58",
+    "Image": "supercursos-api:2",
+    "Labels": "com.docker.compose.oneoff=False,com.docker.compose.project=supercursos-homol,com.docker.compose.project.working_dir=C:\\Users\\pedro\\.jenkins\\workspace\\A2_P2_supercursos_pipeline,com.docker.compose.replace=api-1,com.docker.compose.service=api,desktop.docker.io/ports.scheme=v2,com.docker.compose.config-hash=dabf0a7e60a18f7ff9afc92c635bd43d353603571db56a8d89c2860a88a9bd5b,com.docker.compose.container-number=1,com.docker.compose.depends_on=postgres:service_healthy:false,com.docker.compose.project.config_files=C:\\Users\\pedro\\.jenkins\\workspace\\A2_P2_supercursos_pipeline\\docker-compose.homol.yml,com.docker.compose.version=5.5.1,desktop.docker.io/ports/8080/tcp=127.0.0.1:8082,com.docker.compose.image=sha256:8a86c2eb517f8e66bf36d8877bf0b6ab7cd6ee88fe2daaed1f68fd7be9beab38",
+    "LocalVolumes": "0",
+    "Mounts": "",
+    "Name": "supercursos-homol-api-1",
+    "Names": "supercursos-homol-api-1",
+    "Networks": "supercursos-homol_default",
+    "Ports": "127.0.0.1:8082->8080/tcp",
+    "Project": "supercursos-homol",
+    "Publishers": [
+      {
+        "URL": "127.0.0.1",
+        "TargetPort": 8080,
+        "PublishedPort": 8082,
+        "Protocol": "tcp"
+      }
+    ],
+    "RunningFor": "2 minutes ago",
+    "Service": "api",
+    "Size": "0B",
+    "State": "running",
+    "Status": "Up 2 minutes (healthy)"
+  },
+  {
+    "Command": "\"/docker-entrypoint.…\"",
+    "CreatedAt": "2026-10-15 01:04:51 -0300 -03",
+    "Engine": "",
+    "ExitCode": 0,
+    "Health": "healthy",
+    "ID": "5f1b593d6d2d",
+    "Image": "supercursos-frontend:2",
+    "Labels": "com.docker.compose.project=supercursos-homol,com.docker.compose.project.config_files=C:\\Users\\pedro\\.jenkins\\workspace\\A2_P2_supercursos_pipeline\\docker-compose.homol.yml,com.docker.compose.project.working_dir=C:\\Users\\pedro\\.jenkins\\workspace\\A2_P2_supercursos_pipeline,com.docker.compose.replace=frontend-1,com.docker.compose.container-number=1,com.docker.compose.depends_on=api:service_healthy:false,com.docker.compose.image=sha256:4bf873ea97eb2dbed2362115b97c4fe7f68af7641853cf5e6e2fb5a83ee75fc9,com.docker.compose.service=frontend,com.docker.compose.version=5.5.1,desktop.docker.io/ports.scheme=v2,desktop.docker.io/ports/80/tcp=127.0.0.1:3002,maintainer=NGINX Docker Maintainers <docker-maint@nginx.com>,com.docker.compose.config-hash=7ae0fcf062bc195c5998854c427e91b2b2da311683d34a2b17983d7c9dcbe9fe,com.docker.compose.oneoff=False",
+    "LocalVolumes": "0",
+    "Mounts": "",
+    "Name": "supercursos-homol-frontend-1",
+    "Names": "supercursos-homol-frontend-1",
+    "Networks": "supercursos-homol_default",
+    "Ports": "127.0.0.1:3002->80/tcp",
+    "Project": "supercursos-homol",
+    "Publishers": [
+      {
+        "URL": "127.0.0.1",
+        "TargetPort": 80,
+        "PublishedPort": 3002,
+        "Protocol": "tcp"
+      }
+    ],
+    "RunningFor": "2 minutes ago",
+    "Service": "frontend",
+    "Size": "0B",
+    "State": "running",
+    "Status": "Up 2 minutes (healthy)"
+  },
+  {
+    "Command": "\"/run.sh\"",
+    "CreatedAt": "2026-10-15 01:04:52 -0300 -03",
+    "Engine": "",
+    "ExitCode": 0,
+    "Health": "healthy",
+    "ID": "6dcb2ce1fd15",
+    "Image": "grafana/grafana@sha256:dbbc38ea21103cefb50396340cd88afec779c7e070b0a7bf5a75b4ce46651d3f",
+    "Labels": "com.docker.compose.project=supercursos-homol,com.docker.compose.replace=grafana-1,com.docker.compose.depends_on=prometheus:service_started:false,com.docker.compose.image=sha256:7b22f3edf947329d75eba7a62d9f6ea1ac1e786736813ef7a98cfb275a52e49b,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=C:\\Users\\pedro\\.jenkins\\workspace\\A2_P2_supercursos_pipeline\\docker-compose.homol.yml,com.docker.compose.service=grafana,desktop.docker.io/binds/0/Target=/etc/grafana/provisioning,desktop.docker.io/binds/1/SourceKind=hostFile,desktop.docker.io/ports.scheme=v2,com.docker.compose.project.working_dir=C:\\Users\\pedro\\.jenkins\\workspace\\A2_P2_supercursos_pipeline,com.docker.compose.version=5.5.1,desktop.docker.io/binds/0/SourceKind=hostFile,desktop.docker.io/ports/3000/tcp=127.0.0.1:3003,maintainer=Grafana Labs <hello@grafana.com>,desktop.docker.io/binds/0/Source=C:\\Users\\pedro\\.jenkins\\workspace\\A2_P2_supercursos_pipeline\\grafana\\provisioning,desktop.docker.io/binds/1/Source=C:\\Users\\pedro\\.jenkins\\workspace\\A2_P2_supercursos_pipeline\\grafana\\dashboards,desktop.docker.io/binds/1/Target=/var/lib/grafana/dashboards,org.opencontainers.image.source=https://github.com/grafana/grafana,com.docker.compose.config-hash=aae71dad9c4934b7772602097720c5d4c7a5a135130bc61519acabc3f855cf50,com.docker.compose.container-number=1",
+    "LocalVolumes": "1",
+    "Mounts": "/run/desktop/m…,supercursos-ho…,/run/desktop/m…",
+    "Name": "supercursos-homol-grafana-1",
+    "Names": "supercursos-homol-grafana-1",
+    "Networks": "supercursos-homol_default",
+    "Ports": "127.0.0.1:3003->3000/tcp",
+    "Project": "supercursos-homol",
+    "Publishers": [
+      {
+        "URL": "127.0.0.1",
+        "TargetPort": 3000,
+        "PublishedPort": 3003,
+        "Protocol": "tcp"
+      }
+    ],
+    "RunningFor": "2 minutes ago",
+    "Service": "grafana",
+    "Size": "0B",
+    "State": "running",
+    "Status": "Up 2 minutes (healthy)"
+  },
+  {
+    "Command": "\"/entrypoint.sh\"",
+    "CreatedAt": "2026-10-15 01:04:50 -0300 -03",
+    "Engine": "",
+    "ExitCode": 0,
+    "Health": "healthy",
+    "ID": "73ed6622434b",
+    "Image": "dpage/pgadmin4:9",
+    "Labels": "com.docker.compose.config-hash=85cd86e86d724bd06c2c421a069114b4a75093165e26213a046d954aad59cf81,com.docker.compose.container-number=1,com.docker.compose.oneoff=False,com.docker.compose.project=supercursos-homol,com.docker.compose.project.config_files=C:\\Users\\pedro\\.jenkins\\workspace\\A2_P2_supercursos_pipeline\\docker-compose.homol.yml,com.docker.compose.project.working_dir=C:\\Users\\pedro\\.jenkins\\workspace\\A2_P2_supercursos_pipeline,com.docker.compose.service=pgadmin,com.docker.compose.version=5.5.1,com.docker.compose.depends_on=postgres:service_healthy:false,com.docker.compose.image=sha256:33eb7d070ee7500d1513453773f61df1256fdea08257d4a3f4aebd8cf1cc87cf,com.docker.compose.replace=pgadmin-1,desktop.docker.io/ports.scheme=v2,desktop.docker.io/ports/80/tcp=127.0.0.1:5051",
+    "LocalVolumes": "1",
+    "Mounts": "supercursos-ho…",
+    "Name": "supercursos-homol-pgadmin-1",
+    "Names": "supercursos-homol-pgadmin-1",
+    "Networks": "supercursos-homol_default",
+    "Ports": "127.0.0.1:5051->80/tcp",
+    "Project": "supercursos-homol",
+    "Publishers": [
+      {
+        "URL": "127.0.0.1",
+        "TargetPort": 80,
+        "PublishedPort": 5051,
+        "Protocol": "tcp"
+      }
+    ],
+    "RunningFor": "2 minutes ago",
+    "Service": "pgadmin",
+    "Size": "0B",
+    "State": "running",
+    "Status": "Up 2 minutes (healthy)"
+  },
+  {
+    "Command": "\"docker-entrypoint.s…\"",
+    "CreatedAt": "2026-10-15 01:02:00 -0300 -03",
+    "Engine": "",
+    "ExitCode": 0,
+    "Health": "healthy",
+    "ID": "196da5e820d1",
+    "Image": "postgres:16-alpine",
+    "Labels": "com.docker.compose.container-number=1,com.docker.compose.oneoff=False,com.docker.compose.project=supercursos-homol,com.docker.compose.service=postgres,com.docker.compose.version=5.5.1,com.docker.compose.depends_on=,com.docker.compose.image=sha256:075f7ba66bc9b3ce7d6b8b635208ff61cd7cf1a67d71ec530eec5d7ae0cbe571,com.docker.compose.project.config_files=C:\\Users\\pedro\\.jenkins\\workspace\\A2_P2_supercursos_pipeline\\docker-compose.homol.yml,com.docker.compose.project.working_dir=C:\\Users\\pedro\\.jenkins\\workspace\\A2_P2_supercursos_pipeline,desktop.docker.io/ports.scheme=v2,com.docker.compose.config-hash=90b1a3531bd83100e53118d4cdfdec46e65e7c45ff436dce6fcc16ba742b4f99",
+    "LocalVolumes": "1",
+    "Mounts": "supercursos-ho…",
+    "Name": "supercursos-homol-postgres-1",
+    "Names": "supercursos-homol-postgres-1",
+    "Networks": "supercursos-homol_default",
+    "Ports": "5432/tcp",
+    "Project": "supercursos-homol",
+    "Publishers": [
+      {
+        "URL": "",
+        "TargetPort": 5432,
+        "PublishedPort": 0,
+        "Protocol": "tcp"
+      }
+    ],
+    "RunningFor": "5 minutes ago",
+    "Service": "postgres",
+    "Size": "0B",
+    "State": "running",
+    "Status": "Up 5 minutes (healthy)"
+  },
+  {
+    "Command": "\"/bin/prometheus --c…\"",
+    "CreatedAt": "2026-10-15 01:04:51 -0300 -03",
+    "Engine": "",
+    "ExitCode": 0,
+    "Health": "healthy",
+    "ID": "b8f67e1a6e7d",
+    "Image": "prom/prometheus@sha256:efd719c99d83b060d9daefdcf00360461adf279f45ef5391f8d111892118753e",
+    "Labels": "com.docker.compose.image=sha256:86b17a25c2db1d16a61b16b3c8f336679eb19e26333d03e808da387206e40faa,com.docker.compose.service=prometheus,desktop.docker.io/binds/1/Source=C:\\Users\\pedro\\.jenkins\\workspace\\A2_P2_supercursos_pipeline\\prometheus\\prometheus.yml,org.opencontainers.image.authors=The Prometheus Authors,org.opencontainers.image.source=https://github.com/prometheus/prometheus,org.opencontainers.image.url=https://github.com/prometheus/prometheus,org.opencontainers.image.vendor=Prometheus,com.docker.compose.project=supercursos-homol,com.docker.compose.project.working_dir=C:\\Users\\pedro\\.jenkins\\workspace\\A2_P2_supercursos_pipeline,desktop.docker.io/ports.scheme=v2,org.opencontainers.image.title=Prometheus,com.docker.compose.container-number=1,com.docker.compose.depends_on=api:service_healthy:false,com.docker.compose.replace=prometheus-1,desktop.docker.io/binds/1/SourceKind=hostFile,desktop.docker.io/binds/1/Target=/etc/prometheus/prometheus.yml,org.opencontainers.image.licenses=Apache License 2.0,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=C:\\Users\\pedro\\.jenkins\\workspace\\A2_P2_supercursos_pipeline\\docker-compose.homol.yml,com.docker.compose.version=5.5.1,desktop.docker.io/ports/9090/tcp=127.0.0.1:9092,io.prometheus.image.variant=busybox,maintainer=The Prometheus Authors <prometheus-developers@googlegroups.com>,org.opencontainers.image.description=The Prometheus monitoring system and time series database,org.opencontainers.image.documentation=https://prometheus.io/docs,com.docker.compose.config-hash=e71b7e08cb8a15cd3fa21c493badd647a195b9d4b95153f2b92fddd87e893400",
+    "LocalVolumes": "1",
+    "Mounts": "supercursos-ho…,/run/desktop/m…",
+    "Name": "supercursos-homol-prometheus-1",
+    "Names": "supercursos-homol-prometheus-1",
+    "Networks": "supercursos-homol_default",
+    "Ports": "127.0.0.1:9092->9090/tcp",
+    "Project": "supercursos-homol",
+    "Publishers": [
+      {
+        "URL": "127.0.0.1",
+        "TargetPort": 9090,
+        "PublishedPort": 9092,
+        "Protocol": "tcp"
+      }
+    ],
+    "RunningFor": "2 minutes ago",
+    "Service": "prometheus",
+    "Size": "0B",
+    "State": "running",
+    "Status": "Up 2 minutes (healthy)"
+  }
+]

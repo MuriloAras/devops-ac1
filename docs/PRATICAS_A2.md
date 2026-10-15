@@ -24,8 +24,13 @@ e ter a opcao `-Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true`, como no l
 O script cria SOMENTE o job dedicado; nao altera jobs anteriores nem a autenticacao:
 
 ```powershell
+.\scripts\iniciar-jenkins.ps1
 .\scripts\configurar-jenkins.ps1
 ```
+
+O primeiro script reaproveita a instalacao em `$env:USERPROFILE\Jenkins\jenkins.war`,
+inicia em segundo plano e usa JDK 21. Parametros `-JenkinsWar` e `-JavaHome` permitem
+apontar outras instalacoes. Se Jenkins ja estiver ativo, o script apenas informa isso.
 
 Se o servidor exigir autenticacao, defina `JENKINS_USER` e `JENKINS_TOKEN` apenas no
 ambiente do processo. Para usar um repositorio remoto depois de publicar a branch:
