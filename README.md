@@ -1,7 +1,5 @@
 # Super Cursos
 
-Descrição breve do projeto: o que o sistema faz e qual problema resolve.
-
 ## Contexto
 
 Durante a Ac1, realizamos a automação de testes de uma plataforma de cursos.
