@@ -42,15 +42,64 @@ A organização por módulos facilita a resposta a perguntas como:
 - Qual módulo é responsável por determinada regra?
 - Qual funcionalidade precisa de refatoração?
 
+## Estrutura modular implementada
+
+A aplicação foi reorganizada por capacidade de negócio: o módulo `aluno` cuida
+de cadastro, autenticação, moedas e aquisição; `cursos` oferece o catálogo, o
+vídeo e as avaliações; e `ranking` calcula as posições pelas melhores notas.
+A configuração transversal de segurança e o redirecionamento da página inicial
+ficam em `shared`.
+
+O registro do Desafio 1, incluindo RF/RNF, ASRs, RPCs, alternativas, ADR, C4 e
+evidências, está em [docs/arquitetura/README.md](docs/arquitetura/README.md).
+
+```text
+src/main/java/com/example/grupo34_atdd/
+├── Grupo34AtddApplication.java
+├── modules/aluno/
+│   ├── api/                         # Controller e contratos HTTP (DTOs)
+│   ├── application/                # Casos de uso e transações
+│   ├── domain/                     # Regras de negócio
+│   └── infrastructure/persistence/ # Entidade JPA e repositório
+├── modules/cursos/                 # Catálogo, vídeo e avaliações
+├── modules/ranking/                # Pontuação e classificação
+└── shared/
+    ├── config/                     # Configuração transversal de segurança
+    └── web/                        # Rota inicial e redirecionamento
+```
+
+O controller encaminha requisições ao serviço de aplicação; o serviço aplica as
+regras de domínio e usa o repositório para persistir os dados. DTOs representam
+os contratos HTTP e não dependem de entidades JPA. `shared` não contém regras
+específicas de aluno. A aplicação continua sendo um monólito modular: os módulos
+compartilham o processo e o banco atuais, com fronteiras organizadas no código.
+
+## Compatibilidade preservada
+
+A refatoração preserva as rotas, payloads, status HTTP, autenticação, regras de
+troca e mapeamento do banco existentes. Permanecem os endpoints de cadastro,
+listagem, consulta, login e troca de moedas sob `/api/alunos`. Foram adicionados
+os endpoints de catálogo e avaliação em `/api/cursos` e
+`/api/alunos/{id}/cursos/{slug}`, além de `GET /api/ranking`. As tabelas
+`alunos` e `aluno_cursos`, o custo de 3 moedas por curso e as respostas de erro
+existentes foram mantidos; `resultados_avaliacao` guarda o recorde por aluno e
+curso.
+
+Os testes foram movidos junto às responsabilidades que verificam. Os testes de
+integração continuam validando PostgreSQL, API, saúde, métricas e OpenAPI. O
+README-v1.1.0 mantém as instruções e evidências de CI/CD da AC2.
+
+
 
 --------------------------------------------------------------------------------
 
 # Super Cursos
 
 O Super Cursos é uma plataforma de educação continuada gamificada, na qual alunos
-fazem login, consultam seu saldo de moedas e usam essas moedas para adquirir cursos.
-A aplicação reúne uma API em Spring Boot, uma interface em Vue.js e um banco de
-dados PostgreSQL.
+fazem login, usam moedas para adquirir cursos, assistem a uma aula em vídeo e
+respondem a uma avaliação. Cada acerto rende 100 pontos; o ranking soma a melhor
+nota de cada aluno por curso. A aplicação reúne uma API em Spring Boot, uma
+interface em Vue.js e um banco de dados PostgreSQL.
 
 Para conhecer as diferenças entre as versões e acessar suas práticas e evidências,
 clique nos READMEs abaixo:

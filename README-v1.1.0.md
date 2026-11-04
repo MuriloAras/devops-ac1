@@ -7,8 +7,10 @@ versionar a esteira em um `Jenkinsfile`, construir os containers, implantar em
 homologação, executar testes antes e depois do deploy e registrar as evidências.
 O ambiente também inclui monitoramento com Prometheus e Grafana.
 
-A aplicação mantém a proposta original: autenticação de alunos e troca de moedas
-por cursos. Cada curso custa 3 moedas; saldo insuficiente impede a aquisição.
+A aplicação mantém a autenticação de alunos e a troca de moedas por cursos, e
+agora inclui vídeo, avaliação de dez questões e ranking por pontos. Cada curso
+custa 3 moedas; saldo insuficiente impede a aquisição. A descrição arquitetural
+e a regra de pontuação estão em [docs/arquitetura/README.md](docs/arquitetura/README.md).
 
 ## O que mudou em relação à versão anterior
 

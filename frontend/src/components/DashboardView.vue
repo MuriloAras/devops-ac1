@@ -7,6 +7,7 @@
       </div>
       <div class="header-info">
         <span class="header-name">Olá, {{ aluno.nome }} 👋</span>
+        <button class="btn-ranking" @click="$emit('abrir-ranking')">🏆 Ranking</button>
         <button class="btn-sair" @click="$emit('sair')">Sair</button>
       </div>
     </header>
@@ -64,7 +65,18 @@
             class="curso-item"
           >
             <img src="../assets/coin.png" alt="moeda" class="curso-coin" />
-            <span>{{ curso }}</span>
+            <div class="curso-info">
+              <span>{{ curso }}</span>
+              <button
+                v-if="cursoDoCatalogo(curso)"
+                class="btn-acessar"
+                data-testid="course-access"
+                @click="$emit('acessar-curso', cursoDoCatalogo(curso).slug)"
+              >
+                Assistir e responder
+              </button>
+              <small v-else>Conteúdo em breve</small>
+            </div>
           </div>
         </div>
 
@@ -72,6 +84,40 @@
           <p>Você ainda não adquiriu nenhum curso.</p>
           <p class="cursos-vazio-sub">Troque suas moedas e comece a aprender!</p>
         </div>
+      </section>
+
+      <section class="card catalogo-card">
+        <h2 class="section-title">🎬 Catálogo de cursos</h2>
+        <p class="section-sub">Cada curso tem um vídeo e uma avaliação com 10 questões.</p>
+        <div v-if="carregandoCatalogo" class="cursos-vazio">Carregando cursos...</div>
+        <div v-else-if="catalogoCursos.length" class="catalogo-lista">
+          <article v-for="curso in catalogoCursos" :key="curso.slug" class="catalogo-item">
+            <div>
+              <h3>{{ curso.titulo }}</h3>
+              <p>{{ curso.descricao }}</p>
+            </div>
+            <button
+              v-if="cursoAdquirido(curso.titulo)"
+              class="btn-acessar"
+              data-testid="course-access"
+              @click="$emit('acessar-curso', curso.slug)"
+            >
+              Acessar curso
+            </button>
+            <button
+              v-else
+              class="btn-comprar"
+              data-testid="course-purchase"
+              :disabled="comprandoCatalogo || aluno.saldoMoedas < 3"
+              @click="adquirirCurso(curso.titulo)"
+            >
+              {{ comprandoCatalogo ? 'Adquirindo...' : 'Adquirir por 3 moedas' }}
+            </button>
+          </article>
+        </div>
+        <p v-if="msgCatalogo" :class="['msg', msgCatalogoSucesso ? 'msg-ok' : 'msg-erro']">
+          {{ msgCatalogo }}
+        </p>
       </section>
     </main>
   </div>
@@ -87,12 +133,65 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['sair', 'atualizar'])
+const emit = defineEmits(['sair', 'atualizar', 'acessar-curso', 'abrir-ranking'])
 
 const nomeCurso = ref('')
 const trocando = ref(false)
 const msgTroca = ref('')
 const msgTrocaSucesso = ref(false)
+const catalogoCursos = ref([])
+const carregandoCatalogo = ref(true)
+const comprandoCatalogo = ref(false)
+const msgCatalogo = ref('')
+const msgCatalogoSucesso = ref(false)
+
+loadCatalogo()
+
+async function loadCatalogo() {
+  try {
+    const res = await fetch('/api/cursos')
+    if (res.ok) catalogoCursos.value = await res.json()
+  } catch (e) {
+    msgCatalogo.value = 'Não foi possível carregar o catálogo.'
+  } finally {
+    carregandoCatalogo.value = false
+  }
+}
+
+function cursoAdquirido(titulo) {
+  return props.aluno.cursosAdquiridos?.some(curso => curso.toLowerCase() === titulo.toLowerCase()) ?? false
+}
+
+function cursoDoCatalogo(nome) {
+  return catalogoCursos.value.find(curso => curso.titulo.toLowerCase() === nome.toLowerCase())
+}
+
+async function adquirirCurso(titulo) {
+  comprandoCatalogo.value = true
+  msgCatalogo.value = ''
+  try {
+    const res = await fetch(`/api/alunos/${props.aluno.id}/trocar-moedas`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nomeCurso: titulo })
+    })
+    if (!res.ok) {
+      msgCatalogo.value = res.status === 400
+        ? 'Saldo insuficiente para adquirir este curso.'
+        : 'Não foi possível adquirir o curso.'
+      msgCatalogoSucesso.value = false
+      return
+    }
+    emit('atualizar', await res.json())
+    msgCatalogo.value = `Curso "${titulo}" adquirido. Já pode assistir ao vídeo e fazer a avaliação.`
+    msgCatalogoSucesso.value = true
+  } catch (e) {
+    msgCatalogo.value = 'Erro de conexão com o servidor.'
+    msgCatalogoSucesso.value = false
+  } finally {
+    comprandoCatalogo.value = false
+  }
+}
 
 async function trocarMoedas() {
   if (!nomeCurso.value.trim()) {
@@ -180,6 +279,39 @@ async function trocarMoedas() {
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+.btn-ranking,
+.btn-acessar,
+.btn-comprar {
+  border-radius: 50px;
+  padding: 8px 16px;
+  font-weight: 700;
+  transition: transform 0.15s, background 0.2s;
+}
+
+.btn-ranking {
+  background: #f5c842;
+  color: #1a1a1a;
+}
+
+.btn-acessar,
+.btn-comprar {
+  background: #f05472;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.btn-ranking:hover,
+.btn-acessar:hover:not(:disabled),
+.btn-comprar:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.btn-acessar:disabled,
+.btn-comprar:disabled {
+  background: #bbb;
+  cursor: not-allowed;
 }
 
 .header-name {
@@ -346,6 +478,55 @@ async function trocarMoedas() {
   font-size: 0.95rem;
   color: #333;
   transition: transform 0.15s;
+}
+
+.curso-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+
+.curso-info small {
+  color: #777;
+}
+
+.catalogo-card {
+  grid-column: 1 / -1;
+}
+
+.catalogo-lista {
+  display: grid;
+  gap: 12px;
+}
+
+.catalogo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.catalogo-item h3 {
+  color: #222;
+  margin-bottom: 6px;
+}
+
+.catalogo-item p {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 580px) {
+  .catalogo-item,
+  .curso-info {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }
 
 .curso-item:hover {

@@ -126,4 +126,44 @@ describe('Super Cursos — autenticação e troca de moedas', () => {
       cy.screenshot('06-curso-e-saldo-persistidos-apos-login', { capture: 'viewport' })
     })
   })
+
+  it('assiste ao vídeo de um curso, responde às 10 questões e atualiza o ranking', () => {
+    cadastrarAluno(3).then((aluno) => {
+      entrar(aluno)
+      cy.intercept('POST', `/api/alunos/${aluno.id}/trocar-moedas`).as('adquirirCursoCatalogo')
+      cy.get('[data-testid="course-purchase"]').click()
+      cy.wait('@adquirirCursoCatalogo').its('response.statusCode').should('eq', 200)
+      cy.get('.msg-ok').should('contain.text', 'adquirido')
+      cy.get('.cursos-card [data-testid="course-access"]').click()
+
+      cy.get('h1').should('contain.text', 'Introdução ao Python')
+      cy.get('[data-testid="course-video"] iframe').should(($iframe) => {
+        expect($iframe).to.have.attr('src', 'https://www.youtube-nocookie.com/embed/g_R_Asf6Co0')
+        expect($iframe.attr('src')).not.to.include('list=')
+      })
+      cy.get('[data-testid="course-quiz"] .questao').should('have.length', 10)
+
+      const corretas = [
+        'Uma linguagem de programação', '.py', 'print()', 'Entre aspas',
+        'De cima para baixo', 'Separando por vírgulas', '#',
+        'É ignorado pelo Python', 'Faturamento - custo', 'Número decimal',
+      ]
+      corretas.forEach((resposta, indice) => {
+        cy.get('[data-testid="course-quiz"] .questao').eq(indice)
+          .contains('label', resposta).click()
+      })
+
+      cy.intercept('POST', `/api/alunos/${aluno.id}/cursos/introducao-python/avaliacoes`).as('enviarAvaliacao')
+      cy.get('[data-testid="submit-quiz"]').click()
+      cy.wait('@enviarAvaliacao').its('response.body').should((resultado) => {
+        expect(resultado.acertosNestaTentativa).to.eq(10)
+        expect(resultado.pontosNestaTentativa).to.eq(1000)
+        expect(resultado.melhorPontuacaoNoCurso).to.eq(1000)
+      })
+      cy.contains('1000 pontos no ranking').should('be.visible')
+      cy.get('.btn-voltar').click()
+      cy.contains('button', '🏆 Ranking').click()
+      cy.get('.ranking-modal tbody tr').first().should('contain.text', aluno.nome).and('contain.text', '1.000')
+    })
+  })
 })

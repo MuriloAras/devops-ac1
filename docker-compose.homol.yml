@@ -3,7 +3,7 @@ name: supercursos-homol
 services:
   postgres:
     image: postgres:16-alpine
-    restart: unless-stopped
+    restart: unless-stoppedff
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-supercursos_homol}
       POSTGRES_USER: ${POSTGRES_USER:-supercursos}
