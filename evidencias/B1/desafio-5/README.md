@@ -13,3 +13,5 @@ STUDENT_ID=1 sh evidencias/B1/desafio-5/simular-evento.sh
 ```
 
 O simulador imprime o ID do evento e o script confirma contadores do Core e do gateway. Rode de novo com o mesmo ID, por exemplo `EVENT_ID=evento-repetido STUDENT_ID=1 sh evidencias/B1/desafio-5/simular-evento.sh`, para verificar a deduplicação; a métrica `supercursos_iot_eventos_duplicados_total` aumenta. Para manter a mensagem MQTT até o Core confirmar, o gateway usa QoS 1 e confirmação manual após resposta HTTP bem-sucedida. O broker local é anônimo e deve permanecer restrito ao laboratório.
+
+![Consulta Prometheus mostrando uma mensagem IoT duplicada identificada](01-deduplicacao-prometheus.png)

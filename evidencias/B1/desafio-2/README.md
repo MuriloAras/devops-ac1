@@ -8,3 +8,5 @@ Evidências executáveis:
 - `mvn verify`: integração PostgreSQL confirma que o adaptador JPA persiste o recorde e expõe os pontos no ranking.
 
 O mini-lab aplica Ports & Adapters ao limite que precisava de substituição. Não transforma todos os módulos em uma implementação completa de DDD/Clean Architecture: essa estrutura adicional não é necessária para testar a hipótese.
+
+![Ranking após concluir a avaliação de curso](01-ranking.png)

@@ -47,6 +47,7 @@ services:
       DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-supercursos_homol}
       DB_USER: ${POSTGRES_USER:-supercursos}
       DB_PASSWORD: ${POSTGRES_PASSWORD:-supercursos_local}
+      NOTIFICATIONS_ENABLED: ${NOTIFICATIONS_ENABLED:-true}
     ports:
       - "127.0.0.1:${API_PORT:-8082}:8080"
     healthcheck:
@@ -78,7 +79,7 @@ services:
     ports:
       - "127.0.0.1:${MQTT_PORT:-1883}:1883"
     volumes:
-      - ./mqtt/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./infra/iot/mqtt/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
       - mosquitto_homol:/mosquitto/data
 
   mqtt-gateway:
@@ -121,7 +122,7 @@ services:
     ports:
       - "127.0.0.1:${PROMETHEUS_PORT:-9092}:9090"
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./infra/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus_homol:/prometheus
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:9090/-/ready"]
@@ -142,8 +143,8 @@ services:
     ports:
       - "127.0.0.1:${GRAFANA_PORT:-3003}:3000"
     volumes:
-      - ./grafana/provisioning:/etc/grafana/provisioning:ro
-      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - ./infra/monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./infra/monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
       - grafana_homol:/var/lib/grafana
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:3000/api/health"]

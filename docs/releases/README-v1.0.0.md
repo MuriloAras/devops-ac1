@@ -53,7 +53,7 @@ O documento completo com essas informações pode ser encontrado em **BDD_Devops
 
 ### Cenários BDD da US Escolhida (Troca de Moedas por Cursos)
 
-A partir da User Story selecionada (do integrante Pedro), definimos **3 cenários de teste de aceitação (BDD)**, cada um elaborado e assinado por um integrante do grupo (conforme versionado na planilha [`BDD_Devops_AC1.xlsx`](./BDD_Devops_AC1.xlsx)):
+A partir da User Story selecionada (do integrante Pedro), definimos **3 cenários de teste de aceitação (BDD)**, cada um elaborado e assinado por um integrante do grupo (conforme versionado na planilha [`BDD_Devops_AC1.xlsx`](../../BDD_Devops_AC1.xlsx)):
 
 #### > Cenário 1 (Murilo) — Saldo Suficiente e Exato (3 Moedas)
 
@@ -153,30 +153,30 @@ Nesta seção, apresentamos todas as evidências visuais coletadas durante as et
 
 ### 🔴 Etapa RED do TDD
 
-Na fase RED, criamos primeiro a classe de testes [`AlunoTest.java`](./src/test/java/com/example/grupo34_atdd/domain/AlunoTest.java) com os 3 cenários de BDD. Como a regra de negócio na classe de domínio ainda não havia sido implementada, os 3 testes falharam propositalmente:
+Na fase RED, criamos primeiro a classe de testes [`AlunoTest.java`](https://github.com/MuriloAras/devops-ac1/blob/c34ee9fe2bdfed1ed1a75651be964ec2918db3f3/src/test/java/com/example/grupo34_atdd/domain/AlunoTest.java) com os 3 cenários de BDD. Como a regra de negócio na classe de domínio ainda não havia sido implementada, os 3 testes falharam propositalmente:
 
-![Evidência RED JUnit](./evidencias/AC1/evidencias_red_junit.png)
+![Evidência RED JUnit](../../evidencias/AC1/evidencias_red_junit.png)
 *Figura 1: Execução dos testes no JUnit demonstrando a falha dos 3 cenários (Cenário Beatriz, Pedro e Murilo).*
 
 ---
 
 ### 🟢 Etapa GREEN do TDD
 
-Na fase GREEN, implementamos a lógica inicial na classe [`Aluno.java`](./src/main/java/com/example/grupo34_atdd/domain/Aluno.java) para atender estritamente aos requisitos dos testes.
+Na fase GREEN, implementamos a lógica inicial na classe [`Aluno.java`](https://github.com/MuriloAras/devops-ac1/blob/c34ee9fe2bdfed1ed1a75651be964ec2918db3f3/src/main/java/com/example/grupo34_atdd/domain/Aluno.java) para atender estritamente aos requisitos dos testes.
 
 #### 1. Testes Passando no JUnit:
 
-![Evidência GREEN JUnit](./evidencias/AC1/evidencias_green_junit.png)
+![Evidência GREEN JUnit](../../evidencias/AC1/evidencias_green_junit.png)
 *Figura 2: Os 3 testes do domínio executando com sucesso (barra verde).*
 
 #### 2. Execução Limpa no Maven:
 
-![Evidência GREEN Maven](./evidencias/AC1/evidencias_green_maven.png)
+![Evidência GREEN Maven](../../evidencias/AC1/evidencias_green_maven.png)
 *Figura 3: Execução do comando `mvn test` com resultado `BUILD SUCCESS`.*
 
 #### 3. Cobertura Inicial no JaCoCo:
 
-![Evidência GREEN JaCoCo](./evidencias/AC1/evidencias_green_jacoco.png)
+![Evidência GREEN JaCoCo](../../evidencias/AC1/evidencias_green_jacoco.png)
 *Figura 4: Relatório JaCoCo comprovando a cobertura de 100% da classe de domínio inicial.*
 
 ---
@@ -185,22 +185,22 @@ Na fase GREEN, implementamos a lógica inicial na classe [`Aluno.java`](./src/ma
 
 Na fase BLUE, realizamos a refatoração do código:
 
-* Isolamos o modelo puro de domínio [`domain.Aluno`](./src/main/java/com/example/grupo34_atdd/domain/Aluno.java) das entidades JPA de banco de dados [`entity.AlunoEntity`](./src/main/java/com/example/grupo34_atdd/entity/AlunoEntity.java).
+* Isolamos o modelo puro de domínio [`domain.Aluno`](https://github.com/MuriloAras/devops-ac1/blob/c34ee9fe2bdfed1ed1a75651be964ec2918db3f3/src/main/java/com/example/grupo34_atdd/domain/Aluno.java) das entidades JPA de banco de dados [`entity.AlunoEntity`](https://github.com/MuriloAras/devops-ac1/blob/c34ee9fe2bdfed1ed1a75651be964ec2918db3f3/src/main/java/com/example/grupo34_atdd/entity/AlunoEntity.java).
 * Reduzimos a complexidade ciclomática para apenas **5**, garantindo alta manutenibilidade e baixo acoplamento.
 
 #### 1. Testes JUnit Pós-Refatoração:
 
-![Evidência BLUE JUnit](./evidencias/AC1/evidencias_blue_junit.png)
+![Evidência BLUE JUnit](../../evidencias/AC1/evidencias_blue_junit.png)
 *Figura 5: Testes unitários refatorados passando com 100% de sucesso.*
 
 #### 2. Execução Maven na Etapa BLUE:
 
-![Evidência BLUE Maven](./evidencias/AC1/evidencias_blue_maven.png)
+![Evidência BLUE Maven](../../evidencias/AC1/evidencias_blue_maven.png)
 *Figura 6: `mvn test` validando a integridade de todas as suítes de teste.*
 
 #### 3. Cobertura 100% no JaCoCo (Sem Vermelho ou Amarelo):
 
-![Evidência BLUE JaCoCo](./evidencias/AC1/evidencias_blue_jacoco.png)
+![Evidência BLUE JaCoCo](../../evidencias/AC1/evidencias_blue_jacoco.png)
 *Figura 7: Cobertura de 100% no pacote de domínio sem linhas amarelas ou vermelhas.*
 
 ---
@@ -209,7 +209,7 @@ Na fase BLUE, realizamos a refatoração do código:
 
 Expandimos os testes unitários com Mockito para abranger **todas as demais camadas** solicitadas no enunciado (Controller, Service, Entity, DTO e Config):
 
-![Evidência JaCoCo Todas as Camadas](./evidencias/AC1/evidencias_jacoco_camadas.png)
+![Evidência JaCoCo Todas as Camadas](../../evidencias/AC1/evidencias_jacoco_camadas.png)
 *Figura 8: Relatório do JaCoCo demonstrando **100% de cobertura verde em todos os pacotes do projeto**.*
 
 ---
@@ -218,12 +218,12 @@ Expandimos os testes unitários com Mockito para abranger **todas as demais cama
 
 #### 1. Banco em Memória H2:
 
-![Evidência H2 Console](./evidencias/AC1/evidencias_h2.png)
+![Evidência H2 Console](../../evidencias/AC1/evidencias_h2.png)
 *Figura 9: Console H2 (`jdbc:h2:mem:devopsdb`) com a query `SELECT * FROM ALUNOS;` exibindo os registros persistidos.*
 
 #### 2. Banco PostgreSQL no PgAdmin (via Docker):
 
-![Evidência PgAdmin](./evidencias/AC1/evidencias_pgAdmin.png)
+![Evidência PgAdmin](../../evidencias/AC1/evidencias_pgAdmin.png)
 *Figura 10: Interface do PgAdmin 4 conectada ao container `postgres-db` consultando a tabela `alunos` no banco `devopsdb`.*
 
 
@@ -232,12 +232,12 @@ Expandimos os testes unitários com Mockito para abranger **todas as demais cama
 
 #### 1. Orquestração e Inicialização com Docker Compose:
 
-![Evidência Docker Build](./evidencias/AC1/evidencias_docker_1.png)
+![Evidência Docker Build](../../evidencias/AC1/evidencias_docker_1.png)
 *Figura 11: Execução do `docker compose up --build -d` compilando a imagem e iniciando a rede e os containers.*
 
 #### 2. Containers em Execução (`docker compose ps`):
 
-![Evidência Docker Containers](./evidencias/AC1/evidencias_docker_2.png)
+![Evidência Docker Containers](../../evidencias/AC1/evidencias_docker_2.png)
 *Figura 12: Terminal exibindo os containers `spring-boot-app`, `postgres-db` (healthy) e `pgadmin-container` ativos e mapeados nas portas 8080, 5432 e 5050.*
 
 ---
@@ -246,17 +246,17 @@ Expandimos os testes unitários com Mockito para abranger **todas as demais cama
 
 #### 1. Documentação Interativa da API (Swagger UI):
 
-![Evidência Swagger](./evidencias/AC1/evidencias_swagger.png)
+![Evidência Swagger](../../evidencias/AC1/evidencias_swagger.png)
 *Figura 13: Interface do Swagger UI expondo todas as operações REST de cadastro, busca, login e troca de moedas.*
 
 #### 2. Tela de Login do Frontend (Vue.js):
 
-![Evidência Frontend Login](./evidencias/AC1/evidencias_frontend_1.png)
+![Evidência Frontend Login](../../evidencias/AC1/evidencias_frontend_1.png)
 *Figura 14: Tela de Login da aplicação Super Cursos com identidade visual personalizada.*
 
 #### 3. Dashboard e Troca de Moedas no Frontend:
 
-![Evidência Frontend Dashboard](./evidencias/AC1/evidencias_frontend_2.png)
+![Evidência Frontend Dashboard](../../evidencias/AC1/evidencias_frontend_2.png)
 *Figura 15: Painel do aluno autenticado exibindo saldo de moedas, catálogo de cursos e cursos adquiridos após a troca.*
 
 

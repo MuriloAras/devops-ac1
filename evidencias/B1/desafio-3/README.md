@@ -10,3 +10,5 @@ Rotas no Core:
 Se o serviço Python não responder, o Core retorna uma resposta alternativa limitada e incrementa `supercursos_ai_fallback_total`. Os fluxos de cadastro, compra e avaliação não dependem do serviço de IA.
 
 Evidências: testes Python em `ai-service/tests/`, testes Java de contingência em `AiServiceClientTest`, serviço `ai-service` no Compose e scrape Prometheus `/metrics`.
+
+![Documentação interativa do serviço Python](01-servico-python.png)

@@ -10,7 +10,7 @@ O ambiente também inclui monitoramento com Prometheus e Grafana.
 A aplicação mantém a autenticação de alunos e a troca de moedas por cursos, e
 agora inclui vídeo, avaliação de dez questões e ranking por pontos. Cada curso
 custa 3 moedas; saldo insuficiente impede a aquisição. A descrição arquitetural
-e a regra de pontuação estão em [docs/arquitetura/README.md](docs/arquitetura/README.md).
+e a regra de pontuação estão em [docs/arquitetura/README.md](../../docs/arquitetura/README.md).
 
 ## O que mudou em relação à versão anterior
 
@@ -48,10 +48,10 @@ com **commit registrado no Jenkins:** `1d37dcf`.
 
 ## Onde estão as evidências
 
-- [`evidencias/AC1/`](evidencias/AC1/): TDD, cobertura, bancos, Docker, Swagger e telas da versão anterior.
-- [`evidencias/AC2/p2/`](evidencias/AC2/p2/): configuração e resumo do Jenkins, estágios, console, testes, JaCoCo e PMD.
-- [`evidencias/AC2/p3/`](evidencias/AC2/p3/): saúde da API, containers, Prometheus e resultados, capturas e vídeo do Cypress.
-- [`evidencias/AC2/grafana/`](evidencias/AC2/grafana/): dashboard, consulta Explore e exportações do monitoramento.
+- [`evidencias/AC1/`](../../evidencias/AC1/): TDD, cobertura, bancos, Docker, Swagger e telas da versão anterior.
+- [`evidencias/AC2/p2/`](../../evidencias/AC2/p2/): configuração e resumo do Jenkins, estágios, console, testes, JaCoCo e PMD.
+- [`evidencias/AC2/p3/`](../../evidencias/AC2/p3/): saúde da API, containers, Prometheus e resultados, capturas e vídeo do Cypress.
+- [`evidencias/AC2/grafana/`](../../evidencias/AC2/grafana/): dashboard, consulta Explore e exportações do monitoramento.
 
 Os diretórios `build-3-20261015T044637939Z` contêm os arquivos da execução registrada.
 O arquivo `manifesto-coleta.json`, dentro de `evidencias/AC2/p2/`, registra o build,

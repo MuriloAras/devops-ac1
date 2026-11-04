@@ -151,7 +151,7 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum(rate(http_server_requests_seconds_sum{job=\"supercursos-api\",uri!~\"/actuator.*\"}[1m])) / clamp_min(sum(rate(http_server_requests_seconds_count{job=\"supercursos-api\",uri!~\"/actuator.*\"}[1m])), 1e-9)",
+          "expr": "sum(rate(http_server_requests_seconds_sum{job=\"supercursos-api\",uri!~\"/actuator.*\"}[1m])) / sum(rate(http_server_requests_seconds_count{job=\"supercursos-api\",uri!~\"/actuator.*\"}[1m]))",
           "legendFormat": "Latência média"
         }
       ],

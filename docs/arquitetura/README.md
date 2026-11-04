@@ -2,6 +2,8 @@
 
 Este registro reúne as decisões dos seis desafios do Architecture Lab e as microsoluções que as exercitam. A equipe considerada é a equipe real do projeto, com três integrantes. O Core continua em Java/Spring Boot e PostgreSQL; a implementação evolui de forma incremental, sem presumir que a previsão de 100.000 usuários prove por si só a necessidade de microsserviços.
 
+**Repositório:** [github.com/MuriloAras/devops-ac1](https://github.com/MuriloAras/devops-ac1)
+
 ## Resumo das decisões
 
 | Desafio | Decisão | Evidência principal |
@@ -12,6 +14,19 @@ Este registro reúne as decisões dos seis desafios do Architecture Lab e as mic
 | 4 — Eventos | Gravar conclusão de avaliação em uma Outbox na mesma transação; processar notificação em segundo plano. | Teste de falha do consumidor: evento permanece pendente e tentativa é contada. |
 | 5 — IoT e MQTT | Receber dispositivos por MQTT QoS 1 em gateway, transformar para REST do Core e deduplicar por `eventoId`. | Simulador, persistência PostgreSQL e teste de reentrega. |
 | 6 — CI/CD e observabilidade | Manter pipeline único para o monólito e os serviços auxiliares, com testes, health checks, Cypress e métricas Prometheus/Grafana. | `Jenkinsfile`, teste de indisponibilidade da IA e métrica no Prometheus. |
+
+## Requisitos e restrições por desafio
+
+Os RNFs abaixo estão agrupados pelas qualidades FURPS+ mais próximas. A coluna ASR aponta somente os atributos selecionados para orientar a decisão; cada desafio usa no máximo três.
+
+| Desafio | RFs afetados | RNFs relevantes (FURPS+) | ASRs selecionados | RPCs e premissas |
+| --- | --- | --- | --- | --- |
+| 1 — Core | RF01 Ranking; RF02 Conquistas e evolução das funções existentes. | Manutenibilidade (suporte); desempenho e escalabilidade (desempenho); complexidade operacional (operação/custo). | Manutenibilidade; escalabilidade futura; complexidade operacional. | Core existente em Java/Spring Boot; banco relacional; legado da AC1; equipe considerada com três integrantes; não há medição de carga. |
+| 2 — Organização interna | RF01 Ranking; RF02 Conquistas e regras de gamificação. | Manutenibilidade, testabilidade e facilidade de mudança (suporte). | Manutenibilidade; testabilidade. | Manter Spring Boot e reaproveitar regras existentes; não reescrever a aplicação inteira apenas para adotar um padrão. |
+| 3 — Python e IA | RF03 Recomendação inteligente; RF04 Assistente educacional. | Publicação independente (implantação); escala e desempenho (desempenho); tolerância a falhas (confiabilidade); interoperabilidade (interfaces); manutenibilidade (suporte). | Publicação independente; tolerância a falhas; interoperabilidade. | Core continua em Java/Spring Boot; ML/RAG usam Python; falha da IA não pode bloquear operações essenciais. |
+| 4 — Eventos | RF02 Conquistas; RF05 Notificações; eventos de conclusão de atividade. | Disponibilidade e tolerância a falhas (confiabilidade); latência (desempenho); consistência e recuperação (confiabilidade); desacoplamento (suporte). | Disponibilidade; recuperação; consistência. | Fluxos essenciais do Core devem concluir se o consumidor externo estiver indisponível; broker acrescenta custo operacional. |
+| 5 — IoT | RF06 Receber eventos de dispositivos e encaminhá-los à plataforma. | Interoperabilidade (interfaces); eficiência e escala (desempenho); disponibilidade com conexão instável (confiabilidade); segurança de integração (segurança). | Interoperabilidade; disponibilidade/conectividade; segurança de integração. | Dispositivos têm recursos limitados e conexão intermitente; protocolo e broker acrescentam componentes para operar. |
+| 6 — CI/CD e observabilidade | Todos os RFs atendidos pelos componentes; operação e evolução do sistema. | Observabilidade e testabilidade (suporte); publicação (implantação); confiabilidade e recuperação (confiabilidade); desempenho (desempenho). | Observabilidade; confiabilidade; recuperação. | Jenkins é a base da esteira; Prometheus/Grafana são as ferramentas do laboratório; configurações e evidências devem ser versionadas. |
 
 ## Matriz cumulativa de ASRs
 
@@ -231,6 +246,17 @@ C4Deployment
 | Configuração de execução | `docker compose ... config --quiet` passou; relatório Cypress foi executado no projeto Compose isolado. |
 
 Evidências e comandos complementares: `evidencias/B1/desafio-2/` a `desafio-6/`. As etapas do pipeline foram executadas localmente, mas não houve novo build no Jenkins porque o servidor não estava em execução nesta máquina (`localhost:9090` indisponível). Este registro não declara teste de carga para 100.000 usuários.
+
+### Prints dos seis desafios
+
+| Desafio | Print |
+| --- | --- |
+| 1 — Aplicação reorganizada por módulos | [Abrir captura](../../evidencias/B1/desafio-1/01-aplicacao-modular.png) |
+| 2 — Ranking atualizado após avaliação | [Abrir captura](../../evidencias/B1/desafio-2/01-ranking.png) |
+| 3 — Documentação interativa do serviço Python | [Abrir captura](../../evidencias/B1/desafio-3/01-servico-python.png) |
+| 4 — Falhas e tentativas da Outbox | [Abrir captura](../../evidencias/B1/desafio-4/01-outbox-falhas-prometheus.png) |
+| 5 — Deduplicação de evento MQTT | [Abrir captura](../../evidencias/B1/desafio-5/01-deduplicacao-prometheus.png) |
+| 6 — Painel Grafana de operação | [Abrir captura](../../evidencias/B1/desafio-6/01-dashboard-grafana.png) |
 
 ## Limitações conhecidas
 

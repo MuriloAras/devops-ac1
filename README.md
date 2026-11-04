@@ -1,121 +1,194 @@
 # Super Cursos
 
-## Contexto
+Este README apresenta a decisão do Desafio 1 do exercício B1. O projeto mantém uma única aplicação principal **modular** e organiza seu código por funcionalidades. O registro detalhado dos seis desafios, incluindo os diagramas completos e as demais decisões, está em [docs/arquitetura/README.md](docs/arquitetura/README.md).
 
-Durante a Ac1, realizamos a automação de testes de uma plataforma de cursos.
-Agora, o desafio é escolher entre alterar a arquitetura do projeto para modular ou continuar em camadas.
-Devemos considerar que a plataforma atingiu 100000 usuários. 
-Optamos por seguir com a arquitetura modular e a seguir iremos desenvolver o motivo dessa escolha.
+**Repositório:** [github.com/MuriloAras/devops-ac1](https://github.com/MuriloAras/devops-ac1)
 
-## Decisão Arquitetural
+## Como rodar a aplicação
 
-**Arquitetura escolhida: Modular**
+**Requisitos:** Docker Desktop instalado e aberto. O primeiro início precisa de internet para baixar e montar os serviços. Não é necessário instalar Java ou Node para rodar a aplicação pelo Docker.
 
-O sistema é organizado em módulos, cada um responsável por uma funcionalidade ou conjunto coeso de regras de negócio. Cada módulo possui fronteiras bem definidas e depende o mínimo possível dos detalhes internos dos demais.
+O comando abaixo inicia a homologação, um ambiente para conferir a aplicação antes de uma entrega.
 
-## Motivos da Escolha
+Na pasta principal do projeto, rode:
 
-### Organização de código
-
-Conforme o sistema cresce e novas funcionalidades são implementadas, as regras de negócio permanecem organizadas, pois cada uma tem um lugar claro na estrutura do projeto.
-
-### Equipe
-
-Com três membros, a divisão de tarefas na arquitetura modular é mais clara e objetiva. As fronteiras entre as funcionalidades são bem definidas, o que reduz sobreposição de trabalho e conflitos.
-
-### Impacto de mudanças
-
-A modularização limita o impacto entre as funcionalidades. Por exemplo, ao implementar uma nova funcionalidade, o risco de afetar partes já existentes do sistema é menor.
-
-### Manutenção
-
-Com o código organizado por funcionalidade, reduz-se a necessidade de compreender detalhes internos de partes não relacionadas à tarefa atual, o que favorece a manutenção.
-
-### Testes
-
-A estrutura modular ajuda a delimitar o escopo dos testes de cada funcionalidade e facilita a identificação de regressões.
-
-### Clareza
-
-A organização por módulos facilita a resposta a perguntas como:
-
-- Qual módulo é responsável por determinada regra?
-- Qual funcionalidade precisa de refatoração?
-
-## Estrutura modular implementada
-
-A aplicação foi reorganizada por capacidade de negócio: o módulo `aluno` cuida
-de cadastro, autenticação, moedas e aquisição; `cursos` oferece o catálogo, o
-vídeo e as avaliações; `ranking` calcula as posições; e `eventos` registra
-notificações pendentes e eventos de aprendizagem. O módulo `ia` chama o serviço
-Python de forma resiliente. A configuração transversal fica em `shared`.
-
-O registro cumulativo dos seis desafios, incluindo RF/RNF, ASRs, RPCs,
-alternativas, ADRs, C4 e evidências, está em
-[docs/arquitetura/README.md](docs/arquitetura/README.md). Os mini-labs e as
-instruções para executá-los estão em `evidencias/B1/`.
-
-```text
-src/main/java/com/example/grupo34_atdd/
-├── Grupo34AtddApplication.java
-├── modules/aluno/
-│   ├── api/                         # Controller e contratos HTTP (DTOs)
-│   ├── application/                # Casos de uso e transações
-│   ├── domain/                     # Regras de negócio
-│   └── infrastructure/persistence/ # Entidade JPA e repositório
-├── modules/cursos/                 # Catálogo, vídeo e avaliações
-├── modules/ranking/                # Pontuação e classificação
-├── modules/eventos/                # Outbox e entrada de eventos de aprendizagem
-├── modules/ia/                     # Cliente HTTP do serviço Python
-└── shared/
-    ├── config/                     # Configuração transversal de segurança
-    └── web/                        # Rota inicial e redirecionamento
+```bash
+docker compose -f docker-compose.homol.yml up --build -d
+docker compose -f docker-compose.homol.yml ps
 ```
 
-O controller encaminha requisições ao serviço de aplicação; o serviço aplica as
-regras de domínio e usa o repositório para persistir os dados. DTOs representam
-os contratos HTTP e não dependem de entidades JPA. `shared` não contém regras
-específicas de aluno. A aplicação continua sendo um monólito modular: os módulos
-compartilham o processo e o banco atuais. IA e gateway IoT são serviços
-auxiliares; os diagramas do registro arquitetural mostram as fronteiras.
+Quando os serviços estiverem prontos, acesse:
 
-## Compatibilidade preservada
+| Serviço | Endereço | Acesso inicial |
+| --- | --- | --- |
+| Aplicação | [http://localhost:3002](http://localhost:3002) | — |
+| API | [http://localhost:8082/swagger-ui.html](http://localhost:8082/swagger-ui.html) | — |
+| PgAdmin | [http://localhost:5051](http://localhost:5051) | `admin@admin.com` / `admin_local` |
+| Prometheus | [http://localhost:9092](http://localhost:9092) | — |
+| Grafana | [http://localhost:3003](http://localhost:3003) | `admin` / `admin_local` |
 
-A refatoração preserva as rotas, payloads, status HTTP, autenticação, regras de
-troca e mapeamento do banco existentes. Permanecem os endpoints de cadastro,
-listagem, consulta, login e troca de moedas sob `/api/alunos`. Foram adicionados
-os endpoints de catálogo e avaliação em `/api/cursos` e
-`/api/alunos/{id}/cursos/{slug}`, além de `GET /api/ranking`. As tabelas
-`alunos` e `aluno_cursos`, o custo de 3 moedas por curso e as respostas de erro
-existentes foram mantidos; `resultados_avaliacao` guarda o recorde por aluno e
-curso.
+Para conectar o PgAdmin ao banco que roda no Docker, use o host `postgres`, porta `5432`, banco `supercursos_homol`, usuário `supercursos` e senha `supercursos_local`.
 
-Os testes foram movidos junto às responsabilidades que verificam. Os testes de
-integração continuam validando PostgreSQL, API, saúde, métricas e OpenAPI. O
-README-v1.1.0 mantém as instruções e evidências históricas de CI/CD da AC2.
+Para parar a aplicação, rode:
 
+```bash
+docker compose -f docker-compose.homol.yml down
+```
 
+Os dados do banco ficam salvos em um volume do Docker e continuam lá quando os serviços são parados dessa forma. Para apagar também os dados salvos, use `docker compose -f docker-compose.homol.yml down -v`. As portas e senhas podem ser alteradas em um arquivo `.env`, criado a partir de `.env.example`.
 
---------------------------------------------------------------------------------
+## 1. Leitura do cenário
 
-# Super Cursos
+O Super Cursos começou como um MVP e agora considera um cenário de até 100.000 usuários. O Ranking pode crescer mais que as outras funções, enquanto cursos, moedas, conquistas e recompensas também continuam evoluindo.
 
-O Super Cursos é uma plataforma de educação continuada gamificada, na qual alunos
-fazem login, usam moedas para adquirir cursos, assistem a uma aula em vídeo e
-respondem a uma avaliação. Cada acerto rende 100 pontos; o ranking soma a melhor
-nota de cada aluno por curso. A aplicação reúne uma API em Spring Boot, uma
-interface em Vue.js e um banco de dados PostgreSQL.
+A pergunta principal foi: precisamos separar o sistema em vários serviços agora, ou organizar melhor o código dentro da aplicação que já existe? Como ainda não temos medições que mostrem um gargalo, escolhemos primeiro organizar o Core — a parte principal do sistema — em módulos.
 
-Para conhecer as diferenças entre as versões e acessar suas práticas e evidências,
-clique nos READMEs abaixo:
+## 2. RFs afetados
 
-- [README v1.0.0 (AC1)](README-v1.0.0.md): implementação inicial da aplicação, com
-  autenticação, troca de moedas por cursos, cenários BDD, práticas de TDD, testes
-  de unidade e ambiente Docker.
-- [README v1.1.0 (AC2)](README-v1.1.0.md): evolução com esteira Jenkins, testes de
-  integração e Cypress, deploy em homologação com Docker, relatórios de qualidade
-  e monitoramento com Prometheus e Grafana.
+| ID | Requisito funcional | Impacto no desafio |
+| --- | --- | --- |
+| RF01 | Ranking | Registrar pontuações e mostrar a classificação dos alunos. |
+| RF02 | Conquistas e gamificação | Manter a evolução de conquistas e recompensas junto às demais funções do Core. |
 
-**[Acessar a pasta de evidências](evidencias/)**
+## 3. RNFs e seleção dos ASRs
 
-Outras práticas: [CI/CD com Jenkins](https://github.com/PedroADev/CI-e-CD-com-Jenkins).
+RNFs são qualidades esperadas do sistema. Um RNF é um ASR quando pode influenciar diretamente a organização ou a operação da aplicação. Para este desafio, selecionamos três:
+
+| RNF | ASR? | Justificativa |
+| --- | --- | --- |
+| Manutenibilidade | Sim | Separar o código por funcionalidade ajuda a localizar regras e reduz o impacto de mudanças. |
+| Escalabilidade | Sim, como necessidade futura | A fronteira do Ranking permite acompanhar seu crescimento e considerar uma separação se os dados mostrarem que é preciso. |
+| Complexidade operacional | Sim | Uma equipe de três pessoas precisa conseguir manter e executar a solução. |
+| Desempenho | Não neste momento | É importante, mas ainda não temos medições que mostrem um problema de desempenho causado pela arquitetura. |
+| Testabilidade | Não como decisão macro | É importante e os testes podem ser organizados por módulo, mas não exige separar a aplicação em serviços. |
+
+## 4. RPCs — restrições e premissas
+
+| RPC | Consequência para a decisão |
+| --- | --- |
+| O Core já usa Java e Spring Boot | Aproveitar a aplicação existente e evoluir aos poucos. |
+| O projeto tem uma equipe de três pessoas | Manter uma solução que a equipe consiga operar. |
+| O banco relacional atual deve continuar | Não trocar o banco sem uma necessidade demonstrada. |
+| A aplicação da AC1 é o ponto de partida | Preservar seu comportamento e seus contratos. |
+| A previsão é de até 100.000 usuários, sem teste de carga que comprove um gargalo | Não tratar a previsão, sozinha, como motivo para criar serviços separados. |
+
+## 5. Alternativas e trade-offs
+
+| Alternativa | Benefícios | Custos e riscos | Avaliação |
+| --- | --- | --- | --- |
+| A — Monólito em camadas | É simples de executar e mantém a organização atual. | Funcionalidades diferentes continuam espalhadas pelas mesmas camadas técnicas. | Poderia continuar sendo usado, mas organiza menos claramente as funções do produto. |
+| B — Monólito modular | Organiza o código por funcionalidade e mantém uma aplicação e um deploy. | Os módulos ainda compartilham o processo e o banco; não escalam separadamente. | É a opção que melhor atende às necessidades atuais. |
+| C — Serviços independentes | Cada serviço poderia ser publicado e escalado separadamente. | Aumenta o trabalho com comunicação, falhas, monitoramento e operação. | Ainda não há evidência de que esse custo seja necessário para o Core. |
+
+## 6. Decisão do Tech Lead
+
+**Decisão: organizar o Core como um monólito modular.**
+
+O código fica dividido por funcionalidades, como Aluno, Cursos, Ranking, Eventos e IA. A aplicação principal continua sendo uma só. O Ranking ganha uma fronteira clara para que possamos acompanhar seu comportamento e pensar em separá-lo no futuro, caso as medições justifiquem essa mudança.
+
+## 7. ADR-001 — Evolução do Core
+
+| Campo | Registro |
+| --- | --- |
+| Contexto | O produto pode chegar a 100.000 usuários e o Ranking pode crescer mais que outras funções, mas ainda não há dados que indiquem a necessidade de separar serviços. |
+| ASRs | Manutenibilidade, possibilidade de crescimento do Ranking e complexidade operacional. |
+| RPCs | Java/Spring Boot existente, equipe de três pessoas, banco relacional e necessidade de preservar a aplicação da AC1. |
+| Alternativas | Continuar em camadas; organizar em módulos; separar funções em serviços independentes. |
+| Decisão | Organizar Aluno, Cursos, Ranking, Eventos e IA em módulos dentro da aplicação principal. |
+| Consequências positivas | O código fica mais fácil de navegar e mudanças podem ser feitas dentro de uma funcionalidade com menos interferência nas outras. |
+| Trade-offs | A aplicação continua com um único processo, publicação e banco. Os módulos não escalam separadamente. |
+| Quando rever | Se medições mostrarem um gargalo contínuo no Ranking ou uma necessidade real de publicá-lo separadamente. |
+
+## 8. C4 — visão de Container
+
+No Desafio 1, o Core continua sendo uma única aplicação Java/Spring Boot. A mudança é na organização interna do código. O desenho abaixo resume a visão; o [registro arquitetural](docs/arquitetura/README.md) contém o C4 final com os serviços auxiliares dos outros desafios.
+
+```text
+Aluno
+  │
+  ▼
+Interface Web (Vue.js)
+  │ REST
+  ▼
+Core Super Cursos (Java / Spring Boot)
+  ├── Aluno
+  ├── Cursos
+  └── Ranking
+  │ JPA
+  ▼
+Banco relacional (PostgreSQL)
+```
+
+## 9. Mini-lab — evidência arquitetural
+
+### 9.1 Estrutura antes
+
+O código estava organizado principalmente por tipo técnico. Funcionalidades diferentes podiam aparecer lado a lado nas mesmas pastas:
+
+```text
+controller/
+service/
+repository/
+model/
+```
+
+### 9.2 Estrutura depois
+
+Agora, cada funcionalidade tem sua própria pasta. Dentro dela, as responsabilidades de API, regras e persistência ficam próximas:
+
+```text
+modules/
+├── aluno/
+│   ├── api/
+│   ├── application/
+│   ├── domain/
+│   └── infrastructure/persistence/
+├── cursos/
+├── ranking/
+├── eventos/
+└── ia/
+```
+
+### 9.3 O que comparar
+
+| Evidência | Antes | Depois |
+| --- | --- | --- |
+| Organização | Pastas separadas por tipo técnico. | Pastas separadas por funcionalidade. |
+| Dependências | Era mais difícil ver quais partes atendiam cada função. | As responsabilidades de cada função ficam mais fáceis de localizar. |
+| Testes | Era necessário procurar os testes e o código em áreas diferentes. | Os testes ficam próximos da função que verificam. |
+| Evolução | Uma mudança podia exigir navegar por várias pastas comuns. | Uma mudança pode começar no módulo responsável por aquela função. |
+
+## 10. Evidências a versionar no Git
+
+O código reorganizado, os testes e os documentos dos seis desafios estão no repositório. Os links abaixo levam aos detalhes e às evidências de cada parte:
+
+As configurações do Prometheus e Grafana estão em `infra/monitoring/`; a configuração do Mosquitto está em `infra/iot/mqtt/`. Os arquivos Compose continuam na raiz e já apontam para esses caminhos.
+
+- [Registro arquitetural B1](docs/arquitetura/README.md): requisitos, decisões, ADRs, diagramas C4 e resumo dos seis desafios.
+- [Evidências do Desafio 2](evidencias/B1/desafio-2/README.md): organização interna e acesso à persistência.
+- [Evidências do Desafio 3](evidencias/B1/desafio-3/README.md): integração com o serviço Python de IA.
+- [Evidências do Desafio 4](evidencias/B1/desafio-4/README.md): eventos e tratamento de falhas de notificação.
+- [Evidências do Desafio 5](evidencias/B1/desafio-5/README.md): integração IoT por MQTT.
+- [Evidências do Desafio 6](evidencias/B1/desafio-6/README.md): esteira e observabilidade.
+- [Histórico de alterações](CHANGELOG.md) e documentação anterior: [AC1](docs/releases/README-v1.0.0.md) e [AC2](docs/releases/README-v1.1.0.md).
+
+Os testes descritos nas evidências verificam o comportamento implementado. Não foi feito teste de carga para afirmar que o sistema atende a 100.000 usuários.
+
+## 11. Exemplo de conclusão do aluno
+
+Decidimos organizar o Core como um monólito modular. A comparação da estrutura antes e depois mostra que as funcionalidades agora têm lugares mais claros no código, sem exigir que a aplicação seja dividida em serviços. Assim, mantemos uma operação simples para a equipe atual. Se o Ranking apresentar um gargalo ou precisar de mudanças independentes, poderemos rever essa decisão com base em medições.
+
+## 12. Rastreabilidade final
+
+| Elemento | Resposta resumida |
+| --- | --- |
+| RF | Ranking, gamificação e evolução das funções existentes. |
+| RNFs analisados | Manutenibilidade, escalabilidade, complexidade operacional, desempenho e testabilidade. |
+| ASRs | Manutenibilidade, crescimento futuro do Ranking e complexidade operacional. |
+| RPCs | Java/Spring Boot, equipe de três pessoas, banco relacional e legado da AC1. |
+| Alternativas | Monólito em camadas, monólito modular e serviços independentes. |
+| ADR | ADR-001: organizar o Core em módulos. |
+| C4 | Core permanece uma aplicação; sua organização interna passa a ser por funcionalidade. |
+| Evidência | Comparação da estrutura, código modularizado, testes e documentos ligados na seção 10. |
+
+**Ordem da decisão:** RF/RNF → ASRs e RPCs → alternativas → ADR → C4 → evidência.
