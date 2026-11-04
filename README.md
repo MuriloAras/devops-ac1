@@ -41,7 +41,7 @@ Os dados do banco ficam salvos em um volume do Docker e continuam lá quando os 
 
 O Super Cursos começou como um MVP e agora considera um cenário de até 100.000 usuários. O Ranking pode crescer mais que as outras funções, enquanto cursos, moedas, conquistas e recompensas também continuam evoluindo.
 
-A pergunta principal foi: precisamos separar o sistema em vários serviços agora, ou organizar melhor o código dentro da aplicação que já existe? Como ainda não temos medições que mostrem um gargalo, escolhemos primeiro organizar o Core — a parte principal do sistema — em módulos.
+A pergunta principal foi: precisamos separar o sistema em vários serviços agora, ou organizar melhor o código dentro da aplicação que já existe? Como ainda não temos medições que mostrem um gargalo, escolhemos primeiro organizar o Core em módulos.
 
 ## 2. RFs afetados
 
@@ -173,7 +173,7 @@ Os testes descritos nas evidências verificam o comportamento implementado. Não
 
 ## 11. Exemplo de conclusão do aluno
 
-Decidimos organizar o Core como um monólito modular. A comparação da estrutura antes e depois mostra que as funcionalidades agora têm lugares mais claros no código, sem exigir que a aplicação seja dividida em serviços. Assim, mantemos uma operação simples para a equipe atual. Se o Ranking apresentar um gargalo ou precisar de mudanças independentes, poderemos rever essa decisão com base em medições.
+Decidimos organizar o Core como um monólito modular. A comparação da estrutura antes e depois mostra que as funcionalidades agora têm lugares mais claros no código, sem exigir que a aplicação seja dividida em serviços.
 
 ## 12. Rastreabilidade final
 
@@ -258,7 +258,7 @@ O [print da aplicação](evidencias/B1/desafio-1/01-aplicacao-modular.png) mostr
 
 O fallback também foi provocado com a IA parada; a [saída registrada](evidencias/B1/desafio-6/execucao-fallback.txt) mostra a resposta do Core e o contador correspondente no Prometheus.
 
-**Evidências Jenkins:** os prints abaixo são do build histórico **#3 da AC2**, executado em 15/10/2026, com 40 testes aprovados e JaCoCo registrado. Eles comprovam a execução anterior da esteira; o código B1 atual ainda não foi executado no Jenkins porque o servidor local não estava ativo (`localhost:9090`). O `Jenkinsfile` versionado contém a pipeline atual.
+**Evidências Jenkins:** os prints abaixo são do histórico de build, com 40 testes aprovados e JaCoCo registrado. Eles comprovam a execução anterior da esteira; o código B1 atual ainda não foi executado no Jenkins porque o servidor local não estava ativo (`localhost:9090`). O `Jenkinsfile` versionado contém a pipeline atual.
 
 ![Resumo do build Jenkins #3 da AC2](evidencias/AC2/p2/02_resumo_build3_wide.jpg)
 
