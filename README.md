@@ -254,7 +254,7 @@ O [print da aplicação](evidencias/B1/desafio-1/01-aplicacao-modular.png) mostr
 
 **ADR-006:** manter uma esteira até que ciclos de publicação diferentes justifiquem separação. A publicação no Docker Hub continua opcional.
 
-**Resultado B1 executado localmente:** `mvn verify` terminou com sucesso: 36 testes Java e 10 testes de integração PostgreSQL, sem falhas ou erros. Os sete cenários Cypress cobrem login, compra, saldo, vídeo, avaliação e ranking. Os testes Python da IA e do gateway têm dois cenários cada. O ambiente Compose e os health checks também foram conferidos.
+**Resultado B1 executado localmente:** `mvn verify` terminou com sucesso: 37 testes Java e 10 testes de integração PostgreSQL, sem falhas ou erros. Os oito cenários Cypress cobrem login, compra, saldo, os três cursos do catálogo (Python, CI/CD e C#), vídeo, avaliação e ranking. Os testes Python da IA e do gateway têm dois cenários cada. O ambiente Compose e os health checks também foram conferidos.
 
 O fallback também foi provocado com a IA parada; a [saída registrada](evidencias/B1/desafio-6/execucao-fallback.txt) mostra a resposta do Core e o contador correspondente no Prometheus.
 
@@ -272,82 +272,15 @@ O fallback também foi provocado com a IA parada; a [saída registrada](evidenci
 
 ### 14.1 C4 Container
 
-```mermaid
-C4Container
-    Person(aluno, "Aluno", "Estuda, responde avaliações e consulta ranking")
-    System_Ext(dispositivo, "Dispositivo do laboratório", "Publica eventos de aprendizagem MQTT")
-    System_Ext(youtube, "YouTube", "Hospeda o vídeo individual do curso")
-    System_Ext(jenkins, "Jenkins", "Executa CI/CD e aciona Docker Compose")
-    System_Boundary(superCursos, "Super Cursos") {
-        Container(frontend, "Interface Web", "Vue.js / Nginx", "Login, cursos, avaliação e ranking")
-        Container(core, "Core", "Java / Spring Boot", "Monólito modular, API, Outbox e regras")
-        Container(ai, "Serviço de IA demonstrativo", "Python / FastAPI", "Recomendação e busca textual local")
-        Container(mqtt, "Broker MQTT", "Mosquitto", "Recebe eventos QoS 1")
-        Container(gateway, "Gateway IoT", "Python / Paho MQTT", "Transforma MQTT em REST para o Core")
-        ContainerDb(db, "Banco relacional", "PostgreSQL", "Alunos, notas, eventos e Outbox")
-        Container(prom, "Coletor de métricas", "Prometheus", "Coleta métricas do Core, IA e gateway")
-        Container(grafana, "Painéis", "Grafana", "Mostra saúde e sinais operacionais")
-    }
-    Rel(aluno, frontend, "Usa", "HTTPS")
-    Rel(frontend, core, "Consome", "REST/JSON")
-    Rel(frontend, youtube, "Incorpora o vídeo", "HTTPS")
-    Rel(core, db, "Lê/grava dados e eventos", "JPA")
-    Rel(core, ai, "Consulta assistente/recomendação", "HTTP/JSON")
-    Rel(dispositivo, mqtt, "Publica", "MQTT QoS 1")
-    Rel(mqtt, gateway, "Entrega tópicos", "MQTT QoS 1")
-    Rel(gateway, core, "Envia evento normalizado", "REST/JSON")
-    Rel(prom, core, "Coleta", "Actuator/Prometheus")
-    Rel(prom, ai, "Coleta", "Prometheus")
-    Rel(prom, gateway, "Coleta", "Prometheus")
-    Rel(grafana, prom, "Consulta séries", "PromQL")
-    Rel(jenkins, core, "Testa/constrói/implanta", "Pipeline e Docker")
-```
+![Diagrama C4 Container do Super Cursos](evidencias/B1/diagramas/c4-container-super-cursos.png)
 
 ### 14.2 C4 Component do Core
 
-```mermaid
-C4Component
-    Container_Boundary(core, "Core Spring Boot") {
-        Component(aluno, "Módulo aluno", "Cadastro, login, moedas e aquisição")
-        Component(cursos, "Módulo cursos", "Catálogo, vídeo, prova e gravação de recorde")
-        Component(ranking, "Módulo ranking", "Porta de domínio e regras de posições")
-        Component(jpa, "Adaptador JPA do Ranking", "Traduz porta para Spring Data/PostgreSQL")
-        Component(outbox, "Módulo eventos", "Outbox, despachante e consumidor de demonstração")
-        Component(ia, "Cliente de IA", "HTTP com timeout, resposta alternativa e métricas")
-        Component(iot, "Entrada IoT", "Validação, deduplicação e persistência")
-        Component(iotRepo, "Persistência de eventos IoT", "Spring Data/PostgreSQL")
-    }
-    Container_Ext(aiService, "Serviço Python", "FastAPI", "Busca textual e recomendações demonstrativas")
-    Rel(cursos, aluno, "Valida aquisição")
-    Rel(cursos, ranking, "Salva melhor nota via contrato de domínio")
-    Rel(ranking, jpa, "Porta implementada pelo adaptador")
-    Rel(cursos, outbox, "Registra evento na transação")
-    Rel(ia, aiService, "Consome por HTTP/JSON")
-    Rel(iot, iotRepo, "Persiste e deduplica por eventoId")
-```
+![Diagrama C4 Componentes do Core Spring Boot](evidencias/B1/diagramas/c4-component-core.png)
 
 ### 14.3 Fluxo de falha da Outbox
 
-```mermaid
-sequenceDiagram
-    participant A as Aluno
-    participant C as Core
-    participant DB as PostgreSQL / Outbox
-    participant N as Consumidor de notificação
-    A->>C: Envia avaliação
-    C->>DB: Grava nota e evento na mesma transação
-    DB-->>C: Confirma gravação
-    C-->>A: Retorna pontuação
-    C->>DB: Despachante busca pendências
-    C->>N: Tenta notificar em segundo plano
-    alt Consumidor disponível
-        N-->>C: Aceita
-        C->>DB: Marca como processado
-    else Consumidor indisponível
-        N--xC: Falha
-        C->>DB: Mantém pendente e soma tentativa
-    end
-```
+![Diagrama de sequência da Outbox na avaliação](evidencias/B1/diagramas/sequencia-outbox-avaliacao.png)
 
 ### 14.4 C4 Deployment / operação
 
@@ -373,13 +306,3 @@ C4Deployment
     Rel(prom, gateway, "Coleta métricas", "HTTP")
     Rel(grafana, prom, "Consulta métricas", "PromQL")
 ```
-
-## 15. Limitações e síntese para a PoC
-
-- Não foi feito teste de carga para afirmar atendimento a 100.000 usuários.
-- A busca de IA é demonstrativa e não usa LLM, embeddings ou base vetorial.
-- O consumidor de notificação é local e não envia e-mail ou SMS real.
-- O broker MQTT do mini-lab não tem autenticação; deve receber controle de acesso e TLS antes de ser exposto fora da máquina.
-- A política de segurança da API ainda permite `/api/**` sem associar as rotas a uma identidade validada.
-
-Para a PoC da Avaliação Final, levar o Core modular, a porta de persistência do Ranking, o fallback da IA, a Outbox e as métricas. Antes de expor a usuários reais, implementar autorização, proteger as integrações, definir política de retenção e medir carga, latência e volume.

@@ -127,11 +127,39 @@ describe('Super Cursos — autenticação e troca de moedas', () => {
     })
   })
 
+  it('mostra os cursos de CI/CD e C# com seus vídeos e quizzes', () => {
+    cadastrarAluno(6).then((aluno) => {
+      entrar(aluno)
+      cy.get('.catalogo-item').should('have.length', 3)
+
+      cy.contains('.catalogo-item', 'Introdução a CI/CD')
+        .contains('button', 'Adquirir por 3 moedas').click()
+      cy.contains('.catalogo-item', 'Introdução ao C#')
+        .contains('button', 'Adquirir por 3 moedas').click()
+
+      cy.contains('.curso-item', 'Introdução a CI/CD')
+        .contains('button', 'Assistir e responder').click()
+      cy.get('h1').should('contain.text', 'Introdução a CI/CD')
+      cy.get('[data-testid="course-video"] iframe')
+        .should('have.attr', 'src', 'https://www.youtube-nocookie.com/embed/95r8nJLq5zU')
+      cy.get('[data-testid="course-quiz"] .questao').should('have.length', 10)
+
+      cy.get('.btn-voltar').click()
+      cy.contains('.curso-item', 'Introdução ao C#')
+        .contains('button', 'Assistir e responder').click()
+      cy.get('h1').should('contain.text', 'Introdução ao C#')
+      cy.get('[data-testid="course-video"] iframe')
+        .should('have.attr', 'src', 'https://www.youtube-nocookie.com/embed/HOpCMKNJEFg')
+      cy.get('[data-testid="course-quiz"] .questao').should('have.length', 10)
+    })
+  })
+
   it('assiste ao vídeo de um curso, responde às 10 questões e atualiza o ranking', () => {
     cadastrarAluno(3).then((aluno) => {
       entrar(aluno)
       cy.intercept('POST', `/api/alunos/${aluno.id}/trocar-moedas`).as('adquirirCursoCatalogo')
-      cy.get('[data-testid="course-purchase"]').click()
+      cy.contains('.catalogo-item', 'Introdução ao Python')
+        .find('[data-testid="course-purchase"]').click()
       cy.wait('@adquirirCursoCatalogo').its('response.statusCode').should('eq', 200)
       cy.get('.msg-ok').should('contain.text', 'adquirido')
       cy.get('.cursos-card [data-testid="course-access"]').click()
