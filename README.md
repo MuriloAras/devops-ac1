@@ -1,6 +1,6 @@
 # Super Cursos
 
-Este README apresenta a decisão do Desafio 1 do exercício B1. O projeto mantém uma única aplicação principal **modular** e organiza seu código por funcionalidades. O registro detalhado dos seis desafios, incluindo os diagramas completos e as demais decisões, está em [docs/arquitetura/README.md](docs/arquitetura/README.md).
+Este README reúne o registro arquitetural dos seis desafios do exercício B1, com as decisões, os diagramas e as evidências. O projeto mantém uma aplicação principal **modular** e organiza seu código por funcionalidades.
 
 **Repositório:** [github.com/MuriloAras/devops-ac1](https://github.com/MuriloAras/devops-ac1)
 
@@ -101,7 +101,7 @@ O código fica dividido por funcionalidades, como Aluno, Cursos, Ranking, Evento
 
 ## 8. C4 — visão de Container
 
-No Desafio 1, o Core continua sendo uma única aplicação Java/Spring Boot. A mudança é na organização interna do código. O desenho abaixo resume a visão; o [registro arquitetural](docs/arquitetura/README.md) contém o C4 final com os serviços auxiliares dos outros desafios.
+No Desafio 1, o Core continua sendo uma única aplicação Java/Spring Boot. A mudança é na organização interna do código. O desenho abaixo resume essa decisão; a seção 14, depois do item 12, mostra a visão final com os serviços auxiliares.
 
 ```text
 Aluno
@@ -164,12 +164,9 @@ O código reorganizado, os testes e os documentos dos seis desafios estão no re
 
 As configurações do Prometheus e Grafana estão em `infra/monitoring/`; a configuração do Mosquitto está em `infra/iot/mqtt/`. Os arquivos Compose continuam na raiz e já apontam para esses caminhos.
 
-- [Registro arquitetural B1](docs/arquitetura/README.md): requisitos, decisões, ADRs, diagramas C4 e resumo dos seis desafios.
-- [Evidências do Desafio 2](evidencias/B1/desafio-2/README.md): organização interna e acesso à persistência.
-- [Evidências do Desafio 3](evidencias/B1/desafio-3/README.md): integração com o serviço Python de IA.
-- [Evidências do Desafio 4](evidencias/B1/desafio-4/README.md): eventos e tratamento de falhas de notificação.
-- [Evidências do Desafio 5](evidencias/B1/desafio-5/README.md): integração IoT por MQTT.
-- [Evidências do Desafio 6](evidencias/B1/desafio-6/README.md): esteira e observabilidade.
+- [Registro arquitetural B1](#registro-detalhado-dos-seis-desafios): decisões, requisitos e evidências dos seis desafios, neste README.
+- [`docs/arquitetura/README.md`](docs/arquitetura/README.md): atalho para este registro, mantido no caminho indicado pelo exercício.
+- [Pasta de evidências B1](evidencias/B1/): prints e arquivos usados nos mini-labs.
 - [Histórico de alterações](CHANGELOG.md) e documentação anterior: [AC1](docs/releases/README-v1.0.0.md) e [AC2](docs/releases/README-v1.1.0.md).
 
 Os testes descritos nas evidências verificam o comportamento implementado. Não foi feito teste de carga para afirmar que o sistema atende a 100.000 usuários.
@@ -192,3 +189,197 @@ Decidimos organizar o Core como um monólito modular. A comparação da estrutur
 | Evidência | Comparação da estrutura, código modularizado, testes e documentos ligados na seção 10. |
 
 **Ordem da decisão:** RF/RNF → ASRs e RPCs → alternativas → ADR → C4 → evidência.
+
+## 13. Registro detalhado dos seis desafios
+
+Esta seção concentra as decisões e os prints dos seis desafios em um único documento. As imagens e os arquivos de apoio continuam em `evidencias/` para que possam ser abertos em tamanho original.
+
+### 13.1 Desafio 1 — Organização do Core por funcionalidade
+
+**RFs:** ranking, conquistas e evolução das funções existentes. **RNFs/FURPS+:** manutenibilidade, capacidade de acompanhar o crescimento e simplicidade de operação. **ASRs escolhidos:** manutenibilidade, escalabilidade futura e complexidade operacional. **RPCs:** manter Java/Spring Boot, PostgreSQL, compatibilidade com a aplicação da AC1 e uma solução adequada à equipe de três integrantes; ainda não há medição de carga que comprove a necessidade de separar serviços.
+
+**Alternativas e decisão:** manter o monólito em camadas, organizar a aplicação como monólito modular ou separar funções em serviços. Foi escolhido o monólito modular: as funções ficam mais fáceis de localizar e a aplicação continua simples de publicar. Os módulos compartilham processo e banco, então não escalam separadamente.
+
+**ADR-001:** Aluno, Cursos, Ranking, Eventos e IA passam a ter fronteiras próprias dentro do Core. Rever a decisão se medições mostrarem um gargalo contínuo no Ranking ou necessidade real de publicação independente.
+
+O [print da aplicação](evidencias/B1/desafio-1/01-aplicacao-modular.png) mostra o sistema funcionando; a estrutura do Core e os diagramas C4 abaixo mostram a organização adotada.
+
+![Catálogo do Super Cursos em execução](evidencias/B1/desafio-1/01-aplicacao-modular.png)
+
+### 13.2 Desafio 2 — Limites entre regras e persistência
+
+**RFs:** registrar notas e apresentar o ranking. **RNFs/FURPS+:** facilidade de manutenção e testabilidade. **ASRs escolhidos:** manutenibilidade e testabilidade. **RPCs:** preservar as regras existentes e aplicar a mudança somente onde havia uma dependência concreta da persistência.
+
+**Alternativas e decisão:** deixar o serviço do Ranking chamar Spring Data diretamente; criar uma porta de domínio e um adaptador de persistência; ou reescrever toda a aplicação em outro padrão. Foi adotada a porta `ResultadoAvaliacaoPort` com o adaptador `ResultadoAvaliacaoJpaAdapter`. Assim, o teste unitário pode substituir a porta, enquanto o teste de integração valida o PostgreSQL. O módulo Aluno ainda possui acessos diretos ao Spring Data; uma conversão completa não foi necessária para este desafio.
+
+**ADR-002:** separar o contrato de persistência do Ranking da tecnologia JPA, sem reescrever outras áreas sem necessidade. O print abaixo confirma o fluxo de nota até o ranking.
+
+![Avaliação concluída e pontuação no ranking](evidencias/B1/desafio-2/01-ranking.png)
+
+### 13.3 Desafio 3 — Serviço Python para IA
+
+**RFs:** recomendações e assistente educacional. **RNFs/FURPS+:** implantação independente, tolerância a falhas e interoperabilidade. **ASRs escolhidos:** deploy independente, tolerância a falhas e interoperabilidade. **RPCs:** o Core permanece em Java; o serviço de IA usa Python; sua indisponibilidade não deve impedir login, cursos, avaliações ou ranking.
+
+**Alternativas e decisão:** executar a IA dentro do Core, mantê-la como módulo Python acoplado ou criar um serviço FastAPI separado. Foi escolhido um serviço separado, acessado pelo Core por HTTP/JSON com timeout, fallback e métrica. Busca textual e recomendações ficam juntas por enquanto para evitar operação adicional.
+
+**ADR-003:** a IA pode ser implantada separadamente e, se ficar indisponível, o Core retorna uma resposta alternativa. O mini-lab usa busca por correspondência de palavras em textos locais; não usa LLM, embeddings nem base vetorial.
+
+![Documentação do serviço Python](evidencias/B1/desafio-3/01-servico-python.png)
+
+### 13.4 Desafio 4 — Entrega de eventos com Outbox
+
+**RFs:** registrar a conclusão de uma avaliação e permitir uma notificação posterior. **RNFs/FURPS+:** confiabilidade, recuperação e consistência. **ASRs escolhidos:** disponibilidade, recuperabilidade e consistência. **RPCs:** uma falha na notificação não pode cancelar a nota já concluída; os dados atuais estão no PostgreSQL.
+
+**Alternativas e decisão:** chamar o consumidor por REST antes de concluir a avaliação, guardar o evento apenas em memória, adicionar um broker externo ou salvar a mensagem em uma Outbox transacional. Foi escolhida a Outbox: nota e evento `avaliacao.concluida` são gravados na mesma transação; o despachante tenta processar a mensagem depois. Se o consumidor falha, a mensagem permanece pendente e a tentativa é registrada.
+
+**ADR-004:** manter a avaliação independente do envio de notificação. Um broker poderá ser considerado se houver vários consumidores ou volume que justifique o custo operacional.
+
+![Métrica de falhas da Outbox no Prometheus](evidencias/B1/desafio-4/01-outbox-falhas-prometheus.png)
+
+### 13.5 Desafio 5 — Entrada IoT por MQTT
+
+**RFs:** receber eventos de dispositivos de aprendizagem. **RNFs/FURPS+:** interoperabilidade, conectividade, disponibilidade e segurança da integração. **ASRs escolhidos:** interoperabilidade, disponibilidade com conexão instável e segurança de integração. **RPCs:** os dispositivos podem ter conexão intermitente; o Core deve receber um formato comum; o broker deste mini-lab só fica acessível na máquina local.
+
+**Alternativas e decisão:** os dispositivos chamarem a API REST diretamente ou publicarem por MQTT com um gateway de adaptação. Foi escolhido MQTT QoS 1, Mosquitto e gateway Python que valida a mensagem e chama o Core por REST. O Core usa `eventoId` único para reconhecer reentregas e evitar duplicar o registro.
+
+**ADR-005:** deixar o Core independente do protocolo e dos detalhes de cada dispositivo. QoS 1 significa que a mensagem pode chegar mais de uma vez; por isso a deduplicação faz parte do fluxo.
+
+![Evento MQTT duplicado reconhecido pelo Core](evidencias/B1/desafio-5/01-deduplicacao-prometheus.png)
+
+### 13.6 Desafio 6 — Esteira e observabilidade
+
+**RFs:** manter e publicar os componentes que atendem às funções anteriores. **RNFs/FURPS+:** testabilidade, observabilidade, confiabilidade e recuperação. **ASRs escolhidos:** observabilidade, confiabilidade e recuperabilidade. **RPCs:** Jenkins é a ferramenta definida para a esteira; Prometheus e Grafana acompanham os serviços; a equipe ainda não precisa de uma pipeline por serviço.
+
+**Alternativas e decisão:** manter etapas manuais, criar uma pipeline por serviço ou usar uma pipeline única. Foi mantida uma pipeline Jenkins, definida em [`Jenkinsfile`](Jenkinsfile), com testes Java e PostgreSQL, JaCoCo/PMD, build dos containers, testes Python, deploy de homologação, health checks e Cypress. Prometheus coleta métricas da API, IA e gateway; Grafana apresenta os indicadores.
+
+**ADR-006:** manter uma esteira até que ciclos de publicação diferentes justifiquem separação. A publicação no Docker Hub continua opcional.
+
+**Resultado B1 executado localmente:** `mvn verify` terminou com sucesso: 36 testes Java e 10 testes de integração PostgreSQL, sem falhas ou erros. Os sete cenários Cypress cobrem login, compra, saldo, vídeo, avaliação e ranking. Os testes Python da IA e do gateway têm dois cenários cada. O ambiente Compose e os health checks também foram conferidos.
+
+O fallback também foi provocado com a IA parada; a [saída registrada](evidencias/B1/desafio-6/execucao-fallback.txt) mostra a resposta do Core e o contador correspondente no Prometheus.
+
+**Evidências Jenkins:** os prints abaixo são do build histórico **#3 da AC2**, executado em 15/10/2026, com 40 testes aprovados e JaCoCo registrado. Eles comprovam a execução anterior da esteira; o código B1 atual ainda não foi executado no Jenkins porque o servidor local não estava ativo (`localhost:9090`). O `Jenkinsfile` versionado contém a pipeline atual.
+
+![Resumo do build Jenkins #3 da AC2](evidencias/AC2/p2/02_resumo_build3_wide.jpg)
+
+![Testes aprovados no build Jenkins #3 da AC2](evidencias/AC2/p2/03_junit_build3_wide.jpg)
+
+**Evidências Grafana:** o print do mini-lab B1 mostra a saúde e as métricas da API, Outbox e IoT. Os prints históricos da AC2 estão em [`evidencias/AC2/grafana/`](evidencias/AC2/grafana/).
+
+![Painel Grafana do ambiente local](evidencias/B1/desafio-6/01-dashboard-grafana.png)
+
+## 14. Diagramas C4 finais
+
+### 14.1 C4 Container
+
+```mermaid
+C4Container
+    Person(aluno, "Aluno", "Estuda, responde avaliações e consulta ranking")
+    System_Ext(dispositivo, "Dispositivo do laboratório", "Publica eventos de aprendizagem MQTT")
+    System_Ext(youtube, "YouTube", "Hospeda o vídeo individual do curso")
+    System_Ext(jenkins, "Jenkins", "Executa CI/CD e aciona Docker Compose")
+    System_Boundary(superCursos, "Super Cursos") {
+        Container(frontend, "Interface Web", "Vue.js / Nginx", "Login, cursos, avaliação e ranking")
+        Container(core, "Core", "Java / Spring Boot", "Monólito modular, API, Outbox e regras")
+        Container(ai, "Serviço de IA demonstrativo", "Python / FastAPI", "Recomendação e busca textual local")
+        Container(mqtt, "Broker MQTT", "Mosquitto", "Recebe eventos QoS 1")
+        Container(gateway, "Gateway IoT", "Python / Paho MQTT", "Transforma MQTT em REST para o Core")
+        ContainerDb(db, "Banco relacional", "PostgreSQL", "Alunos, notas, eventos e Outbox")
+        Container(prom, "Coletor de métricas", "Prometheus", "Coleta métricas do Core, IA e gateway")
+        Container(grafana, "Painéis", "Grafana", "Mostra saúde e sinais operacionais")
+    }
+    Rel(aluno, frontend, "Usa", "HTTPS")
+    Rel(frontend, core, "Consome", "REST/JSON")
+    Rel(frontend, youtube, "Incorpora o vídeo", "HTTPS")
+    Rel(core, db, "Lê/grava dados e eventos", "JPA")
+    Rel(core, ai, "Consulta assistente/recomendação", "HTTP/JSON")
+    Rel(dispositivo, mqtt, "Publica", "MQTT QoS 1")
+    Rel(mqtt, gateway, "Entrega tópicos", "MQTT QoS 1")
+    Rel(gateway, core, "Envia evento normalizado", "REST/JSON")
+    Rel(prom, core, "Coleta", "Actuator/Prometheus")
+    Rel(prom, ai, "Coleta", "Prometheus")
+    Rel(prom, gateway, "Coleta", "Prometheus")
+    Rel(grafana, prom, "Consulta séries", "PromQL")
+    Rel(jenkins, core, "Testa/constrói/implanta", "Pipeline e Docker")
+```
+
+### 14.2 C4 Component do Core
+
+```mermaid
+C4Component
+    Container_Boundary(core, "Core Spring Boot") {
+        Component(aluno, "Módulo aluno", "Cadastro, login, moedas e aquisição")
+        Component(cursos, "Módulo cursos", "Catálogo, vídeo, prova e gravação de recorde")
+        Component(ranking, "Módulo ranking", "Porta de domínio e regras de posições")
+        Component(jpa, "Adaptador JPA do Ranking", "Traduz porta para Spring Data/PostgreSQL")
+        Component(outbox, "Módulo eventos", "Outbox, despachante e consumidor de demonstração")
+        Component(ia, "Cliente de IA", "HTTP com timeout, resposta alternativa e métricas")
+        Component(iot, "Entrada IoT", "Validação, deduplicação e persistência")
+        Component(iotRepo, "Persistência de eventos IoT", "Spring Data/PostgreSQL")
+    }
+    Container_Ext(aiService, "Serviço Python", "FastAPI", "Busca textual e recomendações demonstrativas")
+    Rel(cursos, aluno, "Valida aquisição")
+    Rel(cursos, ranking, "Salva melhor nota via contrato de domínio")
+    Rel(ranking, jpa, "Porta implementada pelo adaptador")
+    Rel(cursos, outbox, "Registra evento na transação")
+    Rel(ia, aiService, "Consome por HTTP/JSON")
+    Rel(iot, iotRepo, "Persiste e deduplica por eventoId")
+```
+
+### 14.3 Fluxo de falha da Outbox
+
+```mermaid
+sequenceDiagram
+    participant A as Aluno
+    participant C as Core
+    participant DB as PostgreSQL / Outbox
+    participant N as Consumidor de notificação
+    A->>C: Envia avaliação
+    C->>DB: Grava nota e evento na mesma transação
+    DB-->>C: Confirma gravação
+    C-->>A: Retorna pontuação
+    C->>DB: Despachante busca pendências
+    C->>N: Tenta notificar em segundo plano
+    alt Consumidor disponível
+        N-->>C: Aceita
+        C->>DB: Marca como processado
+    else Consumidor indisponível
+        N--xC: Falha
+        C->>DB: Mantém pendente e soma tentativa
+    end
+```
+
+### 14.4 C4 Deployment / operação
+
+```mermaid
+C4Deployment
+    Deployment_Node(jenkinsNode, "Servidor Jenkins", "Jenkins + plugins") {
+        Container(jenkins, "Pipeline Super Cursos", "Jenkinsfile", "Testa, constrói, implanta e arquiva relatórios")
+    }
+    Deployment_Node(host, "Máquina de desenvolvimento/homologação", "Docker Desktop / Docker Compose") {
+        Deployment_Node(network, "Rede local do Compose", "Containers") {
+            Container(core, "Core", "Java/Spring Boot")
+            Container(ai, "AI Lab", "Python/FastAPI")
+            Container(gateway, "Gateway MQTT", "Python/Paho")
+            Container(mqtt, "Mosquitto", "MQTT QoS 1")
+            ContainerDb(db, "PostgreSQL", "Volume nomeado")
+            Container(prom, "Prometheus", "Coleta de métricas")
+            Container(grafana, "Grafana", "Painel provisionado")
+        }
+    }
+    Rel(jenkins, host, "Executa Docker Compose e publica artefatos", "Docker CLI")
+    Rel(prom, core, "Coleta métricas", "HTTP")
+    Rel(prom, ai, "Coleta métricas", "HTTP")
+    Rel(prom, gateway, "Coleta métricas", "HTTP")
+    Rel(grafana, prom, "Consulta métricas", "PromQL")
+```
+
+## 15. Limitações e síntese para a PoC
+
+- Não foi feito teste de carga para afirmar atendimento a 100.000 usuários.
+- A busca de IA é demonstrativa e não usa LLM, embeddings ou base vetorial.
+- O consumidor de notificação é local e não envia e-mail ou SMS real.
+- O broker MQTT do mini-lab não tem autenticação; deve receber controle de acesso e TLS antes de ser exposto fora da máquina.
+- A política de segurança da API ainda permite `/api/**` sem associar as rotas a uma identidade validada.
+
+Para a PoC da Avaliação Final, levar o Core modular, a porta de persistência do Ranking, o fallback da IA, a Outbox e as métricas. Antes de expor a usuários reais, implementar autorização, proteger as integrações, definir política de retenção e medir carga, latência e volume.

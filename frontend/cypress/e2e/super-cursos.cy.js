@@ -163,7 +163,7 @@ describe('Super Cursos — autenticação e troca de moedas', () => {
       cy.contains('1000 pontos no ranking').should('be.visible')
       cy.get('.btn-voltar').click()
       cy.contains('button', '🏆 Ranking').click()
-      cy.get('.ranking-modal tbody tr').first().should('contain.text', aluno.nome).and('contain.text', '1.000')
+      cy.contains('.ranking-modal tbody tr', aluno.nome).should('contain.text', '1.000')
     })
   })
 })
