@@ -46,12 +46,14 @@ A organização por módulos facilita a resposta a perguntas como:
 
 A aplicação foi reorganizada por capacidade de negócio: o módulo `aluno` cuida
 de cadastro, autenticação, moedas e aquisição; `cursos` oferece o catálogo, o
-vídeo e as avaliações; e `ranking` calcula as posições pelas melhores notas.
-A configuração transversal de segurança e o redirecionamento da página inicial
-ficam em `shared`.
+vídeo e as avaliações; `ranking` calcula as posições; e `eventos` registra
+notificações pendentes e eventos de aprendizagem. O módulo `ia` chama o serviço
+Python de forma resiliente. A configuração transversal fica em `shared`.
 
-O registro do Desafio 1, incluindo RF/RNF, ASRs, RPCs, alternativas, ADR, C4 e
-evidências, está em [docs/arquitetura/README.md](docs/arquitetura/README.md).
+O registro cumulativo dos seis desafios, incluindo RF/RNF, ASRs, RPCs,
+alternativas, ADRs, C4 e evidências, está em
+[docs/arquitetura/README.md](docs/arquitetura/README.md). Os mini-labs e as
+instruções para executá-los estão em `evidencias/B1/`.
 
 ```text
 src/main/java/com/example/grupo34_atdd/
@@ -63,6 +65,8 @@ src/main/java/com/example/grupo34_atdd/
 │   └── infrastructure/persistence/ # Entidade JPA e repositório
 ├── modules/cursos/                 # Catálogo, vídeo e avaliações
 ├── modules/ranking/                # Pontuação e classificação
+├── modules/eventos/                # Outbox e entrada de eventos de aprendizagem
+├── modules/ia/                     # Cliente HTTP do serviço Python
 └── shared/
     ├── config/                     # Configuração transversal de segurança
     └── web/                        # Rota inicial e redirecionamento
@@ -72,7 +76,8 @@ O controller encaminha requisições ao serviço de aplicação; o serviço apli
 regras de domínio e usa o repositório para persistir os dados. DTOs representam
 os contratos HTTP e não dependem de entidades JPA. `shared` não contém regras
 específicas de aluno. A aplicação continua sendo um monólito modular: os módulos
-compartilham o processo e o banco atuais, com fronteiras organizadas no código.
+compartilham o processo e o banco atuais. IA e gateway IoT são serviços
+auxiliares; os diagramas do registro arquitetural mostram as fronteiras.
 
 ## Compatibilidade preservada
 
@@ -87,7 +92,7 @@ curso.
 
 Os testes foram movidos junto às responsabilidades que verificam. Os testes de
 integração continuam validando PostgreSQL, API, saúde, métricas e OpenAPI. O
-README-v1.1.0 mantém as instruções e evidências de CI/CD da AC2.
+README-v1.1.0 mantém as instruções e evidências históricas de CI/CD da AC2.
 
 
 

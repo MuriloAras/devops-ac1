@@ -2,13 +2,14 @@ package com.example.grupo34_atdd.modules.cursos.application;
 
 import com.example.grupo34_atdd.modules.aluno.api.dto.AlunoResponseDTO;
 import com.example.grupo34_atdd.modules.aluno.application.AlunoService;
+import com.example.grupo34_atdd.modules.eventos.domain.EventoOutboxPort;
 import com.example.grupo34_atdd.modules.cursos.api.dto.CursoConteudoDTO;
 import com.example.grupo34_atdd.modules.cursos.api.dto.CursoResumoDTO;
 import com.example.grupo34_atdd.modules.cursos.api.dto.QuestaoCursoDTO;
 import com.example.grupo34_atdd.modules.cursos.domain.CursoComAvaliacao;
 import com.example.grupo34_atdd.modules.ranking.api.dto.ResultadoAvaliacaoDTO;
-import com.example.grupo34_atdd.modules.ranking.infrastructure.persistence.ResultadoAvaliacaoEntity;
-import com.example.grupo34_atdd.modules.ranking.infrastructure.persistence.ResultadoAvaliacaoRepository;
+import com.example.grupo34_atdd.modules.ranking.domain.ResultadoAvaliacaoPort;
+import com.example.grupo34_atdd.modules.ranking.domain.ResultadoCurso;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,13 +23,15 @@ public class CursoService {
 
     private final CatalogoCursos catalogoCursos;
     private final AlunoService alunoService;
-    private final ResultadoAvaliacaoRepository resultadoRepository;
+    private final ResultadoAvaliacaoPort resultadoPort;
+    private final EventoOutboxPort eventoPort;
 
     public CursoService(CatalogoCursos catalogoCursos, AlunoService alunoService,
-                        ResultadoAvaliacaoRepository resultadoRepository) {
+                        ResultadoAvaliacaoPort resultadoPort, EventoOutboxPort eventoPort) {
         this.catalogoCursos = catalogoCursos;
         this.alunoService = alunoService;
-        this.resultadoRepository = resultadoRepository;
+        this.resultadoPort = resultadoPort;
+        this.eventoPort = eventoPort;
     }
 
     @Transactional(readOnly = true)
@@ -62,22 +65,16 @@ public class CursoService {
         }
         int pontos = acertos * 100;
 
-        ResultadoAvaliacaoEntity resultado = resultadoRepository
-                .findByAlunoIdAndCursoSlug(alunoId, slug)
-                .orElseGet(ResultadoAvaliacaoEntity::new);
-        resultado.setAlunoId(alunoId);
-        resultado.setNomeAluno(aluno.getNome());
-        resultado.setCursoSlug(slug);
-        if (pontos > resultado.getMelhorPontuacao()) {
-            resultado.setMelhorPontuacao(pontos);
-            resultado.setMelhorNumeroAcertos(acertos);
-        }
-        resultado.setUltimaTentativaEm(Instant.now());
-        resultadoRepository.save(resultado);
-
-        Long pontuacaoTotal = resultadoRepository.buscarTotalPontosDoAluno(alunoId);
-        return new ResultadoAvaliacaoDTO(slug, pontos, resultado.getMelhorPontuacao(), acertos,
-                pontuacaoTotal == null ? 0 : pontuacaoTotal.intValue());
+        ResultadoCurso anterior = resultadoPort.buscar(alunoId, slug)
+                .orElse(new ResultadoCurso(alunoId, aluno.getNome(), slug, 0, 0, Instant.now()));
+        ResultadoCurso atualizado = new ResultadoCurso(alunoId, aluno.getNome(), slug,
+                Math.max(pontos, anterior.melhorPontuacao()),
+                pontos > anterior.melhorPontuacao() ? acertos : anterior.melhorNumeroAcertos(), Instant.now());
+        ResultadoCurso salvo = resultadoPort.salvar(atualizado);
+        eventoPort.publicar("avaliacao.concluida",
+                "alunoId=" + alunoId + ";curso=" + slug + ";pontos=" + pontos);
+        long total = resultadoPort.totalizar(alunoId);
+        return new ResultadoAvaliacaoDTO(slug, pontos, salvo.melhorPontuacao(), acertos, (int) total);
     }
 
     private CursoComAvaliacao buscarCurso(String slug) {

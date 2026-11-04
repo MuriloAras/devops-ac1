@@ -1,227 +1,246 @@
-# Registro arquitetural do Super Cursos
+# Registro arquitetural B1 do Super Cursos
 
-Este documento registra a decisão do Desafio 1 do Architecture Lab para o Core
-do Super Cursos e sua evidência no código. O Core permanece uma aplicação única
-em Java/Spring Boot; a mudança organiza o código por capacidade de negócio como
-um monólito modular. Isso responde ao crescimento previsto para até 100.000
-usuários sem assumir, sem métricas, que o sistema já precisa de serviços
-distribuídos ou de deploy independente.
+Este registro reúne as decisões dos seis desafios do Architecture Lab e as microsoluções que as exercitam. A equipe considerada é a equipe real do projeto, com três integrantes. O Core continua em Java/Spring Boot e PostgreSQL; a implementação evolui de forma incremental, sem presumir que a previsão de 100.000 usuários prove por si só a necessidade de microsserviços.
 
-Este registro cobre o Desafio 1 e a modularização executada no MVP disponível.
-Não declara concluídos os demais desafios do B1. A matriz de ASRs abaixo inicia
-o registro cumulativo e deverá ser ampliada nos próximos desafios.
+## Resumo das decisões
 
-## 1. RF e RNF do cenário
-
-| ID | Requisito / atributo | Relação com o projeto atual |
+| Desafio | Decisão | Evidência principal |
 | --- | --- | --- |
-| RF01 | Ranking | Implementado como ranking por pontos obtidos nas avaliações dos cursos. |
-| RF02 | Conquistas e gamificação | O MVP possui saldo de moedas e aquisição de cursos; badges ainda não fazem parte do escopo implementado. |
-| RNF | Manutenibilidade | Capacidades evoluem em ritmos diferentes; fronteiras por negócio reduzem acoplamento e impacto de mudanças. |
-| RNF | Escalabilidade | O cenário prevê até 100.000 usuários e crescimento maior para Ranking, mas não apresenta métricas de carga por capacidade. |
-| RNF | Complexidade operacional | A equipe registrada no projeto tem três integrantes; operação distribuída aumentaria as responsabilidades de implantação, rede e observabilidade. |
-| RNF | Desempenho | Importante, mas não há medições de latência ou throughput que indiquem gargalo arquitetural. |
-| RNF | Testabilidade | Importante para validar mudanças; isoladamente, não exige uma decomposição macro. |
+| 1 — Drivers e evolução do Core | Adotar monólito modular para Aluno, Cursos e Ranking. | Comparação dos pacotes antes/depois, testes e C4. |
+| 2 — Organização interna | Inverter a dependência da persistência do Ranking por `ResultadoAvaliacaoPort`; JPA é um adaptador substituível. | Testes unitários com porta substituída e integração PostgreSQL. |
+| 3 — Python e IA | Manter recomendação/assistente em serviço FastAPI separado, com cliente HTTP no Core e fallback. | Pergunta ao serviço local e teste com serviço indisponível. |
+| 4 — Eventos | Gravar conclusão de avaliação em uma Outbox na mesma transação; processar notificação em segundo plano. | Teste de falha do consumidor: evento permanece pendente e tentativa é contada. |
+| 5 — IoT e MQTT | Receber dispositivos por MQTT QoS 1 em gateway, transformar para REST do Core e deduplicar por `eventoId`. | Simulador, persistência PostgreSQL e teste de reentrega. |
+| 6 — CI/CD e observabilidade | Manter pipeline único para o monólito e os serviços auxiliares, com testes, health checks, Cypress e métricas Prometheus/Grafana. | `Jenkinsfile`, teste de indisponibilidade da IA e métrica no Prometheus. |
 
-### Matriz cumulativa de ASRs
+## Matriz cumulativa de ASRs
 
-| Desafio | ASR prioritário | Como pode influenciar a arquitetura | Situação |
+Foram escolhidos no máximo três atributos por desafio, apenas quando podem alterar estrutura, comunicação, dados, implantação ou operação.
+
+| Desafio | ASR prioritário | Efeito arquitetural | Como foi tratado |
 | --- | --- | --- | --- |
-| 1 | Manutenibilidade | Fronteiras por capacidade reduzem dependências e o impacto de mudanças no Core. | Endereçado pela organização do módulo `aluno`. |
-| 1 | Escalabilidade | A fronteira de negócio permite observar e, se houver evidência, extrair seletivamente uma capacidade de maior carga. | Ranking e avaliações são módulos separados no Core; ainda não há teste de carga nem métrica que justifique extração. |
-| 1 | Complexidade operacional | Manter um único processo e deploy evita introduzir agora operação distribuída sem necessidade comprovada. | Atendido pela decisão de monólito modular. |
+| 1 | Manutenibilidade | Fronteiras de negócio reduzem impacto de mudanças. | Módulos `aluno`, `cursos` e `ranking`. |
+| 1 | Escalabilidade futura | Ranking pode ser observado e extraído se medições mostrarem necessidade. | Fronteira explícita, sem serviço separado prematuro. Não há teste de carga de 100 mil usuários. |
+| 1 | Complexidade operacional | A equipe de três integrantes precisa operar algo proporcional. | Core permanece um processo e um banco. |
+| 2 | Manutenibilidade | Regras de negócio não devem depender da tecnologia de banco. | Port de domínio e adaptador Spring Data/JPA. |
+| 2 | Testabilidade | Deve ser possível testar caso de uso sem PostgreSQL. | Testes substituem a porta; integração valida o adaptador real. |
+| 3 | Deploy independente | Python tem runtime e ciclo de atualização distintos do Core. | Container FastAPI próprio, consumido por HTTP. |
+| 3 | Tolerância a falhas | Indisponibilidade da IA não pode bloquear o Core. | Timeout curto e resposta alternativa Java; métrica de fallback. |
+| 3 | Interoperabilidade | Core Java e serviço Python precisam de contrato estável. | JSON via HTTP com rotas explícitas. |
+| 4 | Disponibilidade | Falha de notificação não deve desfazer a avaliação. | Evento gravado transacionalmente na Outbox e processado depois. |
+| 4 | Recuperabilidade | Evento não entregue precisa permanecer recuperável. | Pendências e tentativas persistem no PostgreSQL. |
+| 4 | Consistência | Avaliação e evento associado devem ser gravados juntos. | Mesma transação de aplicação. |
+| 5 | Interoperabilidade | Dispositivo limitado usa MQTT; Core recebe contrato web comum. | Gateway converte MQTT para REST. |
+| 5 | Disponibilidade/conectividade | Mensagem pode precisar de reentrega. | QoS 1, confirmação manual depois do aceite do Core e chave idempotente. |
+| 5 | Segurança de integração | Broker exposto publicamente seria risco. | Broker anônimo restrito ao host local neste mini-lab. Não é configuração de produção. |
+| 6 | Observabilidade | Falhas entre serviços precisam ser visíveis. | Métricas API, IA e gateway coletadas pelo Prometheus; painéis Grafana. |
+| 6 | Confiabilidade | Só implantar após qualidade e saúde básicas. | Testes, health checks, E2E e etapas que falham a esteira. |
+| 6 | Recuperabilidade | Falhas devem permitir diagnóstico e retomada. | Logs, métricas, eventos Outbox persistidos e artefatos de execução. |
 
-Desempenho e testabilidade foram analisados, mas não selecionados como ASRs
-macro neste desafio. Testes continuam sendo uma prática de validação da
-mudança; não são evidência de que a arquitetura atual tenha um gargalo de
-desempenho.
+## RPCs e premissas consideradas
 
-## 2. RPCs e premissas
-
-| RPC | Consequência para a decisão |
+| RPC | Consequência |
 | --- | --- |
-| Core existente em Java/Spring Boot | A evolução deve aproveitar a aplicação atual e preservar seus contratos. |
-| Equipe de três integrantes, conforme o README do projeto | A solução precisa manter custo operacional compatível com a equipe. |
-| PostgreSQL e persistência relacional existentes | Não há motivação apresentada para substituir o banco neste desafio. |
-| Legado da AC1 | A mudança deve ser incremental e preservar funcionalidades, endpoints, autenticação, tabelas e testes existentes. |
-| Crescimento previsto para até 100.000 usuários | É uma premissa de evolução; sem perfil de tráfego, não prova necessidade de distribuição. |
+| Core legado em Java/Spring Boot, regras e PostgreSQL existentes | Preservar contratos do aluno e evoluir sem reescrever o produto. |
+| Equipe do projeto com três integrantes | Preferir uma esteira e operação simples enquanto isso atender aos drivers. |
+| O case exige serviços Python para IA | IA demonstra uma fronteira HTTP; o Core continua sendo dono dos fluxos essenciais. |
+| Notificação pode falhar sem bloquear conclusão | Usar entrega eventual recuperável; não fazer chamada síncrona obrigatória. |
+| Dispositivos IoT têm recursos limitados e conectividade instável | MQTT na entrada, gateway adaptador e deduplicação no Core. |
+| Jenkins, Prometheus e Grafana são as ferramentas do laboratório | Manter `Jenkinsfile`, configuração e dashboard versionados no repositório. |
+| Não há meta de carga medida nem credenciais de IA/MQTT de produção | Mini-labs locais verificam fronteiras e falhas; não alegam capacidade produtiva. |
 
-## 3. Alternativas e trade-offs
+## Alternativas e trade-offs
 
-| Alternativa | Benefícios | Custos e riscos | Avaliação |
-| --- | --- | --- | --- |
-| A — Monólito em camadas | Deploy e operação simples; continuidade imediata. | As capacidades ficam agrupadas por camada técnica e podem se misturar conforme o produto cresce. | Viável, mas oferece fronteiras de negócio menos explícitas. |
-| B — Monólito modular | Organiza código por capacidade, facilita ownership e testes focados, preserva um deploy e permite avaliar extração futura. | Processo, ciclo de implantação e banco continuam compartilhados; fronteiras precisam ser mantidas pela equipe. | Escolhida: melhor equilíbrio entre manutenibilidade e custo operacional para as evidências atuais. |
-| C — Serviços independentes | Permite deploy e escala independentes por capacidade. | Acrescenta comunicação de rede, observabilidade distribuída, tratamento de falhas e custo de operação. | Prematura sem medições que exijam escala ou deploy independentes. |
+| Tema | Alternativas | Decisão e custo aceito |
+| --- | --- | --- |
+| Core (D1) | Monólito em camadas; monólito modular; serviços independentes. | Monólito modular: fronteiras claras com deploy simples. Módulos não escalam separadamente. |
+| Dependências internas (D2) | JPA chamado diretamente pelo caso de uso; porta e adaptador; reescrita completa em Clean/DDD. | Porta e adaptador somente no acesso ao Ranking. Evita reescrita ampla; outras áreas ainda têm chamadas diretas a Spring Data. |
+| IA (D3) | IA embutida no Core; módulo acoplado; serviço Python; um ou dois serviços de IA. | Serviço Python separado para respeitar runtime/ciclo; recomendação e busca demonstrativa ficam juntas por baixo volume. Separar ML e RAG só com necessidade medida. |
+| Eventos (D4) | REST síncrono; evento em memória; broker externo; Outbox transacional. | Outbox no PostgreSQL: confiável e simples para um consumidor local. Não oferece escala de broker nem fan-out amplo. |
+| IoT (D5) | REST direto; MQTT com gateway; MQTT e depois broker interno. | MQTT + gateway + REST, sem segundo broker. QoS 1 é “pelo menos uma vez”; a aplicação deduplica. |
+| CI/CD (D6) | Uma esteira; uma pipeline por serviço. | Uma esteira até que ciclos de release diferentes justifiquem divisão. Docker Hub permanece opcional. |
 
-## 4. ADR-001 — Evoluir o Core para monólito modular
+## ADR-001 — Monólito modular para o Core
 
-**Status:** aceita.
+**Contexto:** o cenário cresce até 100.000 usuários e o Ranking pode crescer mais que outras funções, mas não há dados de throughput/latência que provem necessidade de deploy ou escala independente.
 
-**Contexto:** o produto deve evoluir de MVP para um cenário de até 100.000
-usuários. Ranking pode crescer mais que as demais capacidades. O Core possui
-alunos, moedas, aquisição de cursos, avaliações e ranking por pontos. Não há
-métricas de carga ou evidência de que uma capacidade precise de deploy
-independente.
+**Decisão:** organizar aluno, cursos e ranking como módulos de uma aplicação Spring Boot; manter PostgreSQL compartilhado. A equipe real tem três integrantes.
 
-**ASRs e RPCs:** manutenibilidade, escalabilidade futura e controle da
-complexidade operacional; Java/Spring Boot, equipe de três integrantes,
-PostgreSQL e legado da AC1.
+**Consequências:** responsabilidades ficam localizáveis e o ranking pode ser observado como capacidade própria; processo, release e banco permanecem compartilhados. Reavaliar se medições mostrarem gargalo persistente ou necessidade de release independente.
 
-**Alternativas consideradas:** monólito em camadas, monólito modular e
-decomposição seletiva em serviços.
+## ADR-002 — Porta e adaptador de persistência
 
-**Decisão:** organizar o Core como monólito modular, com módulos de alunos,
-cursos e ranking. O Core continua como uma única aplicação Spring Boot e mantém
-o banco relacional. O módulo `ranking` já tem uma fronteira própria, mas não
-será extraído como serviço sem evidência de gargalo, necessidade de escala
-própria ou deploy independente.
+**Contexto:** regras do Ranking e avaliação não devem conhecer entidades e repositórios Spring Data para que possam ser testadas sem banco.
 
-**Consequências positivas:** responsabilidades de negócio ficam mais fáceis de
-localizar; mudanças e testes podem ser concentrados na capacidade afetada; a
-equipe preserva implantação e operação simples; a evolução pode ser incremental.
+**Decisão:** `ResultadoAvaliacaoPort` define operações de recorde e ranking em tipos de domínio; `ResultadoAvaliacaoJpaAdapter` mapeia para entidade/repositório. O mock da porta é usado nos testes unitários e o PostgreSQL nos testes de integração.
 
-**Trade-offs:** o módulo não escala nem implanta separadamente; módulos
-compartilham processo e banco. A camada de aplicação ainda acessa diretamente o
-repositório Spring Data; a inversão dessa dependência pode ser avaliada no
-Desafio 2, sem reescrita ampla do produto.
+**Alternativa rejeitada:** converter toda a aplicação para um padrão amplo de uma vez aumentaria o custo sem uma hipótese adicional. O restante do módulo aluno ainda usa Spring Data diretamente.
 
-**Gatilho de revisão:** revisar a decisão se medições mostrarem gargalo de
-throughput/latência, necessidade sustentada de escala própria ou demanda real
-por deploy independente de uma capacidade.
+DDD é uma forma de modelar o domínio; Hexagonal/Ports & Adapters e Clean organizam dependências e limites. Podem ser combinadas, mas não são rótulos concorrentes que exijam reescrever o produto inteiro. Neste mini-lab, o port de persistência resolve a dependência observada.
 
-## 5. C4 Container
+## ADR-003 — Serviço Python para a fronteira de IA
+
+**Contexto:** o case exige que IA tenha runtime e ciclo próprios, e que uma falha não interrompa fluxos essenciais.
+
+**Decisão:** FastAPI separado, consumido pelo Core por HTTP/JSON com timeout, fallback e contador. Recomendação e busca textual demonstrativa permanecem juntas neste volume.
+
+**Alternativas:** executar no Core (mais simples, mas mistura runtime); módulo Python acoplado (não separa deploy); serviço único para cada função de IA (mais autonomia, mais operação). Reavaliar a separação se recomendação/assistente tiverem tráfego, disponibilidade ou ciclos diferentes.
+
+**Limite do mini-lab:** busca por sobreposição de palavras em textos locais; não há LLM, embeddings ou base vetorial. A resposta identifica sua fonte e não inventa um modelo em produção.
+
+## ADR-004 — Outbox para notificação eventual
+
+**Contexto:** concluir uma avaliação é essencial; notificar é secundário e pode falhar.
+
+**Decisão:** inserir `avaliacao.concluida` em `eventos_outbox` na mesma transação que grava a nota. Um despachante agendado processa pendências. Falha incrementa tentativa e mantém a mensagem pendente.
+
+**Alternativas:** REST síncrono faria a avaliação depender do consumidor; evento em memória seria perdido em reinício; RabbitMQ/Kafka acrescentariam operação para um consumidor demonstrativo. Adotar broker se surgirem múltiplos consumidores, volume alto ou escala independente.
+
+## ADR-005 — MQTT na borda IoT
+
+**Contexto:** dispositivos simples e intermitentes publicam eventos de presença/atividade.
+
+**Decisão:** simulador publica MQTT QoS 1; gateway assina `supercursos/labs/+/eventos`, transforma o payload e envia REST ao Core. O evento é persistido por `eventoId` único; duplicatas são aceitas como já vistas.
+
+**Alternativas:** REST direto exige que cada dispositivo conheça o contrato/endpoint do Core; MQTT mais um broker interno não tem driver no cenário atual. O gateway permite trocar adaptador sem acoplar Core a cada dispositivo.
+
+## ADR-006 — Uma esteira e métricas ponta a ponta
+
+**Contexto:** Core, Python e gateway precisam ser testados, publicados e observados; a equipe é pequena e ainda não há releases independentes.
+
+**Decisão:** pipeline Jenkins único com etapas de Java/PostgreSQL, JaCoCo/PMD, build de containers, testes Python, deploy de homologação, health checks e Cypress. Prometheus coleta API/Python/gateway e Grafana exibe saúde e métricas de fallback, IoT e Outbox.
+
+**Trade-off:** a esteira falha como conjunto e pode alongar o ciclo; em troca, há uma configuração fácil de operar. Dividir pipelines quando autonomia de release ou carga justificar. A publicação Docker Hub é opcional e não é necessária para deploy local.
+
+## C4 Container final
 
 ```mermaid
 C4Container
-    Person(aluno, "Aluno", "Usa a plataforma de cursos")
-    System_Ext(youtube, "YouTube", "Hospeda o vídeo incorporado do curso")
+    Person(aluno, "Aluno", "Estuda, responde avaliações e consulta ranking")
+    System_Ext(dispositivo, "Dispositivo do laboratório", "Publica eventos de aprendizagem MQTT")
+    System_Ext(youtube, "YouTube", "Hospeda o vídeo individual do curso")
+    System_Ext(jenkins, "Jenkins", "Executa CI/CD e aciona Docker Compose")
     System_Boundary(superCursos, "Super Cursos") {
-        Container(frontend, "Interface Web", "Vue.js / Nginx", "Login, saldo e aquisição de cursos")
-        Container(core, "Core", "Java / Spring Boot", "Monólito modular: API e regras de negócio")
-        ContainerDb(database, "Banco relacional", "PostgreSQL", "Alunos, cursos adquiridos e melhores avaliações")
+        Container(frontend, "Interface Web", "Vue.js / Nginx", "Login, cursos, avaliação e ranking")
+        Container(core, "Core", "Java / Spring Boot", "Monólito modular, API, Outbox e regras")
+        Container(ai, "Serviço de IA demonstrativo", "Python / FastAPI", "Recomendação e recuperação textual local")
+        Container(mqtt, "Broker MQTT", "Mosquitto", "Recebe eventos QoS 1")
+        Container(gateway, "Gateway IoT", "Python / Paho MQTT", "Transforma MQTT em REST para o Core")
+        ContainerDb(db, "Banco relacional", "PostgreSQL", "Alunos, notas, eventos e Outbox")
+        Container(prom, "Coletor de métricas", "Prometheus", "Coleta métricas do Core, IA e gateway")
+        Container(grafana, "Painéis", "Grafana", "Mostra saúde e sinais operacionais")
     }
-    Rel(aluno, frontend, "Acessa", "HTTPS")
-    Rel(frontend, core, "Consome API", "REST/JSON")
-    Rel(frontend, youtube, "Carrega o player incorporado", "HTTPS")
-    Rel(core, database, "Lê e grava", "JPA")
+    Rel(aluno, frontend, "Usa", "HTTPS")
+    Rel(frontend, core, "Consome", "REST/JSON")
+    Rel(frontend, youtube, "Incorpora o vídeo", "HTTPS")
+    Rel(core, db, "Lê/grava dados e eventos", "JPA")
+    Rel(core, ai, "Consulta assistente/recomendação", "HTTP/JSON")
+    Rel(dispositivo, mqtt, "Publica", "MQTT QoS 1")
+    Rel(mqtt, gateway, "Entrega tópico de laboratório", "MQTT QoS 1")
+    Rel(gateway, core, "Envia evento normalizado", "REST/JSON")
+    Rel(prom, core, "Coleta", "Actuator/Prometheus")
+    Rel(prom, ai, "Coleta", "Prometheus")
+    Rel(prom, gateway, "Coleta", "Prometheus")
+    Rel(grafana, prom, "Consulta séries", "PromQL")
+    Rel(jenkins, core, "Testa/constrói/implanta", "Pipeline e Docker")
 ```
 
-O C4 mantém o Core como um container/deploy. A modularização afeta sua
-organização interna, não a topologia de implantação.
-
-## 6. C4 Component do Core
+## C4 Component do Core
 
 ```mermaid
 C4Component
     Container_Boundary(core, "Core Spring Boot") {
-        Component(aluno, "Módulo aluno", "Cadastro, autenticação, moedas e compras")
-        Component(cursos, "Módulo cursos", "Vídeo, acesso e avaliação de cursos")
-        Component(ranking, "Módulo ranking", "Melhores pontuações e posições")
-        Component(persistencia, "Persistência", "Spring Data JPA e PostgreSQL")
+        Component(aluno, "Módulo aluno", "Cadastro, login, moedas e aquisição")
+        Component(cursos, "Módulo cursos", "Catálogo, vídeo, prova e gravação de recorde")
+        Component(ranking, "Módulo ranking", "Port de domínio, regras de posições")
+        Component(jpa, "Adaptador JPA do Ranking", "Traduz porta para Spring Data/PostgreSQL")
+        Component(outbox, "Módulo eventos", "Outbox, dispatcher e consumidor de demonstração")
+        Component(ia, "Cliente de IA", "HTTP com timeout, fallback e métricas")
+        Component(iot, "Ingresso IoT", "Validação, deduplicação e persistência")
+        Component(iotRepo, "Persistência de eventos IoT", "Spring Data/PostgreSQL")
     }
-    Rel(cursos, aluno, "Confere matrícula e aluno")
-    Rel(cursos, persistencia, "Persiste a melhor nota por aluno/curso")
-    Rel(ranking, persistencia, "Consulta a soma das melhores notas")
+    Container_Ext(aiService, "Serviço Python", "FastAPI", "Busca textual e recomendações demonstrativas")
+    Rel(cursos, aluno, "Valida aquisição")
+    Rel(cursos, ranking, "Salva melhor nota via contrato de domínio")
+    Rel(ranking, jpa, "Porta implementada por adaptador")
+    Rel(cursos, outbox, "Registra evento na transação")
+    Rel(ia, aiService, "Consome por HTTP/JSON")
+    Rel(iot, iotRepo, "Persiste e deduplica por eventoId")
 ```
 
-## 7. Organização interna do Core
+## Fluxos de falha e entrega
 
-```text
-com.example.grupo34_atdd/
-├── Grupo34AtddApplication.java
-├── modules/aluno/
-│   ├── api/                         # Controller e DTOs HTTP
-│   ├── application/                # Casos de uso e transações
-│   ├── domain/                     # Regra de troca de moedas
-│   └── infrastructure/persistence/ # Entidade JPA e repositório
-├── modules/cursos/
-│   ├── api/                         # Catálogo, vídeo e envio de respostas
-│   ├── application/                # Catálogo e acesso às avaliações
-│   └── domain/                     # Curso e regra de correção
-├── modules/ranking/
-│   ├── api/                         # Endpoint e contratos do ranking
-│   ├── application/                # Ordenação e posições
-│   └── infrastructure/persistence/ # Melhores notas por aluno e curso
-└── shared/
-    ├── config/                     # Segurança transversal
-    └── web/                        # Rota inicial
+```mermaid
+sequenceDiagram
+    participant A as Aluno
+    participant C as Core
+    participant DB as PostgreSQL / Outbox
+    participant N as Consumidor de notificação
+    A->>C: Envia avaliação
+    C->>DB: Grava recorde e evento na mesma transação
+    DB-->>C: Commit
+    C-->>A: Retorna pontuação
+    C->>DB: Dispatcher busca pendências
+    C->>N: Tenta notificar em segundo plano
+    alt Consumidor disponível
+        N-->>C: Aceita
+        C->>DB: Marca processado
+    else Consumidor indisponível
+        N--xC: Falha
+        C->>DB: Mantém pendente e soma tentativa
+    end
 ```
 
-O módulo `aluno` mantém autenticação, dados, saldo e aquisição. `cursos` fornece
-um catálogo com um vídeo individual por curso e avaliação de dez questões. O
-curso inicial é **Introdução ao Python**, com o primeiro vídeo indicado pela
-equipe: [Curso Básico de Python — Aula 1](https://www.youtube.com/watch?v=g_R_Asf6Co0).
-O player usa somente esse vídeo, sem carregar a playlist. Cada resposta correta
-rende 100 pontos, até 1.000 por tentativa. O aluno pode refazer a avaliação e o
-recorde do curso é preservado; o ranking soma os recordes dos cursos e empates
-compartilham posição. A aquisição continua usando o fluxo de moedas existente e
-um curso do catálogo só pode ser acessado pelo aluno que o adquiriu. DTOs HTTP
-não dependem de entidades JPA. Segurança transversal e redirecionamento ficam
-em `shared`.
+## C4 Deployment / operação
 
-### Comparação de dependências
+```mermaid
+C4Deployment
+    Deployment_Node(jenkinsNode, "Servidor Jenkins", "Jenkins + plugins") {
+        Container(jenkins, "Pipeline B1", "Jenkinsfile", "Testa, constrói, implanta e arquiva relatórios")
+    }
+    Deployment_Node(host, "Máquina de desenvolvimento/homologação", "Docker Desktop / Docker Compose") {
+        Deployment_Node(network, "Rede local do Compose", "Containers") {
+            Container(core, "Core", "Java/Spring Boot")
+            Container(ai, "AI Lab", "Python/FastAPI")
+            Container(gateway, "MQTT Gateway", "Python/Paho")
+            Container(mqtt, "Mosquitto", "MQTT QoS 1")
+            ContainerDb(db, "PostgreSQL", "Volume nomeado")
+            Container(prom, "Prometheus", "Scrape configurado")
+            Container(grafana, "Grafana", "Dashboard provisionado")
+        }
+    }
+    Rel(jenkins, host, "Executa Docker Compose e publica artefatos", "Docker CLI")
+    Rel(prom, core, "Scrape", "HTTP")
+    Rel(prom, ai, "Scrape", "HTTP")
+    Rel(prom, gateway, "Scrape", "HTTP")
+    Rel(grafana, prom, "Consulta métricas", "PromQL")
+```
 
-| Antes — por camada | Depois — por capacidade |
+## Evidências e validação executadas
+
+| Evidência | Resultado |
 | --- | --- |
-| `controller` encaminhava a `service`; `service` usava `repository`, `entity`, `domain` e DTOs distribuídos em pacotes irmãos. | `modules/aluno/api` concentra a entrada HTTP; `application`, `domain` e `infrastructure/persistence` ficam no mesmo limite de negócio. Configuração e rota genéricas ficam em `shared`. |
-| Para seguir uma mudança de negócio, era preciso navegar entre camadas técnicas espalhadas no pacote raiz. | Os arquivos da funcionalidade e seus testes são encontrados sob o módulo `aluno`; a mudança de pacotes não altera endpoints nem tabelas. |
+| Testes Java unitários | `mvn test`: 36 passaram. Incluem domínio, adapter substituído, fallback de IA e falha do consumidor Outbox. |
+| Integração PostgreSQL/Testcontainers | `mvn verify`: 10 passaram. Incluem persistência de nota, Outbox e evento IoT idempotente. |
+| Qualidade Java | `mvn verify`: PMD, JaCoCo e empacotamento concluíram com `BUILD SUCCESS`. |
+| Python IA e gateway | `docker compose --profile test run --rm --no-deps ai-test` e `mqtt-gateway-test`: 2 testes cada passaram. |
+| Aplicação containerizada | Docker Compose construiu e iniciou API, frontend, PostgreSQL, IA, Mosquitto, gateway, Prometheus e Grafana; health checks ficaram saudáveis. |
+| Cypress | 7 cenários passaram, incluindo login, compras, vídeo, avaliação e atualização do ranking. |
+| Falha da IA | `evidencias/B1/desafio-6/simular-indisponibilidade-ia.sh`: serviço parado, Core respondeu com fallback e Prometheus mostrou `supercursos_ai_fallback_total{operacao="assistente"}=1`; serviço reiniciado pelo script. |
+| MQTT | `evidencias/B1/desafio-5/`: simulador publicou QoS 1, gateway encaminhou ao Core e reentrega com o mesmo ID foi contada como duplicata. |
+| Configuração de execução | `docker compose ... config --quiet` passou; relatório Cypress foi executado no projeto Compose isolado. |
 
-A mudança deixa as fronteiras de negócio mais explícitas, mas não implementa
-inversão completa de dependências: `application` ainda chama diretamente os
-repositórios Spring Data e usa alguns DTOs da API. A regra de correção do quiz
-permanece sem dependências de Spring ou JPA. Avaliar portas de persistência e
-modelos de entrada/saída da aplicação é trabalho possível para o Desafio 2,
-caso o custo seja proporcional ao problema observado.
+Evidências e comandos complementares: `evidencias/B1/desafio-2/` a `desafio-6/`. As etapas do pipeline foram executadas localmente, mas não houve novo build no Jenkins porque o servidor não estava em execução nesta máquina (`localhost:9090` indisponível). Este registro não declara teste de carga para 100.000 usuários.
 
-## 8. Evidência e validação
+## Limitações conhecidas
 
-| Evidência | Local / resultado |
-| --- | --- |
-| Estrutura antes | `src/main/java/com/example/grupo34_atdd/{controller,dto,service,repository,entity,domain,config}` — organização por camada técnica. |
-| Estrutura depois | `src/main/java/com/example/grupo34_atdd/modules/{aluno,cursos,ranking}/` e `shared/` — organização por capacidade com responsabilidades internas identificadas. |
-| Testes movidos por responsabilidade | `src/test/java/com/example/grupo34_atdd/modules/` contém testes dos módulos `aluno`, `cursos` e `ranking`, além da integração PostgreSQL. |
-| Compatibilidade | Mantidos `/api/alunos`, cadastro, listagem, consulta, login e `/{id}/trocar-moedas`; adicionados catálogo, acesso e envio de avaliações, além de `/api/ranking`. Tabelas `alunos` e `aluno_cursos` e custo de 3 moedas mantidos; `resultados_avaliacao` guarda recorde por aluno/curso. |
-| Verificação estrutural | Verificados alinhamento de caminhos/pacotes e ausência de referências aos pacotes antigos. |
-| Regra de pontuação | Testes cobrem 10 respostas, 100 pontos por acerto, máximo de 1.000, proteção contra redução do recorde e posições empatadas. |
-| Testes unitários | `mvn test` no container JDK 21: 33 testes passaram. |
-| Testes de integração | `mvn verify` com PostgreSQL 16 via Testcontainers: 9 testes passaram, incluindo pontuação persistida e ranking. |
-| Análise estática e pacote | `mvn verify` concluiu com `BUILD SUCCESS`, incluindo PMD e JaCoCo. |
-| Build da interface | `docker build` da imagem Vue/Nginx concluiu; build Vite passou. |
-| Cypress ponta a ponta | 7 cenários passaram no ambiente Docker isolado, incluindo o fluxo completo de vídeo, avaliação e ranking. |
+- Serviço Python é demonstração de busca textual/recomendação local; não usa modelo de ML/LLM real, embeddings nem base vetorial.
+- Não há carga artificial ou resultado que comprove comportamento com 100.000 usuários.
+- Broker Mosquitto está configurado sem autenticação para laboratório local; deve receber controle de acesso/TLS antes de exposição fora da máquina.
+- O consumidor de notificação é demonstração local; não envia e-mail/SMS real. A Outbox preserva trabalho, mas precisa de política de retenção/alerta em produção.
+- A política de segurança preexistente permite `/api/**` sem sessão autenticada. IDs informados em rotas não são associados a uma identidade validada no servidor.
+- Curso demonstrativo continua sendo somente Introdução ao Python com o primeiro vídeo enviado; o catálogo não possui administração dinâmica.
 
-O mini-lab inclui módulos de cursos e ranking, junto à reorganização do módulo
-de alunos. O catálogo começa com um curso demonstrativo; novos cursos exigem
-cadastrar título, um vídeo e dez questões com gabarito no `CatalogoCursos`. A
-implementação de badges continua fora do escopo desta funcionalidade.
+## Síntese para a PoC da Avaliação Final
 
-O login e a política de acesso existentes foram preservados. A configuração
-atual permite requisições às rotas da API sem sessão autenticada; os novos
-endpoints usam o `alunoId` informado na rota e não o vinculam a uma identidade
-validada no servidor. Esse comportamento preexistente deve ser revisto antes de
-usar a plataforma com dados reais ou expô-la publicamente.
-
-## 9. Rastreabilidade
-
-| Elemento | Registro |
-| --- | --- |
-| RF | RF01 Ranking por pontos das avaliações; RF02 saldo de moedas e aquisição de cursos. |
-| RNF | Manutenibilidade, escalabilidade, complexidade operacional, desempenho e testabilidade analisados. |
-| ASR | Manutenibilidade, escalabilidade e complexidade operacional. |
-| RPC | Spring Boot, equipe de três integrantes, PostgreSQL e legado da AC1. |
-| Alternativas | Monólito em camadas × monólito modular × serviços independentes. |
-| ADR | ADR-001: adotar monólito modular; revisar extração por evidência. |
-| C4 | Core segue um container; visão Component mostra os módulos de negócio e dependências internas. |
-| Evidência | Módulos `cursos` e `ranking`, regras de pontuação, 33 testes unitários, 9 de integração, build Docker do frontend e 7 cenários Cypress aprovados. |
-
-**Conclusão:** a modularização testa a hipótese de que uma capacidade existente
-pode ser organizada por negócio sem alterar seu comportamento funcional nem
-introduzir comunicação distribuída. O custo operacional continua proporcional à
-equipe atual. A necessidade de escala independente do Ranking ainda precisa ser
-medida antes de qualquer extração para serviço.
-
-## Próximos desafios do B1
-
-Este README é um registro vivo. Desafios 2 a 6 devem acrescentar seus RFs/RNFs,
-até três ASRs prioritários por desafio, RPCs, alternativas, ADR, C4 e evidências,
-sem registrar como realizadas microsoluções que ainda não foram implementadas.
+Levar o Core modular como ponto de partida; preservar uma porta testável para persistência; manter IA fora dos fluxos críticos e com fallback; usar Outbox para trabalho eventual; avaliar MQTT somente para bordas com conectividade intermitente; observar falhas, latência e volume antes de extrair ou escalar serviços. Antes de uma PoC exposta a usuários reais, implementar identidade/autorização, credenciais e TLS para MQTT/serviços, política de retentativa/retention, e modelo real de IA apenas com critérios de qualidade e custo definidos.

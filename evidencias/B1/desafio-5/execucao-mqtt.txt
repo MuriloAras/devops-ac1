@@ -1,0 +1,46 @@
+Publicando evento b1-desafio5-demo para aluno 1
+{
+  "eventId": "b1-desafio5-demo",
+  "studentId": 1,
+  "eventType": "presenca",
+  "occurredAt": "2026-11-04T20:25:20.919152+00:00",
+  "deviceId": "simulador-lab-01"
+}
+
+Métrica de eventos IoT persistidos no Core:
+# HELP supercursos_iot_eventos_recebidos_total  
+# TYPE supercursos_iot_eventos_recebidos_total counter
+supercursos_iot_eventos_recebidos_total{application="supercursos",environment="homol",tipo="presenca"} 4.0
+
+Métrica do gateway MQTT:
+# HELP mqtt_gateway_forwarded_total MQTT events accepted by Core
+# TYPE mqtt_gateway_forwarded_total counter
+mqtt_gateway_forwarded_total 1.0
+# HELP mqtt_gateway_forward_failures_total MQTT forwarding failures
+# TYPE mqtt_gateway_forward_failures_total counter
+mqtt_gateway_forward_failures_total 0.0
+Publicando evento b1-desafio5-demo para aluno 1
+{
+  "eventId": "b1-desafio5-demo",
+  "studentId": 1,
+  "eventType": "presenca",
+  "occurredAt": "2026-11-04T20:25:48.007015+00:00",
+  "deviceId": "simulador-lab-01"
+}
+
+Métrica de eventos IoT persistidos no Core:
+# HELP supercursos_iot_eventos_duplicados_total  
+# TYPE supercursos_iot_eventos_duplicados_total counter
+supercursos_iot_eventos_duplicados_total{application="supercursos",environment="homol"} 2.0
+# HELP supercursos_iot_eventos_recebidos_total  
+# TYPE supercursos_iot_eventos_recebidos_total counter
+supercursos_iot_eventos_recebidos_total{application="supercursos",environment="homol",tipo="presenca"} 4.0
+
+Métrica do gateway MQTT:
+# HELP mqtt_gateway_forwarded_total MQTT events accepted by Core
+# TYPE mqtt_gateway_forwarded_total counter
+mqtt_gateway_forwarded_total 2.0
+# HELP mqtt_gateway_forward_failures_total MQTT forwarding failures
+# TYPE mqtt_gateway_forward_failures_total counter
+mqtt_gateway_forward_failures_total 0.0
+eventos_persistidos=1

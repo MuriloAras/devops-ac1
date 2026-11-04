@@ -1,7 +1,7 @@
 {
   "uid": "supercursos-homol",
   "title": "SuperCursos - Observabilidade HOMOL",
-  "description": "Prática 3: saúde da API, tráfego HTTP, latência e memória JVM. Métricas coletadas pelo Prometheus.",
+  "description": "Saúde e tráfego do Core, contingência da IA, eventos IoT e processamento eventual. Métricas coletadas pelo Prometheus.",
   "tags": [
     "supercursos",
     "homol",
@@ -218,6 +218,39 @@
           "mode": "single"
         }
       }
+    },
+    {
+      "id": 5,
+      "title": "Contingências do serviço de IA",
+      "description": "Aumenta quando o Core responde com fallback porque o serviço Python não está disponível.",
+      "type": "timeseries",
+      "datasource": {"type": "prometheus", "uid": "prometheus-supercursos"},
+      "gridPos": {"h": 8, "w": 8, "x": 0, "y": 16},
+      "targets": [{"refId": "A", "expr": "sum by (operacao) (supercursos_ai_fallback_total)", "legendFormat": "{{operacao}}"}],
+      "fieldConfig": {"defaults": {"unit": "short", "min": 0, "color": {"mode": "palette-classic"}}, "overrides": []},
+      "options": {"legend": {"displayMode": "list", "placement": "bottom"}, "tooltip": {"mode": "single"}}
+    },
+    {
+      "id": 6,
+      "title": "Eventos IoT recebidos",
+      "description": "Eventos MQTT aceitos e persistidos pelo Core, por tipo.",
+      "type": "timeseries",
+      "datasource": {"type": "prometheus", "uid": "prometheus-supercursos"},
+      "gridPos": {"h": 8, "w": 8, "x": 8, "y": 16},
+      "targets": [{"refId": "A", "expr": "sum by (tipo) (supercursos_iot_eventos_recebidos_total)", "legendFormat": "{{tipo}}"}],
+      "fieldConfig": {"defaults": {"unit": "short", "min": 0, "color": {"mode": "palette-classic"}}, "overrides": []},
+      "options": {"legend": {"displayMode": "list", "placement": "bottom"}, "tooltip": {"mode": "single"}}
+    },
+    {
+      "id": 7,
+      "title": "Falhas no processamento da Outbox",
+      "description": "Falhas de consumidor deixam eventos pendentes para nova tentativa.",
+      "type": "timeseries",
+      "datasource": {"type": "prometheus", "uid": "prometheus-supercursos"},
+      "gridPos": {"h": 8, "w": 8, "x": 16, "y": 16},
+      "targets": [{"refId": "A", "expr": "sum(supercursos_outbox_falhas_total)", "legendFormat": "falhas"}],
+      "fieldConfig": {"defaults": {"unit": "short", "min": 0, "color": {"mode": "palette-classic"}}, "overrides": []},
+      "options": {"legend": {"displayMode": "list", "placement": "bottom"}, "tooltip": {"mode": "single"}}
     }
   ],
   "templating": {

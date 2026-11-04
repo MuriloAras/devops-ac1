@@ -2,8 +2,9 @@ package com.example.grupo34_atdd.modules.cursos.application;
 
 import com.example.grupo34_atdd.modules.aluno.api.dto.AlunoResponseDTO;
 import com.example.grupo34_atdd.modules.aluno.application.AlunoService;
-import com.example.grupo34_atdd.modules.ranking.infrastructure.persistence.ResultadoAvaliacaoEntity;
-import com.example.grupo34_atdd.modules.ranking.infrastructure.persistence.ResultadoAvaliacaoRepository;
+import com.example.grupo34_atdd.modules.eventos.domain.EventoOutboxPort;
+import com.example.grupo34_atdd.modules.ranking.domain.ResultadoAvaliacaoPort;
+import com.example.grupo34_atdd.modules.ranking.domain.ResultadoCurso;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,13 +27,16 @@ class CursoServiceTest {
     private AlunoService alunoService;
 
     @Mock
-    private ResultadoAvaliacaoRepository resultadoRepository;
+    private ResultadoAvaliacaoPort resultadoPort;
+
+    @Mock
+    private EventoOutboxPort eventoPort;
 
     private CursoService cursoService;
 
     @BeforeEach
     void configurar() {
-        cursoService = new CursoService(new CatalogoCursos(), alunoService, resultadoRepository);
+        cursoService = new CursoService(new CatalogoCursos(), alunoService, resultadoPort, eventoPort);
     }
 
     @Test
@@ -47,10 +51,10 @@ class CursoServiceTest {
     @Test
     void pontuacaoUsaMelhorNotaPorCursoEAluno() {
         when(alunoService.buscarPorId(7L)).thenReturn(aluno());
-        when(resultadoRepository.findByAlunoIdAndCursoSlug(7L, CatalogoCursos.SLUG_PYTHON))
+        when(resultadoPort.buscar(7L, CatalogoCursos.SLUG_PYTHON))
                 .thenReturn(Optional.empty());
-        when(resultadoRepository.buscarTotalPontosDoAluno(7L)).thenReturn(1_000L);
-        when(resultadoRepository.save(any(ResultadoAvaliacaoEntity.class)))
+        when(resultadoPort.totalizar(7L)).thenReturn(1_000L);
+        when(resultadoPort.salvar(any(ResultadoCurso.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
         var resultado = cursoService.avaliar(7L, CatalogoCursos.SLUG_PYTHON,
@@ -64,16 +68,11 @@ class CursoServiceTest {
     @Test
     void tentativaMenorNaoReduzMelhorPontuacaoDoCurso() {
         when(alunoService.buscarPorId(7L)).thenReturn(aluno());
-        ResultadoAvaliacaoEntity recorde = new ResultadoAvaliacaoEntity();
-        recorde.setAlunoId(7L);
-        recorde.setNomeAluno("Ana");
-        recorde.setCursoSlug(CatalogoCursos.SLUG_PYTHON);
-        recorde.setMelhorPontuacao(1_000);
-        recorde.setMelhorNumeroAcertos(10);
-        when(resultadoRepository.findByAlunoIdAndCursoSlug(7L, CatalogoCursos.SLUG_PYTHON))
-                .thenReturn(Optional.of(recorde));
-        when(resultadoRepository.buscarTotalPontosDoAluno(7L)).thenReturn(1_000L);
-        when(resultadoRepository.save(any(ResultadoAvaliacaoEntity.class)))
+        ResultadoCurso recorde = new ResultadoCurso(7L, "Ana", CatalogoCursos.SLUG_PYTHON,
+                1_000, 10, java.time.Instant.now());
+        when(resultadoPort.buscar(7L, CatalogoCursos.SLUG_PYTHON)).thenReturn(Optional.of(recorde));
+        when(resultadoPort.totalizar(7L)).thenReturn(1_000L);
+        when(resultadoPort.salvar(any(ResultadoCurso.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
         var resultado = cursoService.avaliar(7L, CatalogoCursos.SLUG_PYTHON,

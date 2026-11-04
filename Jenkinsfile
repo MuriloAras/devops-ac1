@@ -96,7 +96,20 @@ pipeline {
             post { success { archiveArtifacts artifacts: 'target/*.jar', fingerprint: true } }
         }
         stage('5 - CD - Build dos Containers') {
-            steps { script { runCmd('docker compose -f docker-compose.homol.yml build api frontend') } }
+            steps { script { runCmd('docker compose -f docker-compose.homol.yml build api frontend ai-service mqtt-gateway') } }
+        }
+        stage('5b - CI - Testes dos componentes Python') {
+            steps {
+                script {
+                    runCmd('docker compose -f docker-compose.homol.yml --profile test run --rm --no-deps ai-test')
+                    runCmd('docker compose -f docker-compose.homol.yml --profile test run --rm --no-deps mqtt-gateway-test')
+                }
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'target/b1-python-reports/*.txt', allowEmptyArchive: true
+                }
+            }
         }
         stage('6 - Registry - Docker Hub (opcional)') {
             when { expression { return params.PUSH_DOCKER_HUB } }
@@ -114,7 +127,7 @@ pipeline {
                                 } else {
                                     bat 'powershell -NoProfile -Command "$env:DOCKER_PASSWORD | docker login --username $env:DOCKER_USER --password-stdin; exit $LASTEXITCODE"'
                                 }
-                                for (service in ['api', 'frontend']) {
+                                for (service in ['api', 'frontend', 'ai', 'mqtt-gateway']) {
                                     def published = "${params.DOCKERHUB_NAMESPACE}/supercursos-${service}:${env.IMAGE_TAG}"
                                     runCmd("docker tag supercursos-${service}:${env.IMAGE_TAG} ${published}")
                                     runCmd("docker push ${published}")
@@ -131,7 +144,7 @@ pipeline {
         stage('7 - CD - Deploy HOMOL') {
             steps {
                 script {
-                    runCmd('docker compose -f docker-compose.homol.yml up -d --wait --wait-timeout 180 postgres pgadmin api frontend prometheus grafana')
+                    runCmd('docker compose -f docker-compose.homol.yml up -d --wait --wait-timeout 180 postgres pgadmin api frontend ai-service mosquitto mqtt-gateway prometheus grafana')
                 }
             }
         }
@@ -141,6 +154,8 @@ pipeline {
                     writeFile file: 'evidencias/a2/p3/health.json', text: ''
                     runCmd('docker compose -f docker-compose.homol.yml exec -T api curl --fail --silent --show-error http://localhost:8080/actuator/health > evidencias/a2/p3/health.json')
                     runCmd('docker compose -f docker-compose.homol.yml ps > evidencias/a2/p3/containers.txt')
+                    runCmd('docker compose -f docker-compose.homol.yml exec -T ai-service python -c "import urllib.request; urllib.request.urlopen(\'http://localhost:8000/health\')"')
+                    runCmd('docker compose -f docker-compose.homol.yml exec -T mqtt-gateway python -c "import urllib.request; urllib.request.urlopen(\'http://localhost:9101/metrics\')"')
                 }
             }
             post {

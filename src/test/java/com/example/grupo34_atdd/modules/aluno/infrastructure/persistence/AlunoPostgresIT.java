@@ -9,6 +9,10 @@ import com.example.grupo34_atdd.modules.cursos.application.CursoService;
 import com.example.grupo34_atdd.modules.ranking.api.dto.ResultadoAvaliacaoDTO;
 import com.example.grupo34_atdd.modules.ranking.application.RankingService;
 import com.example.grupo34_atdd.modules.ranking.infrastructure.persistence.ResultadoAvaliacaoRepository;
+import com.example.grupo34_atdd.modules.eventos.application.EventoAprendizagemService;
+import com.example.grupo34_atdd.modules.eventos.api.dto.AprendizagemEventoDTO;
+import com.example.grupo34_atdd.modules.eventos.infrastructure.persistence.EventoAprendizagemRepository;
+import com.example.grupo34_atdd.modules.eventos.infrastructure.persistence.EventoOutboxRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -61,6 +65,15 @@ class AlunoPostgresIT {
     private ResultadoAvaliacaoRepository resultadoRepository;
 
     @Autowired
+    private EventoAprendizagemService eventoAprendizagemService;
+
+    @Autowired
+    private EventoAprendizagemRepository eventoAprendizagemRepository;
+
+    @Autowired
+    private EventoOutboxRepository eventoOutboxRepository;
+
+    @Autowired
     private DataSource dataSource;
 
     @LocalServerPort
@@ -69,6 +82,8 @@ class AlunoPostgresIT {
     @BeforeEach
     void limparDadosDoContainerDeTeste() {
         resultadoRepository.deleteAll();
+        eventoAprendizagemRepository.deleteAll();
+        eventoOutboxRepository.deleteAll();
         repository.deleteAll();
     }
 
@@ -156,6 +171,8 @@ class AlunoPostgresIT {
         assertTrue(apiDocs.body().contains("/api/alunos/login"));
         assertTrue(apiDocs.body().contains("/api/ranking"));
         assertTrue(apiDocs.body().contains("/api/alunos/{alunoId}/cursos/{slug}/avaliacoes"));
+        assertTrue(apiDocs.body().contains("/api/ia/assistente"));
+        assertTrue(apiDocs.body().contains("/api/eventos-aprendizagem"));
     }
 
     @Test
@@ -179,6 +196,21 @@ class AlunoPostgresIT {
         assertEquals(1_000, novaTentativa.melhorPontuacaoNoCurso());
         assertEquals(1_000, resultadoRepository.findByAlunoIdAndCursoSlug(
                 salvo.getId(), CatalogoCursos.SLUG_PYTHON).orElseThrow().getMelhorPontuacao());
+        assertTrue(eventoOutboxRepository.count() > 0);
+    }
+
+    @Test
+    void deveAceitarEventoIotUmaVezEIgnorarReentregaDuplicada() {
+        AlunoResponseDTO aluno = cadastrar("iot@example.test", 0);
+        AprendizagemEventoDTO event = new AprendizagemEventoDTO("device-event-1", aluno.getId(),
+                "presenca", java.time.Instant.parse("2026-11-04T00:00:00Z"), "lab-device-1");
+
+        var first = eventoAprendizagemService.registrar(event);
+        var duplicate = eventoAprendizagemService.registrar(event);
+
+        assertFalse(first.duplicado());
+        assertTrue(duplicate.duplicado());
+        assertEquals(1, eventoAprendizagemRepository.count());
     }
 
     private AlunoResponseDTO cadastrar(String email, int saldo) {

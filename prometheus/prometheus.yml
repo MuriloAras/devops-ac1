@@ -7,3 +7,11 @@ scrape_configs:
     metrics_path: /actuator/prometheus
     static_configs:
       - targets: ["api:8080"]
+  - job_name: supercursos-ai
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["ai-service:8000"]
+  - job_name: supercursos-mqtt-gateway
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["mqtt-gateway:9101"]

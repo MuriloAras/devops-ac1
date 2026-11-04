@@ -3,7 +3,7 @@ name: supercursos-homol
 services:
   postgres:
     image: postgres:16-alpine
-    restart: unless-stoppedff
+    restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-supercursos_homol}
       POSTGRES_USER: ${POSTGRES_USER:-supercursos}
@@ -57,6 +57,45 @@ services:
       retries: 24
     depends_on:
       postgres:
+        condition: service_healthy
+
+  ai-service:
+    build:
+      context: ./ai-service
+    image: supercursos-ai:${IMAGE_TAG:-local}
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${AI_PORT:-8001}:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+
+  mosquitto:
+    image: eclipse-mosquitto:2.0.20
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${MQTT_PORT:-1883}:1883"
+    volumes:
+      - ./mqtt/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - mosquitto_homol:/mosquitto/data
+
+  mqtt-gateway:
+    build:
+      context: ./mqtt-gateway
+    image: supercursos-mqtt-gateway:${IMAGE_TAG:-local}
+    restart: unless-stopped
+    environment:
+      MQTT_HOST: mosquitto
+      MQTT_PORT: 1883
+      CORE_EVENTS_URL: http://api:8080/api/eventos-aprendizagem
+    ports:
+      - "127.0.0.1:${MQTT_METRICS_PORT:-9101}:9101"
+    depends_on:
+      mosquitto:
+        condition: service_started
+      api:
         condition: service_healthy
 
   frontend:
@@ -130,8 +169,25 @@ services:
         condition: service_healthy
     entrypoint: ["cypress", "run"]
 
+  ai-test:
+    image: supercursos-ai:${IMAGE_TAG:-local}
+    profiles: ["test"]
+    working_dir: /app
+    volumes:
+      - ./target/b1-python-reports:/reports
+    command: ["sh", "-c", "python -m unittest discover -s tests > /reports/ai-tests.txt 2>&1; result=$$?; cat /reports/ai-tests.txt; exit $$result"]
+
+  mqtt-gateway-test:
+    image: supercursos-mqtt-gateway:${IMAGE_TAG:-local}
+    profiles: ["test"]
+    working_dir: /app
+    volumes:
+      - ./target/b1-python-reports:/reports
+    command: ["sh", "-c", "python -m unittest discover -s . -p test_app.py > /reports/mqtt-gateway-tests.txt 2>&1; result=$$?; cat /reports/mqtt-gateway-tests.txt; exit $$result"]
+
 volumes:
   postgres_homol:
   pgadmin_homol:
   prometheus_homol:
   grafana_homol:
+  mosquitto_homol:
