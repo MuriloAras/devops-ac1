@@ -360,15 +360,15 @@ O [print da aplicação](evidencias/B1/desafio-1/01-aplicacao-modular.png) mostr
 
 **ADR-006:** manter uma esteira até que ciclos de publicação diferentes justifiquem separação. A publicação no Docker Hub continua opcional.
 
-**Resultado B1 executado localmente:** `mvn verify` terminou com sucesso: 37 testes Java e 10 testes de integração PostgreSQL, sem falhas ou erros. Os oito cenários Cypress cobrem login, compra, saldo, os três cursos do catálogo (Python, CI/CD e C#), vídeo, avaliação e ranking. Os testes Python da IA e do gateway têm dois cenários cada. O ambiente Compose e os health checks também foram conferidos.
+**Execução local B1 em 04/11/2026:** `mvn verify` terminou com sucesso: 37 testes Java e 10 testes de integração PostgreSQL, sem falhas ou erros. Os oito cenários Cypress cobrem login, compra, saldo, os três cursos do catálogo (Python, CI/CD e C#), vídeo, avaliação e ranking. Os testes Python da IA e do gateway têm dois cenários cada. O ambiente Compose e os health checks também foram conferidos. As capturas e saídas dos mini-labs B1 desta seção foram geradas em 04/11/2026.
 
 O fallback também foi provocado com a IA parada; a [saída registrada](evidencias/B1/desafio-6/execucao-fallback.txt) mostra a resposta do Core e o contador correspondente no Prometheus.
 
-**Evidências Jenkins:** os prints abaixo são do histórico de build, com 40 testes aprovados e JaCoCo registrado. Eles comprovam a execução anterior da esteira; o código B1 atual ainda não foi executado no Jenkins porque o servidor local não estava ativo (`localhost:9090`). O `Jenkinsfile` versionado contém a pipeline atual.
+**Execução Jenkins B1 em 04/11/2026:** o job `SuperCursos-B1-2026-11-04`, build **#1**, terminou com **sucesso** em 7 min 30 s, usando o commit `ebf5fbae4409a7638164106f186cfff32b3a4507` da branch `main`. O Jenkins registrou **55 testes aprovados, sem falhas**: 37 testes Java, 10 de integração com PostgreSQL e 8 cenários Cypress. Os quatro testes Python (dois do serviço de IA e dois do gateway MQTT) também foram executados com sucesso na esteira. A etapa de cobertura JaCoCo registrou 88% de linhas e 93% de classes. Os prints abaixo são desta execução atual; as imagens de 15/10 permanecem somente como histórico do A2.
 
-![Resumo do build Jenkins #3 da AC2](evidencias/AC2/p2/02_resumo_build3_wide.jpg)
+![Build B1 aprovado no Jenkins em 04/11/2026](evidencias/B1/desafio-6/jenkins/01-build-b1-04-11-2026.png)
 
-![Testes aprovados no build Jenkins #3 da AC2](evidencias/AC2/p2/03_junit_build3_wide.jpg)
+![Relatório Jenkins: 55 testes aprovados e nenhuma falha](evidencias/B1/desafio-6/jenkins/02-testes-b1-04-11-2026.png)
 
 **Evidências Grafana:** o print do mini-lab B1 mostra a saúde e as métricas da API, Outbox e IoT. Os prints históricos da AC2 estão em [`evidencias/AC2/grafana/`](evidencias/AC2/grafana/).
 
@@ -390,6 +390,6 @@ O fallback também foi provocado com a IA parada; a [saída registrada](evidenci
 
 #### 14.4 C4 Deployment / operação
 
-<img width="1346" height="1618" alt="image" src="https://github.com/user-attachments/assets/4214a114-f562-491e-81a5-81d3e0d96d7c" />
+![Diagrama C4 Deployment e operação do Super Cursos](evidencias/B1/diagramas/c4-deployment-operacao.png)
 
 ---
