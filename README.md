@@ -1,6 +1,6 @@
 # Super Cursos
 
-Este README reúne dois exercícios do projeto Super Cursos em seções separadas. O A2 (anterior), sobre CI/CD e observabilidade, aparece primeiro; o B1 (atual), sobre arquitetura, vem depois. O código e as evidências de ambos continuam no mesmo repositório.
+Este README reúne a documentação do projeto Super Cursos.
 
 **Repositório:** [github.com/MuriloAras/devops-ac1](https://github.com/MuriloAras/devops-ac1)
 
