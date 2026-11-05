@@ -284,25 +284,5 @@ O fallback também foi provocado com a IA parada; a [saída registrada](evidenci
 
 ### 14.4 C4 Deployment / operação
 
-```mermaid
-C4Deployment
-    Deployment_Node(jenkinsNode, "Servidor Jenkins", "Jenkins + plugins") {
-        Container(jenkins, "Pipeline Super Cursos", "Jenkinsfile", "Testa, constrói, implanta e arquiva relatórios")
-    }
-    Deployment_Node(host, "Máquina de desenvolvimento/homologação", "Docker Desktop / Docker Compose") {
-        Deployment_Node(network, "Rede local do Compose", "Containers") {
-            Container(core, "Core", "Java/Spring Boot")
-            Container(ai, "AI Lab", "Python/FastAPI")
-            Container(gateway, "Gateway MQTT", "Python/Paho")
-            Container(mqtt, "Mosquitto", "MQTT QoS 1")
-            ContainerDb(db, "PostgreSQL", "Volume nomeado")
-            Container(prom, "Prometheus", "Coleta de métricas")
-            Container(grafana, "Grafana", "Painel provisionado")
-        }
-    }
-    Rel(jenkins, host, "Executa Docker Compose e publica artefatos", "Docker CLI")
-    Rel(prom, core, "Coleta métricas", "HTTP")
-    Rel(prom, ai, "Coleta métricas", "HTTP")
-    Rel(prom, gateway, "Coleta métricas", "HTTP")
-    Rel(grafana, prom, "Consulta métricas", "PromQL")
-```
+<img width="1346" height="1618" alt="image" src="https://github.com/user-attachments/assets/4214a114-f562-491e-81a5-81d3e0d96d7c" />
+
