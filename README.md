@@ -2,6 +2,11 @@
 
 Este README reúne a documentação do projeto Super Cursos.
 
+## Alunos:
+Beatriz Silva
+Murilo Araujo da Silva
+Pedro Augusto Vieira De Mattos
+
 **Repositório:** [github.com/MuriloAras/devops-ac1](https://github.com/MuriloAras/devops-ac1)
 
 ## Como rodar a aplicação
